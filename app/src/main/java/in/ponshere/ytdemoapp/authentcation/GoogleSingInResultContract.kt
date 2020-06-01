@@ -1,8 +1,8 @@
-package `in`.ponshere.ytdemoapp
+package `in`.ponshere.ytdemoapp.authentcation
 
+import `in`.ponshere.ytdemoapp.R
 import android.content.Context
 import android.content.Intent
-import android.util.Log
 import androidx.activity.result.contract.ActivityResultContract
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -24,13 +24,9 @@ class GoogleSingInResultContract : ActivityResultContract<Unit, String?>() {
     override fun parseResult(resultCode: Int, data: Intent?): String? {
         val task = GoogleSignIn.getSignedInAccountFromIntent(data)
         return try {
-            // Google Sign In was successful, authenticate with Firebase
             val account = task.getResult(ApiException::class.java)!!
-            Log.d(TAG, "firebaseAuthWithGoogle:" + account.id)
             account.idToken!!
         } catch (e: ApiException) {
-            // Google Sign In failed, update UI appropriately
-            Log.w(TAG, "Google sign in failed", e)
             null
         }
     }

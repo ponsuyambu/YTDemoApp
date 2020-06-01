@@ -1,5 +1,7 @@
-package `in`.ponshere.ytdemoapp
+package `in`.ponshere.ytdemoapp.authentcation.ui
 
+import `in`.ponshere.ytdemoapp.R
+import `in`.ponshere.ytdemoapp.authentcation.GoogleSingInResultContract
 import `in`.ponshere.ytdemoapp.extensions.signInWithToken
 import android.os.Bundle
 import android.widget.Toast
