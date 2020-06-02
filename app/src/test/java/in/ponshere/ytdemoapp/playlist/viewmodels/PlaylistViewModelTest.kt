@@ -49,34 +49,31 @@ class PlaylistViewModelTest {
     }
 
     @Test
-    fun `should show progress dialog when playlist request started`() {
+    fun `should show progress dialog when playlist request started`() =
         testCoroutineRule.runBlocking {
             viewModel.fetchPlaylist()
 
             assertTrue(viewModel.showProgress().value)
         }
-    }
 
     @Test
-    fun `should invoke playlists from repository when playlist request started`() {
+    fun `should invoke playlists from repository when playlist request started`() =
         testCoroutineRule.runBlocking {
             viewModel.fetchPlaylist()
 
             Mockito.verify(repository).getPlaylists()
         }
-    }
 
     @Test
-    fun `should update playlists when playlist received from repository`() {
+    fun `should update playlists when playlist received from repository`() =
         testCoroutineRule.runBlocking {
             viewModel.fetchPlaylist()
 
             Assert.assertEquals(mockPlaylist, viewModel.playlists().value)
         }
-    }
 
     @Test
-    fun `should send page token received for subsequent playlists requests`() {
+    fun `should send received pageToken  for subsequent playlists requests`() =
         testCoroutineRule.runBlocking {
             Mockito.`when`(repository.getPlaylists()).thenReturn(mockPlaylistResultWithToken)
             Mockito.`when`(repository.getPlaylists(Mockito.eq(mockPlaylistResultWithToken.nextPageToken)))
@@ -91,6 +88,4 @@ class PlaylistViewModelTest {
             Mockito.verify(repository)
                 .getPlaylists(Mockito.eq(mockPlaylistResultWithToken.nextPageToken))
         }
-    }
-
 }
