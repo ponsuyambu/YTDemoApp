@@ -16,7 +16,7 @@ class PlaylistViewModel(private val repository: YTRepository) : ViewModel() {
     fun fetchPlaylist() {
         showProgress.postValue(true)
         viewModelScope.launch {
-            val playlistResult = repository.getPlaylists()
+            val playlistResult = repository.getPlaylists(nextPageToken)
             nextPageToken = playlistResult.nextPageToken
             playlists.postValue(playlistResult.playlists)
         }

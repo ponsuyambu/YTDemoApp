@@ -17,17 +17,17 @@ import org.mockito.Mock
 import org.mockito.Mockito
 import org.mockito.junit.MockitoJUnitRunner
 
-
 @ExperimentalCoroutinesApi
 @RunWith(MockitoJUnitRunner::class)
 class PlaylistViewModelTest {
 
-    private val MOCK_PLAYLIST = mutableListOf<YTPlaylist>().apply {
+    private val mockPlaylist = mutableListOf<YTPlaylist>().apply {
         add(YTPlaylist("playlist1", 10, "icon_url1"))
         add(YTPlaylist("playlist2", 8, "icon_url2"))
         add(YTPlaylist("playlist3", 5, "icon_url3"))
     }
-    private val mockPlaylistResult = YTPlaylistsResult(MOCK_PLAYLIST, "")
+    private val mockPlaylistResultWithoutToken = YTPlaylistsResult(mockPlaylist, "")
+    private val mockPlaylistResultWithToken = YTPlaylistsResult(mockPlaylist, "A_TOKEN")
 
     @Mock
     private lateinit var repository: YTRepository
@@ -44,7 +44,7 @@ class PlaylistViewModelTest {
     fun setup() {
         viewModel = PlaylistViewModel(repository)
         testCoroutineRule.runBlocking {
-            Mockito.`when`(repository.getPlaylists()).thenReturn(mockPlaylistResult)
+            Mockito.`when`(repository.getPlaylists()).thenReturn(mockPlaylistResultWithoutToken)
         }
     }
 
@@ -71,7 +71,25 @@ class PlaylistViewModelTest {
         testCoroutineRule.runBlocking {
             viewModel.fetchPlaylist()
 
-            Assert.assertEquals(MOCK_PLAYLIST, viewModel.playlists().value)
+            Assert.assertEquals(mockPlaylist, viewModel.playlists().value)
+        }
+    }
+
+    @Test
+    fun `should send page token received for subsequent playlists requests`() {
+        testCoroutineRule.runBlocking {
+            Mockito.`when`(repository.getPlaylists()).thenReturn(mockPlaylistResultWithToken)
+            Mockito.`when`(repository.getPlaylists(Mockito.eq(mockPlaylistResultWithToken.nextPageToken)))
+                .thenReturn(mockPlaylistResultWithoutToken)
+
+            //first call
+            viewModel.fetchPlaylist()
+            Mockito.verify(repository).getPlaylists(Mockito.eq(null))
+
+            //second call
+            viewModel.fetchPlaylist()
+            Mockito.verify(repository)
+                .getPlaylists(Mockito.eq(mockPlaylistResultWithToken.nextPageToken))
         }
     }
 
