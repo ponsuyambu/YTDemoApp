@@ -27,15 +27,25 @@ class PlaylistScreen : AppCompatActivity() {
             ViewModelProvider(this, PlaylistViewModelFactory(this)).get(PlaylistViewModel::class.java)
 
         addObservers()
-
-        playlistAdapter = PlaylistAdapter(playlist)
-        playlistRecyclerView.apply {
-            layoutManager = LinearLayoutManager(context)
-            adapter = playlistAdapter
-        }
+        setupRecyclerView()
 
         playlistViewModel.fetchPlaylist()
 
+    }
+
+    private fun setupRecyclerView() {
+        playlistAdapter = PlaylistAdapter(playlist)
+        playlistAdapter.onEndReachedListener = object : PlaylistAdapter.OnEndReachedListener {
+            override fun onRecyclerEndReached(position: Int) {
+                playlistViewModel.fetchPlaylist()
+            }
+
+        }
+        playlistRecyclerView.apply {
+            layoutManager = LinearLayoutManager(context)
+//            layoutManager = GridLayoutManager(this@PlaylistScreen, 2)
+            adapter = playlistAdapter
+        }
     }
 
     private fun addObservers() {

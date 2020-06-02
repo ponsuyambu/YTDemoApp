@@ -34,11 +34,11 @@ class YTRemoteRepository(context: Context) : YTRepository {
     override suspend fun getPlaylists(pageToken: String?) : YTPlaylistsResult {
         val playLists = arrayListOf<YTPlaylist>()
         var nextPageToken = ""
-        val playlistsResult =
         coroutineScope {
             withContext(Dispatchers.IO) {
                 val task = youTube.playlists()?.list("snippet,contentDetails")
                 task?.mine = true
+                task?.maxResults = 25
                 pageToken?.let { task?.pageToken = it }
 
                 val result = task?.execute()
@@ -46,7 +46,7 @@ class YTRemoteRepository(context: Context) : YTRepository {
                 nextPageToken = result?.nextPageToken ?: ""
                 result?.items?.forEach { playlist ->
                     val title = playlist?.snippet?.title
-                    val icon = playlist?.snippet?.thumbnails?.default?.url
+                    val icon = playlist?.snippet?.thumbnails?.high?.url
                     val videosCount = playlist?.contentDetails?.itemCount
                     //Make sure all the data are available, only then add to the list
                     if(title != null && icon != null && videosCount != null) {
