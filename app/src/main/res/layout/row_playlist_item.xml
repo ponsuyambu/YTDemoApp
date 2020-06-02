@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="150dp">
+    android:layout_height="80dp">
 
     <androidx.cardview.widget.CardView
         android:layout_width="0dp"
@@ -22,8 +22,8 @@
             <ImageView
                 android:id="@+id/imgPlaylistIcon"
                 app:layout_constraintStart_toStartOf="parent"
-                android:layout_width="150dp"
-                android:layout_height="150dp"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
                 android:scaleType="centerCrop"
                 app:layout_constraintTop_toTopOf="parent"/>
 
@@ -33,24 +33,11 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
-                android:textAllCaps="true"
-                android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/imgPlaylistIcon"
-                tools:text="Title" />
-
-            <TextView
-                android:id="@+id/lblCount"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
-                app:layout_constraintStart_toEndOf="@id/imgPlaylistIcon"
-                app:layout_constraintTop_toBottomOf="@id/tvTitle"
-                android:layout_marginStart="8dp"
-                android:text="Number of videos:"
-                tools:text="Number of videos:" />
+                tools:text="Fav Songs 2018" />
 
             <TextView
                 android:id="@+id/tvCount"
@@ -58,10 +45,21 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:textAllCaps="true"
-                android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
-                app:layout_constraintStart_toEndOf="@id/lblCount"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
+                app:layout_constraintStart_toEndOf="@id/imgPlaylistIcon"
                 app:layout_constraintTop_toBottomOf="@id/tvTitle"
-                tools:text="(5)" />
+                tools:text="5" />
+            <TextView
+                android:id="@+id/lblCount"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:layout_marginEnd="8dp"
+                android:text="videos"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
+                app:layout_constraintStart_toEndOf="@id/tvCount"
+                app:layout_constraintTop_toBottomOf="@id/tvTitle"
+                tools:text="videos" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 
