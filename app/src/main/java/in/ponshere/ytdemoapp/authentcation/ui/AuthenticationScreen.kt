@@ -3,8 +3,8 @@ package `in`.ponshere.ytdemoapp.authentcation.ui
 import `in`.ponshere.ytdemoapp.R
 import `in`.ponshere.ytdemoapp.authentcation.GoogleSingInResultContract
 import `in`.ponshere.ytdemoapp.extensions.signInWithToken
+import `in`.ponshere.ytdemoapp.playlist.ui.PlaylistScreen
 import android.os.Bundle
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.coroutineScope
 import com.google.firebase.auth.FirebaseUser
@@ -32,6 +32,6 @@ class AuthenticationScreen : AppCompatActivity() {
     }
 
     private fun updateUI(user: FirebaseUser?) {
-        Toast.makeText(this, "Welcome ${user?.displayName}!", Toast.LENGTH_SHORT).show()
+        PlaylistScreen.launch(this)
     }
 }
