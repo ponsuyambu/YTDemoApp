@@ -17,18 +17,18 @@ import org.mockito.Mock
 import org.mockito.Mockito
 import org.mockito.junit.MockitoJUnitRunner
 
+private val mockPlaylist = mutableListOf<YTPlaylist>().apply {
+    add(YTPlaylist("playlist1", 10, "icon_url1"))
+    add(YTPlaylist("playlist2", 8, "icon_url2"))
+    add(YTPlaylist("playlist3", 5, "icon_url3"))
+}
+private val mockPlaylistResultWithoutToken = YTPlaylistsResult(mockPlaylist, "")
+private val mockPlaylistResultWithToken = YTPlaylistsResult(mockPlaylist, "A_TOKEN")
+
+
 @ExperimentalCoroutinesApi
 @RunWith(MockitoJUnitRunner::class)
 class PlaylistViewModelTest {
-
-    private val mockPlaylist = mutableListOf<YTPlaylist>().apply {
-        add(YTPlaylist("playlist1", 10, "icon_url1"))
-        add(YTPlaylist("playlist2", 8, "icon_url2"))
-        add(YTPlaylist("playlist3", 5, "icon_url3"))
-    }
-    private val mockPlaylistResultWithoutToken = YTPlaylistsResult(mockPlaylist, "")
-    private val mockPlaylistResultWithToken = YTPlaylistsResult(mockPlaylist, "A_TOKEN")
-
     @Mock
     private lateinit var repository: YTRepository
 
@@ -49,43 +49,39 @@ class PlaylistViewModelTest {
     }
 
     @Test
-    fun `should show progress dialog when playlist request started`() =
-        testCoroutineRule.runBlocking {
-            viewModel.fetchPlaylist()
+    fun `should show progress dialog when playlist request started`() = testCoroutineRule.runBlocking {
+        viewModel.fetchPlaylist()
 
-            assertTrue(viewModel.showProgress().value)
-        }
-
-    @Test
-    fun `should invoke playlists from repository when playlist request started`() =
-        testCoroutineRule.runBlocking {
-            viewModel.fetchPlaylist()
-
-            Mockito.verify(repository).getPlaylists()
-        }
+        assertTrue(viewModel.showProgress().value)
+    }
 
     @Test
-    fun `should update playlists when playlist received from repository`() =
-        testCoroutineRule.runBlocking {
-            viewModel.fetchPlaylist()
+    fun `should invoke playlists from repository when playlist request started`() = testCoroutineRule.runBlocking {
+        viewModel.fetchPlaylist()
 
-            Assert.assertEquals(mockPlaylist, viewModel.playlists().value)
-        }
+        Mockito.verify(repository).getPlaylists()
+    }
 
     @Test
-    fun `should send received pageToken  for subsequent playlists requests`() =
-        testCoroutineRule.runBlocking {
-            Mockito.`when`(repository.getPlaylists()).thenReturn(mockPlaylistResultWithToken)
-            Mockito.`when`(repository.getPlaylists(Mockito.eq(mockPlaylistResultWithToken.nextPageToken)))
-                .thenReturn(mockPlaylistResultWithoutToken)
+    fun `should update playlists when playlist received from repository`() = testCoroutineRule.runBlocking {
+        viewModel.fetchPlaylist()
 
-            //first call
-            viewModel.fetchPlaylist()
-            Mockito.verify(repository).getPlaylists(Mockito.eq(null))
+        Assert.assertEquals(mockPlaylist, viewModel.playlists().value)
+    }
 
-            //second call
-            viewModel.fetchPlaylist()
-            Mockito.verify(repository)
-                .getPlaylists(Mockito.eq(mockPlaylistResultWithToken.nextPageToken))
-        }
+    @Test
+    fun `should send received pageToken  for subsequent playlists requests`() = testCoroutineRule.runBlocking {
+        Mockito.`when`(repository.getPlaylists()).thenReturn(mockPlaylistResultWithToken)
+        Mockito.`when`(repository.getPlaylists(Mockito.eq(mockPlaylistResultWithToken.nextPageToken)))
+            .thenReturn(mockPlaylistResultWithoutToken)
+
+        //first call
+        viewModel.fetchPlaylist()
+        Mockito.verify(repository).getPlaylists(Mockito.eq(null))
+
+        //second call
+        viewModel.fetchPlaylist()
+        Mockito.verify(repository)
+            .getPlaylists(Mockito.eq(mockPlaylistResultWithToken.nextPageToken))
+    }
 }
