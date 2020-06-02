@@ -26,7 +26,7 @@ class TestCoroutineRule : TestRule {
         }
     }
 
-    fun runBlockingTest(block: suspend TestCoroutineScope.() -> Unit) =
+    fun runBlocking(block: suspend TestCoroutineScope.() -> Unit) =
         testCoroutineScope.runBlockingTest { block() }
 
 }

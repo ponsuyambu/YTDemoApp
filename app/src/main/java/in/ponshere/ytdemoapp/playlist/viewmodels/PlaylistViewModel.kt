@@ -11,12 +11,14 @@ import kotlinx.coroutines.launch
 class PlaylistViewModel(private val repository: YTRepository) : ViewModel() {
     private val showProgress = MutableLiveData(false)
     private val playlists = MutableLiveData<List<YTPlaylist>>()
+    private var nextPageToken: String? = null
 
     fun fetchPlaylist() {
         showProgress.postValue(true)
         viewModelScope.launch {
-            val list = repository.getPlaylists()
-            playlists.postValue(list)
+            val playlistResult = repository.getPlaylists()
+            nextPageToken = playlistResult.nextPageToken
+            playlists.postValue(playlistResult.playlists)
         }
     }
 
