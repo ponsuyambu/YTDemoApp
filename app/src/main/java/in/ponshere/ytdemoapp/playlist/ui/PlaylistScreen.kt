@@ -1,48 +1,56 @@
 package `in`.ponshere.ytdemoapp.playlist.ui
 
 import `in`.ponshere.ytdemoapp.R
+import `in`.ponshere.ytdemoapp.playlist.repository.models.YTPlaylist
+import `in`.ponshere.ytdemoapp.playlist.viewmodels.PlaylistViewModel
+import `in`.ponshere.ytdemoapp.playlist.viewmodels.PlaylistViewModelFactory
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.coroutineScope
-import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential
-import com.google.api.client.http.javanet.NetHttpTransport
-import com.google.api.client.json.jackson2.JacksonFactory
-import com.google.api.services.youtube.YouTube
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import timber.log.Timber
-import java.util.*
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
+import kotlinx.android.synthetic.main.activity_playlist_screen.*
 
 
 class PlaylistScreen : AppCompatActivity() {
+
+    private lateinit var playlistViewModel: PlaylistViewModel
+    private lateinit var playlistAdapter: PlaylistAdapter
+    val playlist = mutableListOf<YTPlaylist>()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_playlist_screen)
+        playlistViewModel =
+            ViewModelProvider(this, PlaylistViewModelFactory(this)).get(PlaylistViewModel::class.java)
 
-        val credential = GoogleAccountCredential.usingOAuth2(
-            this,
-            Collections.singleton("https://www.googleapis.com/auth/youtube")
-        )
-        credential.selectedAccount = GoogleSignIn.getLastSignedInAccount(this)?.account
-        val youTube = YouTube.Builder(
-            NetHttpTransport(),
-            JacksonFactory(),
-            credential
-        )
-            .setApplicationName("YTDemoApp")
-            .build()
+        addObservers()
 
-        val task = youTube.playlists()?.list("snippet,contentDetails")
-        task?.mine = true
-        lifecycle.coroutineScope.launch(Dispatchers.IO) {
-            val result = task?.execute()
-            result?.items?.forEach { playlist ->
-                Timber.d("Playlist: ${playlist?.snippet?.title}")
-            }
+        playlistAdapter = PlaylistAdapter(playlist)
+        playlistRecyclerView.apply {
+            layoutManager = LinearLayoutManager(context)
+            adapter = playlistAdapter
         }
+
+        playlistViewModel.fetchPlaylist()
+
+    }
+
+    private fun addObservers() {
+        playlistViewModel.showProgress().observe(this,
+            Observer {
+
+            })
+
+        playlistViewModel.playlists().observe(this,
+            Observer {
+                it?.let {
+                    playlist.addAll(it)
+                    playlistAdapter.notifyDataSetChanged()
+                }
+            })
     }
 
     companion object {
