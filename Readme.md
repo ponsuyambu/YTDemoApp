@@ -16,3 +16,6 @@ The application offers user Google sign in. Using Google SignIn, the user can si
 ### Google SignIn
 - https://developers.google.com/identity/protocols/oauth2
 - Scopes - https://developers.google.com/android/reference/com/google/android/gms/common/Scopes
+
+### Testing
+- https://developer.android.com/training/testing/set-up-project

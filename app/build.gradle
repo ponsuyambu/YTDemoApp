@@ -31,6 +31,7 @@ android {
             signingConfig signingConfigs.release
         }
     }
+    testBuildType "release" // Release keystore SHA1 is used for google signing
 }
 
 dependencies {
@@ -67,14 +68,39 @@ dependencies {
     implementation('com.google.apis:google-api-services-youtube:v3-rev183-1.22.0') {
         exclude group: 'org.apache.httpcomponents'
     }
-
-    //testing
-    testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
-
     //Timber
     implementation 'com.jakewharton.timber:timber:4.7.1'
 
+    //testing
 
+    //Unit tests
+    testImplementation 'junit:junit:4.12'
+    testImplementation 'androidx.test.ext:junit:1.1.1'
+
+    /* *******AndroidTests********* */
+
+    // Core library
+    androidTestImplementation 'androidx.test:core:1.2.0'
+
+    // AndroidJUnitRunner and JUnit Rules
+    androidTestImplementation 'androidx.test:runner:1.2.0'
+    androidTestImplementation 'androidx.test:rules:1.2.0'
+
+    // Assertions
+    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
+    androidTestImplementation 'androidx.test.ext:truth:1.2.0'
+    androidTestImplementation 'com.google.truth:truth:0.42'
+
+    // Espresso dependencies
+    def espressoVersion = "3.2.0"
+    androidTestImplementation "androidx.test.espresso:espresso-core:${espressoVersion}"
+    androidTestImplementation "androidx.test.espresso:espresso-contrib:${espressoVersion}"
+    androidTestImplementation "androidx.test.espresso:espresso-intents:${espressoVersion}"
+    androidTestImplementation "androidx.test.espresso:espresso-accessibility:${espressoVersion}"
+    androidTestImplementation "androidx.test.espresso:espresso-web:${espressoVersion}"
+    androidTestImplementation "androidx.test.espresso.idling:idling-concurrent:${espressoVersion}"
+
+    implementation 'androidx.test.espresso:espresso-idling-resource:3.2.0'
+    // Set this dependency to build and run UI Automator tests
+    androidTestImplementation 'androidx.test.uiautomator:uiautomator:2.2.0'
 }
