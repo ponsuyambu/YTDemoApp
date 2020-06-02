@@ -1,10 +1,12 @@
 package `in`.ponshere.ytdemoapp.playlist.viewmodels
 
 import `in`.ponshere.ytdemoapp.playlist.repository.YTRepository
+import `in`.ponshere.ytdemoapp.playlist.repository.models.YTPlaylist
 import `in`.ponshere.ytdemoapp.utils.TestCoroutineRule
 import `in`.ponshere.ytdemoapp.utils.assertTrue
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import org.junit.Assert
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -47,6 +49,18 @@ class PlaylistViewModelTest {
 
         testCoroutineRule.runBlockingTest {
             Mockito.verify(repository).getPlaylists()
+        }
+    }
+
+    @Test
+    fun `should update playlists when playlist received from repository`() {
+        testCoroutineRule.runBlockingTest {
+            val expectedPlaylist = mutableListOf<YTPlaylist>()
+            Mockito.`when`(repository.getPlaylists()).thenReturn(expectedPlaylist)
+
+            viewmodel.fetchPlaylist()
+
+            Assert.assertEquals(expectedPlaylist, viewmodel.playlists().value)
         }
     }
 

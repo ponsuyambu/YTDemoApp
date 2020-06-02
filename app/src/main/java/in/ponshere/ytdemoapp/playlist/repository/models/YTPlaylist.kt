@@ -1,6 +1,6 @@
 package `in`.ponshere.ytdemoapp.playlist.repository.models
 
-data class Playlist(
+data class YTPlaylist(
     val title: String,
     val videosCount: Long,
     val icon: String
