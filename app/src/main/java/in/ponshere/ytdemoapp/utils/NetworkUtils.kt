@@ -7,7 +7,7 @@ import javax.inject.Singleton
 @Singleton
 class NetworkUtils @Inject constructor(val context: Context) {
     fun isOnline(): Boolean {
-        return false
+        return true
     }
 
 }

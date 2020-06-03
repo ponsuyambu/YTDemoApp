@@ -1,12 +1,16 @@
 package `in`.ponshere.ytdemoapp.datasource
 
 import `in`.ponshere.ytdemoapp.db.AppDatabase
+import `in`.ponshere.ytdemoapp.db.YTPlaylistEntity
+import `in`.ponshere.ytdemoapp.extensions.toJson
 import `in`.ponshere.ytdemoapp.playlist.models.YTVideosResult
 import `in`.ponshere.ytdemoapp.playlistdetails.models.YTPlaylistsResult
 import javax.inject.Inject
 
+private const val FIRST_PAGE_TOKEN = "!!FIRST_PAGE!!"
+
 class YTLocalDataSource @Inject constructor(
-    private val database: AppDatabase
+    database: AppDatabase
 ) : YTDataSource {
 
     private val playlistResultDao = database.playlistResultDao()
@@ -19,7 +23,7 @@ class YTLocalDataSource @Inject constructor(
         TODO("Not yet implemented")
     }
 
-    fun isAlreadyCached(pageToken: String) = playlistResultDao.findByPageToken(pageToken) != null
+    suspend fun isAlreadyCached(pageToken: String) = playlistResultDao.findByPageToken(pageToken) != null
 
     fun addPlaylistResult(playlistResult: YTPlaylistsResult) {
 

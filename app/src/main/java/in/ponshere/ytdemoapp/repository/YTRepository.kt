@@ -16,17 +16,18 @@ class YTRepository @Inject constructor(
     private val networkUtils: NetworkUtils
 ) : YTDataSource{
     override suspend fun getPlaylists(pageToken: String?): YTPlaylistsResult {
-//        if(networkUtils.isOnline().not()) {
-//            return localDataSource.getPlaylists(pageToken)
-//        }
+        if(networkUtils.isOnline().not()) {
+            return localDataSource.getPlaylists(pageToken)
+        }
 
-        val playlistsResult = remoteDataSource.getPlaylists(pageToken)
-//        if(pageToken == null) {
-//            localDataSource.deletePlaylistResults()
-//            localDataSource.addPlaylistResult(playlistsResult)
-//        }else if(localDataSource.isAlreadyCached(playlistsResult.nextPageToken).not()) {
-//            localDataSource.addPlaylistResult(playlistsResult)
-//        }
+    val playlistsResult = remoteDataSource.getPlaylists(pageToken)
+        if(pageToken == null) {
+            localDataSource.deletePlaylistResults()
+            localDataSource.addPlaylistResult(playlistsResult, pageToken)
+        }else if(localDataSource.isAlreadyCached(playlistsResult.nextPageToken).not()) {
+            localDataSource.addPlaylistResult(playlistsResult, pageToken)
+        }
+
         return playlistsResult
     }
 
