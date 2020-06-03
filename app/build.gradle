@@ -69,6 +69,14 @@ dependencies {
     implementation('com.google.apis:google-api-services-youtube:v3-rev183-1.22.0') {
         exclude group: 'org.apache.httpcomponents'
     }
+
+    //Room
+    def room_version = "2.2.5"
+    implementation "androidx.room:room-runtime:$room_version"
+    kapt "androidx.room:room-compiler:$room_version" // For Kotlin use kapt instead of annotationProcessor
+    implementation "androidx.room:room-ktx:$room_version"
+
+
     //Timber
     implementation 'com.jakewharton.timber:timber:4.7.1'
 
@@ -94,6 +102,7 @@ dependencies {
     testImplementation 'androidx.arch.core:core-testing:2.1.0'
     testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.3.4'
 
+    testImplementation "androidx.room:room-testing:$room_version"
     /* *******AndroidTests********* */
 
     // Core library

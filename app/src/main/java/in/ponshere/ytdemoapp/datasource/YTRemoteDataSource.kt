@@ -1,5 +1,6 @@
-package `in`.ponshere.ytdemoapp.playlist.repository
+package `in`.ponshere.ytdemoapp.datasource
 
+import `in`.ponshere.ytdemoapp.playlist.repository.GOOGLE_SIGN_IN_YOUTUBE_SCOPE
 import `in`.ponshere.ytdemoapp.playlist.repository.models.YTPlaylist
 import `in`.ponshere.ytdemoapp.playlist.repository.models.YTPlaylistsResult
 import `in`.ponshere.ytdemoapp.playlist.repository.models.YTVideo
@@ -15,7 +16,7 @@ import kotlinx.coroutines.withContext
 import java.util.*
 import javax.inject.Inject
 
-class YTRemoteRepository @Inject constructor(context: Context) : YTRepository {
+class YTRemoteDataSource @Inject constructor(context: Context) : YTDataSource {
     private val youTube : YouTube
 
     init {
