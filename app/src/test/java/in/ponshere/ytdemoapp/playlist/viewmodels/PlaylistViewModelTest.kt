@@ -4,7 +4,9 @@ import `in`.ponshere.ytdemoapp.playlist.repository.YTRepository
 import `in`.ponshere.ytdemoapp.playlist.repository.models.YTPlaylist
 import `in`.ponshere.ytdemoapp.playlist.repository.models.YTPlaylistsResult
 import `in`.ponshere.ytdemoapp.utils.TestCoroutineRule
+import `in`.ponshere.ytdemoapp.utils.any
 import `in`.ponshere.ytdemoapp.utils.assertTrue
+import `in`.ponshere.ytdemoapp.utils.eq
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.junit.Assert
@@ -15,6 +17,7 @@ import org.junit.rules.TestRule
 import org.junit.runner.RunWith
 import org.mockito.Mock
 import org.mockito.Mockito
+import org.mockito.Mockito.never
 import org.mockito.junit.MockitoJUnitRunner
 
 val mockPlaylist = mutableListOf<YTPlaylist>().apply {
@@ -22,7 +25,7 @@ val mockPlaylist = mutableListOf<YTPlaylist>().apply {
     add(YTPlaylist("playlist2", 8, "icon_url2"))
     add(YTPlaylist("playlist3", 5, "icon_url3"))
 }
-val mockPlaylistResultWithoutToken = YTPlaylistsResult(mockPlaylist, "")
+val mockPlaylistResultWithEmptyToken = YTPlaylistsResult(mockPlaylist, "")
 val mockPlaylistResultWithToken = YTPlaylistsResult(mockPlaylist, "A_TOKEN")
 
 
@@ -44,7 +47,7 @@ class PlaylistViewModelTest {
     fun setup() {
         viewModel = PlaylistViewModel(repository)
         testCoroutineRule.runBlocking {
-            Mockito.`when`(repository.getPlaylists()).thenReturn(mockPlaylistResultWithoutToken)
+            Mockito.`when`(repository.getPlaylists()).thenReturn(mockPlaylistResultWithEmptyToken)
         }
     }
 
@@ -70,10 +73,10 @@ class PlaylistViewModelTest {
     }
 
     @Test
-    fun `should send received pageToken  for subsequent playlists requests`() = testCoroutineRule.runBlocking {
+    fun `should send received pageToken for subsequent playlists requests`() = testCoroutineRule.runBlocking {
         Mockito.`when`(repository.getPlaylists()).thenReturn(mockPlaylistResultWithToken)
         Mockito.`when`(repository.getPlaylists(Mockito.eq(mockPlaylistResultWithToken.nextPageToken)))
-            .thenReturn(mockPlaylistResultWithoutToken)
+            .thenReturn(mockPlaylistResultWithEmptyToken)
 
         //first call
         viewModel.fetchPlaylist()
@@ -83,5 +86,18 @@ class PlaylistViewModelTest {
         viewModel.fetchPlaylist()
         Mockito.verify(repository)
             .getPlaylists(Mockito.eq(mockPlaylistResultWithToken.nextPageToken))
+    }
+
+    @Test
+    fun `should not request new playlists if the nextPageToken is empty`() = testCoroutineRule.runBlocking {
+        Mockito.`when`(repository.getPlaylists(any())).thenReturn(mockPlaylistResultWithEmptyToken)
+
+        //first call
+        viewModel.fetchPlaylist()
+        Mockito.verify(repository).getPlaylists(eq(null))
+
+        //second call
+        viewModel.fetchPlaylist()
+        Mockito.verify(repository, never()).getPlaylists(eq(""))
     }
 }

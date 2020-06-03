@@ -14,12 +14,20 @@ class PlaylistViewModel(private val repository: YTRepository) : ViewModel() {
     private var nextPageToken: String? = null
 
     fun fetchPlaylist() {
-        showProgress.postValue(true)
         viewModelScope.launch {
-            val playlistResult = repository.getPlaylists(nextPageToken)
-            nextPageToken = playlistResult.nextPageToken
-            playlists.postValue(playlistResult.playlists)
+            if(isNextPlaylistResultsAvailable(nextPageToken)) {
+                showProgress.postValue(true)
+                val playlistResult = repository.getPlaylists(nextPageToken)
+                nextPageToken = playlistResult.nextPageToken
+                playlists.postValue(playlistResult.playlists)
+            }
         }
+    }
+
+    private fun isNextPlaylistResultsAvailable(pageToken : String?) : Boolean{
+        if(pageToken == null) return true
+        if(pageToken.isEmpty()) return false
+        return true
     }
 
     fun showProgress(): LiveData<Boolean> = showProgress
