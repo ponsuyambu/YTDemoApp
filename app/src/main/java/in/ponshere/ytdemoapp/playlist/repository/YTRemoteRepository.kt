@@ -2,6 +2,7 @@ package `in`.ponshere.ytdemoapp.playlist.repository
 
 import `in`.ponshere.ytdemoapp.playlist.repository.models.YTPlaylist
 import `in`.ponshere.ytdemoapp.playlist.repository.models.YTPlaylistsResult
+import `in`.ponshere.ytdemoapp.playlist.repository.models.YTVideo
 import android.content.Context
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential
@@ -27,9 +28,29 @@ class YTRemoteRepository @Inject constructor(context: Context) : YTRepository {
             NetHttpTransport(),
             JacksonFactory(),
             credential
-        )
-            .setApplicationName("YTDemoApp")
-            .build()
+        ).setApplicationName("YTDemoApp").build()
+    }
+
+    suspend fun getVideos(playlistId: String, pageToken: String? = null) {
+        val videos = arrayListOf<YTVideo>()
+        var nextPageToken = ""
+        coroutineScope {
+            withContext(Dispatchers.IO) {
+                val task = youTube.playlistItems()?.list("snippet, contentDetails")
+                task?.maxResults = 25
+                pageToken?.let { task?.pageToken = it }
+
+                val result = task?.execute()
+
+                nextPageToken = result?.nextPageToken ?: ""
+                result?.items?.forEach { playlistItem ->
+                    val title = playlistItem?.snippet?.title
+                    val icon = playlistItem?.snippet?.thumbnails?.high
+                    val videoId = playlistItem?.snippet?.resourceId?.videoId
+                }
+            }
+        }
+
     }
 
     override suspend fun getPlaylists(pageToken: String?) : YTPlaylistsResult {

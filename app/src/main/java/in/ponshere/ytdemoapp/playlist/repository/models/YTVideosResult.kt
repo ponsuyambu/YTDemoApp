@@ -1,7 +1,7 @@
 package `in`.ponshere.ytdemoapp.playlist.repository.models
 
 
-class YTVideosResult(
-    val videos: List<YTVideo>,
+class YTPlaylistsResult(
+    val playlists: List<YTPlaylist>,
     val nextPageToken: String
 )

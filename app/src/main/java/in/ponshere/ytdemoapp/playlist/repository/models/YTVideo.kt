@@ -4,9 +4,10 @@ import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
-data class YTPlaylist(
+data class YTVideo(
+    val videoId: String,
     val title: String,
-    val videosCount: Long,
-    val icon: String
-) : Parcelable{
-}
+    val icon: String,
+    val author: String,
+    val duration: String
+) : Parcelable
