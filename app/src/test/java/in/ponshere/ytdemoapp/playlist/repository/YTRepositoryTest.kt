@@ -3,6 +3,7 @@ package `in`.ponshere.ytdemoapp.playlist.repository
 import `in`.ponshere.ytdemoapp.datasource.YTLocalDataSource
 import `in`.ponshere.ytdemoapp.datasource.YTRemoteDataSource
 import `in`.ponshere.ytdemoapp.playlist.viewmodels.mockPlaylistResultWithToken
+import `in`.ponshere.ytdemoapp.utils.NetworkUtils
 import `in`.ponshere.ytdemoapp.utils.TestCoroutineRule
 import `in`.ponshere.ytdemoapp.utils.any
 import `in`.ponshere.ytdemoapp.utils.eq
@@ -28,6 +29,8 @@ class YTRepositoryTest {
     lateinit var localDataSource: YTLocalDataSource
     @Mock
     lateinit var remoteDataSource: YTRemoteDataSource
+    @Mock
+    lateinit var networkUtils: NetworkUtils
 
     @get:Rule
     val testInstantTaskExecutorRule: TestRule = InstantTaskExecutorRule()
@@ -39,8 +42,8 @@ class YTRepositoryTest {
     private lateinit var repository: YTRepository
 
     @Before
-    fun setUp() {
-
+    fun setup() {
+        `when`(networkUtils.isOnline()).thenReturn(true)
     }
 
     @Test
@@ -73,4 +76,13 @@ class YTRepositoryTest {
         verify(localDataSource).addPlaylistResult(eq(mockPlaylistResultWithToken))
     }
 
+    @Test
+    fun `should get data from local data source if the device is offline` () = testCoroutineRule.runBlocking {
+        `when`(localDataSource.getPlaylists(eq(null))).thenReturn(mockPlaylistResultWithToken)
+        `when`(networkUtils.isOnline()).thenReturn(false)
+
+        repository.getPlaylists()
+
+        verify(localDataSource).getPlaylists(eq(null))
+    }
 }

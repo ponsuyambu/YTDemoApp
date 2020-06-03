@@ -4,15 +4,21 @@ import `in`.ponshere.ytdemoapp.datasource.YTDataSource
 import `in`.ponshere.ytdemoapp.datasource.YTLocalDataSource
 import `in`.ponshere.ytdemoapp.datasource.YTRemoteDataSource
 import `in`.ponshere.ytdemoapp.playlist.repository.models.YTPlaylistsResult
+import `in`.ponshere.ytdemoapp.utils.NetworkUtils
 import javax.inject.Inject
 
 const val GOOGLE_SIGN_IN_YOUTUBE_SCOPE = "https://www.googleapis.com/auth/youtube"
 
 class YTRepository @Inject constructor(
     private val localDataSource: YTLocalDataSource,
-    private val remoteDataSource: YTRemoteDataSource
+    private val remoteDataSource: YTRemoteDataSource,
+    private val networkUtils: NetworkUtils
 ) : YTDataSource{
     override suspend fun getPlaylists(pageToken: String?): YTPlaylistsResult {
+        if(networkUtils.isOnline().not()) {
+            return localDataSource.getPlaylists(pageToken)
+        }
+
         val playlistsResult = remoteDataSource.getPlaylists(pageToken)
         if(pageToken == null) {
             localDataSource.deletePlaylistResults()
