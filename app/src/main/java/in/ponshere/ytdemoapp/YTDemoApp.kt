@@ -1,12 +1,18 @@
 package `in`.ponshere.ytdemoapp
 
-import android.app.Application
+import `in`.ponshere.ytdemoapp.di.DaggerAppComponent
+import dagger.android.AndroidInjector
+import dagger.android.DaggerApplication
 import timber.log.Timber
 
-class YTDemoApp : Application() {
+class YTDemoApp : DaggerApplication() {
     override fun onCreate() {
         super.onCreate()
         //TODO: Add condition once the major development is done
-        Timber.plant(Timber.DebugTree());
+        Timber.plant(Timber.DebugTree())
+    }
+
+    override fun applicationInjector(): AndroidInjector<out DaggerApplication> {
+        return DaggerAppComponent.builder().application(this).build()
     }
 }

@@ -7,14 +7,14 @@ import `in`.ponshere.ytdemoapp.idlingresource.SignInIdlingResource
 import `in`.ponshere.ytdemoapp.playlist.ui.PlaylistScreen
 import android.os.Bundle
 import androidx.annotation.VisibleForTesting
-import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.coroutineScope
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import dagger.android.support.DaggerAppCompatActivity
 import kotlinx.android.synthetic.main.activity_authentication.*
 import kotlinx.coroutines.launch
 
-class AuthenticationScreen : AppCompatActivity() {
+class AuthenticationScreen : DaggerAppCompatActivity() {
 
     @VisibleForTesting
     var singInIdlingResource: SignInIdlingResource? = null

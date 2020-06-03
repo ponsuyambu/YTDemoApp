@@ -12,8 +12,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.withContext
 import java.util.*
+import javax.inject.Inject
 
-class YTRemoteRepository(context: Context) : YTRepository {
+class YTRemoteRepository @Inject constructor(context: Context) : YTRepository {
     private val youTube : YouTube
 
     init {
