@@ -48,7 +48,6 @@ class PlaylistScreen : DaggerAppCompatActivity() {
         }
         playlistRecyclerView.apply {
             layoutManager = LinearLayoutManager(context)
-//            layoutManager = GridLayoutManager(this@PlaylistScreen, 2)
             adapter = playlistAdapter
         }
     }

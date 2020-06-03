@@ -1,6 +1,8 @@
 package `in`.ponshere.ytdemoapp.di
 
 import `in`.ponshere.ytdemoapp.db.AppDatabase
+import `in`.ponshere.ytdemoapp.utils.NetworkState
+import `in`.ponshere.ytdemoapp.utils.NetworkStateHolder
 import android.app.Application
 import android.content.Context
 import androidx.room.Room
@@ -25,5 +27,10 @@ class ApplicationModule() {
             applicationContext,
             AppDatabase::class.java, DATABASE_NAME
         ).build()
+    }
+
+    @Provides
+    fun provideNetworkStateHolder() : NetworkState {
+        return NetworkStateHolder
     }
 }
