@@ -3,7 +3,7 @@ package `in`.ponshere.ytdemoapp.di
 import `in`.ponshere.ytdemoapp.authentcation.ui.AuthenticationScreen
 import `in`.ponshere.ytdemoapp.player.YoutubePlayerScreen
 import `in`.ponshere.ytdemoapp.playlist.ui.PlaylistScreen
-import `in`.ponshere.ytdemoapp.playlistdetails.PlaylistDetailsScreen
+import `in`.ponshere.ytdemoapp.playlistdetails.ui.PlaylistDetailsScreen
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 

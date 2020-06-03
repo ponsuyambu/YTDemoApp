@@ -1,24 +1,36 @@
 package `in`.ponshere.ytdemoapp.player
 
 import `in`.ponshere.ytdemoapp.R
+import `in`.ponshere.ytdemoapp.playlistdetails.models.YTVideo
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener
 import dagger.android.support.DaggerAppCompatActivity
 import kotlinx.android.synthetic.main.activity_youtube_player_screen.*
 
+private const val KEY_PLAYLISTVIDEO = "playlistVideo"
 
 class YoutubePlayerScreen : DaggerAppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_youtube_player_screen)
+        val playlistVideo = intent.getParcelableExtra<YTVideo>(KEY_PLAYLISTVIDEO)
         lifecycle.addObserver(youtube_player_view)
         youtube_player_view.addYouTubePlayerListener(object : AbstractYouTubePlayerListener() {
             override fun onReady(youTubePlayer: YouTubePlayer) {
-                val videoId = "bK3qQU0r8x0"
-                youTubePlayer.loadVideo(videoId, 23f)
+                youTubePlayer.loadVideo(playlistVideo.videoId, 23f)
             }
         })
+    }
 
+    companion object {
+        fun launch(caller: Activity, playlistVideo: YTVideo) {
+            val intent = Intent(caller, YoutubePlayerScreen::class.java).apply {
+                putExtra(KEY_PLAYLISTVIDEO, playlistVideo)
+            }
+            caller.startActivity(intent)
+        }
     }
 }

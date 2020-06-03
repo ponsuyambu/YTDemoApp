@@ -1,4 +1,4 @@
-package `in`.ponshere.ytdemoapp.playlist.repository.models
+package `in`.ponshere.ytdemoapp.playlistdetails.models
 
 import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize

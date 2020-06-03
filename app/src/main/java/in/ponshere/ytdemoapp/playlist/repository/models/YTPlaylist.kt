@@ -5,6 +5,7 @@ import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 data class YTPlaylist(
+    val id: String,
     val title: String,
     val videosCount: Long,
     val icon: String

@@ -2,8 +2,9 @@ package `in`.ponshere.ytdemoapp.datasource
 
 import `in`.ponshere.ytdemoapp.playlist.repository.GOOGLE_SIGN_IN_YOUTUBE_SCOPE
 import `in`.ponshere.ytdemoapp.playlist.repository.models.YTPlaylist
-import `in`.ponshere.ytdemoapp.playlist.repository.models.YTPlaylistsResult
-import `in`.ponshere.ytdemoapp.playlist.repository.models.YTVideo
+import `in`.ponshere.ytdemoapp.playlist.repository.models.YTVideosResult
+import `in`.ponshere.ytdemoapp.playlistdetails.models.YTPlaylistsResult
+import `in`.ponshere.ytdemoapp.playlistdetails.models.YTVideo
 import android.content.Context
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential
@@ -32,26 +33,30 @@ class YTRemoteDataSource @Inject constructor(context: Context) : YTDataSource {
         ).setApplicationName("YTDemoApp").build()
     }
 
-    suspend fun getVideos(playlistId: String, pageToken: String? = null) {
+    override suspend fun getPlaylistVideos(playlistId: String, pageToken: String?): YTVideosResult {
         val videos = arrayListOf<YTVideo>()
         var nextPageToken = ""
         coroutineScope {
             withContext(Dispatchers.IO) {
-                val task = youTube.playlistItems()?.list("snippet, contentDetails")
-                task?.maxResults = 25
+                val task = youTube.playlistItems()?.list("snippet")
+                task?.playlistId = playlistId
+                task?.maxResults = 15
                 pageToken?.let { task?.pageToken = it }
 
                 val result = task?.execute()
 
                 nextPageToken = result?.nextPageToken ?: ""
                 result?.items?.forEach { playlistItem ->
-                    val title = playlistItem?.snippet?.title
-                    val icon = playlistItem?.snippet?.thumbnails?.high
                     val videoId = playlistItem?.snippet?.resourceId?.videoId
+                    val title = playlistItem?.snippet?.title
+                    val icon = playlistItem?.snippet?.thumbnails?.high?.url
+                    if(videoId != null && title != null && icon != null) {
+                        videos.add(YTVideo(videoId, title, icon, "", ""))
+                    }
                 }
             }
         }
-
+        return YTVideosResult(videos, nextPageToken)
     }
 
     override suspend fun getPlaylists(pageToken: String?) : YTPlaylistsResult {
@@ -61,7 +66,7 @@ class YTRemoteDataSource @Inject constructor(context: Context) : YTDataSource {
             withContext(Dispatchers.IO) {
                 val task = youTube.playlists()?.list("snippet,contentDetails")
                 task?.mine = true
-                task?.maxResults = 25
+                task?.maxResults = 5
                 pageToken?.let { task?.pageToken = it }
 
                 val result = task?.execute()
@@ -71,9 +76,11 @@ class YTRemoteDataSource @Inject constructor(context: Context) : YTDataSource {
                     val title = playlist?.snippet?.title
                     val icon = playlist?.snippet?.thumbnails?.high?.url
                     val videosCount = playlist?.contentDetails?.itemCount
+                    val playlistId = playlist?.id
                     //Make sure all the data are available, only then add to the list
-                    if(title != null && icon != null && videosCount != null) {
+                    if(playlistId != null && title != null && icon != null && videosCount != null) {
                         playLists.add(YTPlaylist(
+                            playlistId,
                             title,
                             videosCount,
                             icon
@@ -82,6 +89,9 @@ class YTRemoteDataSource @Inject constructor(context: Context) : YTDataSource {
                 }
             }
         }
-        return YTPlaylistsResult(playLists, nextPageToken)
+        return YTPlaylistsResult(
+            playLists,
+            nextPageToken
+        )
     }
 }

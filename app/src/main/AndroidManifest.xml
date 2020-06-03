@@ -13,7 +13,7 @@
         <activity android:name=".player.YoutubePlayerScreen">
 
         </activity>
-        <activity android:name=".playlistdetails.PlaylistDetailsScreen">
+        <activity android:name=".playlistdetails.ui.PlaylistDetailsScreen">
 
         </activity>
         <activity android:name=".playlist.ui.PlaylistScreen" />

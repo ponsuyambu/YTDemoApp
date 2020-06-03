@@ -2,7 +2,7 @@ package `in`.ponshere.ytdemoapp.playlist.viewmodels
 
 import `in`.ponshere.ytdemoapp.playlist.repository.YTRepository
 import `in`.ponshere.ytdemoapp.playlist.repository.models.YTPlaylist
-import `in`.ponshere.ytdemoapp.playlist.repository.models.YTPlaylistsResult
+import `in`.ponshere.ytdemoapp.playlistdetails.models.YTPlaylistsResult
 import `in`.ponshere.ytdemoapp.utils.TestCoroutineRule
 import `in`.ponshere.ytdemoapp.utils.any
 import `in`.ponshere.ytdemoapp.utils.assertTrue
@@ -21,9 +21,9 @@ import org.mockito.Mockito.never
 import org.mockito.junit.MockitoJUnitRunner
 
 val mockPlaylist = mutableListOf<YTPlaylist>().apply {
-    add(YTPlaylist("playlist1", 10, "icon_url1"))
-    add(YTPlaylist("playlist2", 8, "icon_url2"))
-    add(YTPlaylist("playlist3", 5, "icon_url3"))
+    add(YTPlaylist("1", "playlist1", 10, "icon_url1"))
+    add(YTPlaylist("2", "playlist2", 8, "icon_url2"))
+    add(YTPlaylist("3", "playlist3", 5, "icon_url3"))
 }
 val mockPlaylistResultWithEmptyToken = YTPlaylistsResult(mockPlaylist, "")
 val mockPlaylistResultWithToken = YTPlaylistsResult(mockPlaylist, "A_TOKEN")
