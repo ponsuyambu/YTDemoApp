@@ -81,6 +81,9 @@ dependencies {
     kapt 'com.google.dagger:dagger-compiler:2.27'
     kapt 'com.google.dagger:dagger-android-processor:2.27'
 
+    //android-youtube-player
+    implementation 'com.pierfrancescosoffritti.androidyoutubeplayer:core:10.0.5'
+    
     //testing
 
     //Unit tests

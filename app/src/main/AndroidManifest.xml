@@ -10,7 +10,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".playlist.ui.PlaylistScreen"></activity>
+        <activity android:name=".player.YoutubePlayerScreen">
+
+        </activity>
+        <activity android:name=".playlistdetails.PlaylistDetailsScreen">
+
+        </activity>
+        <activity android:name=".playlist.ui.PlaylistScreen" />
         <activity
             android:name=".authentcation.ui.AuthenticationScreen"
             android:theme="@style/AppTheme.NoActionBar">
