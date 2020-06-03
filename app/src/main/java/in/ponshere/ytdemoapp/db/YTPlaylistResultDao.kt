@@ -8,11 +8,15 @@ import androidx.room.Query
 @Dao
 interface YTPlaylistResultDao {
     @Query("SELECT * FROM playlist_cache")
-    fun getAll(): List<YTPlaylistResult>
+    suspend fun getAll(): List<YTPlaylistEntity>
 
     @Query("SELECT * FROM playlist_cache WHERE page_token LIKE :pageToken")
-    fun findByPageToken(pageToken: String): YTPlaylistResult?
+    suspend fun findByPageToken(pageToken: String): YTPlaylistEntity?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(vararg users: YTPlaylistResult)
+    suspend fun insert(playlistEntity: YTPlaylistEntity)
+
+    @Query("DELETE FROM playlist_cache")
+    suspend fun deleteAll()
+
 }

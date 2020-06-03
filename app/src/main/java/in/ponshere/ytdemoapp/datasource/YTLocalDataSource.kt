@@ -5,6 +5,8 @@ import `in`.ponshere.ytdemoapp.db.YTPlaylistEntity
 import `in`.ponshere.ytdemoapp.extensions.toJson
 import `in`.ponshere.ytdemoapp.playlist.models.YTVideosResult
 import `in`.ponshere.ytdemoapp.playlistdetails.models.YTPlaylistsResult
+import com.google.gson.Gson
+import timber.log.Timber
 import javax.inject.Inject
 
 private const val FIRST_PAGE_TOKEN = "!!FIRST_PAGE!!"
@@ -16,7 +18,9 @@ class YTLocalDataSource @Inject constructor(
     private val playlistResultDao = database.playlistResultDao()
 
     override suspend fun getPlaylists(pageToken: String?): YTPlaylistsResult {
-        TODO("Not yet implemented")
+        val playlistEntity = playlistResultDao.findByPageToken(pageToken ?: FIRST_PAGE_TOKEN)
+        Timber.d("getPlaylists ::: ${playlistEntity}")
+        return Gson().fromJson(playlistEntity?.resultResponse,YTPlaylistsResult::class.java)
     }
 
     override suspend fun getPlaylistVideos(playlistId: String, pageToken: String?): YTVideosResult {
@@ -25,11 +29,11 @@ class YTLocalDataSource @Inject constructor(
 
     suspend fun isAlreadyCached(pageToken: String) = playlistResultDao.findByPageToken(pageToken) != null
 
-    fun addPlaylistResult(playlistResult: YTPlaylistsResult) {
-
+    suspend fun addPlaylistResult(playlistResult: YTPlaylistsResult, pageToken: String?) {
+        playlistResultDao.insert(YTPlaylistEntity(playlistResult.toJson(), pageToken ?: FIRST_PAGE_TOKEN))
     }
 
-    fun deletePlaylistResults() {
-
+    suspend fun deletePlaylistResults() {
+        playlistResultDao.deleteAll()
     }
 }

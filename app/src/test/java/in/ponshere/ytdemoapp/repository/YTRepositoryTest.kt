@@ -53,7 +53,7 @@ class YTRepositoryTest {
 
         repository.getPlaylists(A_PAGE_TOKEN)
 
-        verify(localDataSource).addPlaylistResult(eq(mockPlaylistResultWithToken))
+        verify(localDataSource).addPlaylistResult(eq(mockPlaylistResultWithToken), eq(A_PAGE_TOKEN))
     }
 
     @Test
@@ -63,7 +63,7 @@ class YTRepositoryTest {
 
         repository.getPlaylists(A_PAGE_TOKEN)
 
-        verify(localDataSource,never()).addPlaylistResult(any())
+        verify(localDataSource,never()).addPlaylistResult(any(), eq(A_PAGE_TOKEN))
     }
 
     @Test
@@ -73,7 +73,7 @@ class YTRepositoryTest {
         repository.getPlaylists()
 
         verify(localDataSource).deletePlaylistResults()
-        verify(localDataSource).addPlaylistResult(eq(mockPlaylistResultWithToken))
+        verify(localDataSource).addPlaylistResult(eq(mockPlaylistResultWithToken), eq(null))
     }
 
     @Test

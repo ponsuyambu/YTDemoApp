@@ -9,5 +9,4 @@ class NetworkUtils @Inject constructor(val context: Context) {
     fun isOnline(): Boolean {
         return true
     }
-
 }
