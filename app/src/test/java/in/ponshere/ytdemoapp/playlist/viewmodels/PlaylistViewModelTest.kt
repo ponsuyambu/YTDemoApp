@@ -17,13 +17,13 @@ import org.mockito.Mock
 import org.mockito.Mockito
 import org.mockito.junit.MockitoJUnitRunner
 
-private val mockPlaylist = mutableListOf<YTPlaylist>().apply {
+val mockPlaylist = mutableListOf<YTPlaylist>().apply {
     add(YTPlaylist("playlist1", 10, "icon_url1"))
     add(YTPlaylist("playlist2", 8, "icon_url2"))
     add(YTPlaylist("playlist3", 5, "icon_url3"))
 }
-private val mockPlaylistResultWithoutToken = YTPlaylistsResult(mockPlaylist, "")
-private val mockPlaylistResultWithToken = YTPlaylistsResult(mockPlaylist, "A_TOKEN")
+val mockPlaylistResultWithoutToken = YTPlaylistsResult(mockPlaylist, "")
+val mockPlaylistResultWithToken = YTPlaylistsResult(mockPlaylist, "A_TOKEN")
 
 
 @ExperimentalCoroutinesApi

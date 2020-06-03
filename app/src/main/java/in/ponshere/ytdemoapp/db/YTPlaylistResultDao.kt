@@ -11,7 +11,7 @@ interface YTPlaylistResultDao {
     fun getAll(): List<YTPlaylistResult>
 
     @Query("SELECT * FROM playlist_cache WHERE page_token LIKE :pageToken")
-    fun findByPageToken(pageToken: String): YTPlaylistResult
+    fun findByPageToken(pageToken: String): YTPlaylistResult?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(vararg users: YTPlaylistResult)
