@@ -1,6 +1,6 @@
 package `in`.ponshere.ytdemoapp
 
-import `in`.ponshere.ytdemoapp.authentcation.ui.AuthenticationScreen
+import `in`.ponshere.ytdemoapp.authentication.ui.AuthenticationScreen
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.rule.ActivityTestRule

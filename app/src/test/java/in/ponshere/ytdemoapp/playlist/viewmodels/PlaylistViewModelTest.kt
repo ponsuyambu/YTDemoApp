@@ -1,8 +1,8 @@
 package `in`.ponshere.ytdemoapp.playlist.viewmodels
 
-import `in`.ponshere.ytdemoapp.playlist.repository.YTRepository
-import `in`.ponshere.ytdemoapp.playlist.repository.models.YTPlaylist
+import `in`.ponshere.ytdemoapp.playlist.models.YTPlaylist
 import `in`.ponshere.ytdemoapp.playlistdetails.models.YTPlaylistsResult
+import `in`.ponshere.ytdemoapp.repository.YTRepository
 import `in`.ponshere.ytdemoapp.utils.TestCoroutineRule
 import `in`.ponshere.ytdemoapp.utils.any
 import `in`.ponshere.ytdemoapp.utils.assertTrue

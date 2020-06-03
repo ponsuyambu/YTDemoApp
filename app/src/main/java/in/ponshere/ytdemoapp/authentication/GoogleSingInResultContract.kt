@@ -1,4 +1,4 @@
-package `in`.ponshere.ytdemoapp.authentcation
+package `in`.ponshere.ytdemoapp.authentication
 
 import `in`.ponshere.ytdemoapp.R
 import android.content.Context

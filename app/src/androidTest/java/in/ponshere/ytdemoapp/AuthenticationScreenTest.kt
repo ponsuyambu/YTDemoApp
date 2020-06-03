@@ -1,6 +1,6 @@
 package `in`.ponshere.ytdemoapp
 
-import `in`.ponshere.ytdemoapp.authentcation.ui.AuthenticationScreen
+import `in`.ponshere.ytdemoapp.authentication.ui.AuthenticationScreen
 import `in`.ponshere.ytdemoapp.idlingresource.SignInIdlingResource
 import `in`.ponshere.ytdemoapp.playlist.ui.PlaylistScreen
 import androidx.test.espresso.Espresso.onView

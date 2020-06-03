@@ -1,4 +1,4 @@
-package `in`.ponshere.ytdemoapp.playlist.repository
+package `in`.ponshere.ytdemoapp.repository
 
 import `in`.ponshere.ytdemoapp.datasource.YTLocalDataSource
 import `in`.ponshere.ytdemoapp.datasource.YTRemoteDataSource

@@ -1,7 +1,7 @@
 package `in`.ponshere.ytdemoapp.playlistdetails.ui
 
 import `in`.ponshere.ytdemoapp.R
-import `in`.ponshere.ytdemoapp.playlist.repository.models.YTPlaylist
+import `in`.ponshere.ytdemoapp.playlist.models.YTPlaylist
 import `in`.ponshere.ytdemoapp.playlistdetails.models.YTVideo
 import `in`.ponshere.ytdemoapp.playlistdetails.viewmodels.PlaylistDetailsViewModel
 import `in`.ponshere.ytdemoapp.playlistdetails.viewmodels.PlaylistDetailsViewModelFactory

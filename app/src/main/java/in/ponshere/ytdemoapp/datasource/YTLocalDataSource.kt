@@ -1,7 +1,7 @@
 package `in`.ponshere.ytdemoapp.datasource
 
 import `in`.ponshere.ytdemoapp.db.AppDatabase
-import `in`.ponshere.ytdemoapp.playlist.repository.models.YTVideosResult
+import `in`.ponshere.ytdemoapp.playlist.models.YTVideosResult
 import `in`.ponshere.ytdemoapp.playlistdetails.models.YTPlaylistsResult
 import javax.inject.Inject
 

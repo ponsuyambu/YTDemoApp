@@ -1,6 +1,6 @@
 package `in`.ponshere.ytdemoapp.playlistdetails.models
 
-import `in`.ponshere.ytdemoapp.playlist.repository.models.YTPlaylist
+import `in`.ponshere.ytdemoapp.playlist.models.YTPlaylist
 
 
 data class YTPlaylistsResult(

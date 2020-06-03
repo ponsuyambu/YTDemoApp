@@ -1,9 +1,9 @@
-package `in`.ponshere.ytdemoapp.playlist.repository
+package `in`.ponshere.ytdemoapp.repository
 
 import `in`.ponshere.ytdemoapp.datasource.YTDataSource
 import `in`.ponshere.ytdemoapp.datasource.YTLocalDataSource
 import `in`.ponshere.ytdemoapp.datasource.YTRemoteDataSource
-import `in`.ponshere.ytdemoapp.playlist.repository.models.YTVideosResult
+import `in`.ponshere.ytdemoapp.playlist.models.YTVideosResult
 import `in`.ponshere.ytdemoapp.playlistdetails.models.YTPlaylistsResult
 import `in`.ponshere.ytdemoapp.utils.NetworkUtils
 import javax.inject.Inject

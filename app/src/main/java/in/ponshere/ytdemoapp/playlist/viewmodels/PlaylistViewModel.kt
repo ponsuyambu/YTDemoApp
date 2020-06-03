@@ -1,7 +1,7 @@
 package `in`.ponshere.ytdemoapp.playlist.viewmodels
 
-import `in`.ponshere.ytdemoapp.playlist.repository.YTRepository
-import `in`.ponshere.ytdemoapp.playlist.repository.models.YTPlaylist
+import `in`.ponshere.ytdemoapp.playlist.models.YTPlaylist
+import `in`.ponshere.ytdemoapp.repository.YTRepository
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel

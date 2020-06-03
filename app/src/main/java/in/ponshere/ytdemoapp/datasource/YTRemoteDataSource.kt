@@ -1,10 +1,10 @@
 package `in`.ponshere.ytdemoapp.datasource
 
-import `in`.ponshere.ytdemoapp.playlist.repository.GOOGLE_SIGN_IN_YOUTUBE_SCOPE
-import `in`.ponshere.ytdemoapp.playlist.repository.models.YTPlaylist
-import `in`.ponshere.ytdemoapp.playlist.repository.models.YTVideosResult
+import `in`.ponshere.ytdemoapp.playlist.models.YTPlaylist
+import `in`.ponshere.ytdemoapp.playlist.models.YTVideosResult
 import `in`.ponshere.ytdemoapp.playlistdetails.models.YTPlaylistsResult
 import `in`.ponshere.ytdemoapp.playlistdetails.models.YTVideo
+import `in`.ponshere.ytdemoapp.repository.GOOGLE_SIGN_IN_YOUTUBE_SCOPE
 import android.content.Context
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential

@@ -1,7 +1,7 @@
-package `in`.ponshere.ytdemoapp.authentcation.ui
+package `in`.ponshere.ytdemoapp.authentication.ui
 
 import `in`.ponshere.ytdemoapp.R
-import `in`.ponshere.ytdemoapp.authentcation.GoogleSingInResultContract
+import `in`.ponshere.ytdemoapp.authentication.GoogleSingInResultContract
 import `in`.ponshere.ytdemoapp.extensions.signInWithToken
 import `in`.ponshere.ytdemoapp.idlingresource.SignInIdlingResource
 import `in`.ponshere.ytdemoapp.playlist.ui.PlaylistScreen

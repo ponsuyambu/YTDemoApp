@@ -1,7 +1,7 @@
 package `in`.ponshere.ytdemoapp.playlist.ui
 
 import `in`.ponshere.ytdemoapp.R
-import `in`.ponshere.ytdemoapp.playlist.repository.models.YTPlaylist
+import `in`.ponshere.ytdemoapp.playlist.models.YTPlaylist
 import `in`.ponshere.ytdemoapp.playlistdetails.ui.PlaylistDetailsScreen
 import android.app.Activity
 import android.view.LayoutInflater

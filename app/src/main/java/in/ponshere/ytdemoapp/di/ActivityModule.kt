@@ -1,6 +1,6 @@
 package `in`.ponshere.ytdemoapp.di
 
-import `in`.ponshere.ytdemoapp.authentcation.ui.AuthenticationScreen
+import `in`.ponshere.ytdemoapp.authentication.ui.AuthenticationScreen
 import `in`.ponshere.ytdemoapp.player.YoutubePlayerScreen
 import `in`.ponshere.ytdemoapp.playlist.ui.PlaylistScreen
 import `in`.ponshere.ytdemoapp.playlistdetails.ui.PlaylistDetailsScreen

@@ -1,6 +1,6 @@
 package `in`.ponshere.ytdemoapp.datasource
 
-import `in`.ponshere.ytdemoapp.playlist.repository.models.YTVideosResult
+import `in`.ponshere.ytdemoapp.playlist.models.YTVideosResult
 import `in`.ponshere.ytdemoapp.playlistdetails.models.YTPlaylistsResult
 
 interface YTDataSource {
