@@ -19,4 +19,8 @@ class YTLocalDataSource @Inject constructor(
     fun addPlaylistResult(playlistResult: YTPlaylistsResult) {
 
     }
+
+    fun deletePlaylistResults() {
+
+    }
 }

@@ -63,4 +63,14 @@ class YTRepositoryTest {
         verify(localDataSource,never()).addPlaylistResult(any())
     }
 
+    @Test
+    fun `should recreate play list cache when the first network call is made` () = testCoroutineRule.runBlocking {
+        `when`(remoteDataSource.getPlaylists(eq(null))).thenReturn(mockPlaylistResultWithToken)
+
+        repository.getPlaylists()
+
+        verify(localDataSource).deletePlaylistResults()
+        verify(localDataSource).addPlaylistResult(eq(mockPlaylistResultWithToken))
+    }
+
 }

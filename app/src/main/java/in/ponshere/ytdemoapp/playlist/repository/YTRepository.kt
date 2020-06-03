@@ -14,7 +14,10 @@ class YTRepository @Inject constructor(
 ) : YTDataSource{
     override suspend fun getPlaylists(pageToken: String?): YTPlaylistsResult {
         val playlistsResult = remoteDataSource.getPlaylists(pageToken)
-        if(localDataSource.isAlreadyCached(playlistsResult.nextPageToken).not()) {
+        if(pageToken == null) {
+            localDataSource.deletePlaylistResults()
+            localDataSource.addPlaylistResult(playlistsResult)
+        }else if(localDataSource.isAlreadyCached(playlistsResult.nextPageToken).not()) {
             localDataSource.addPlaylistResult(playlistsResult)
         }
         return playlistsResult
