@@ -10,14 +10,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".player.YoutubePlayerScreen"
-            android:configChanges="orientation|screenSize|keyboardHidden|smallestScreenSize|screenLayout">
-
-        </activity>
-        <activity android:name=".playlistdetails.ui.PlaylistDetailsScreen">
-
-        </activity>
-        <activity android:name=".playlist.ui.PlaylistScreen" />
+        <activity android:name=".search.SearchScreen" />
+        <activity
+            android:name=".player.YoutubePlayerScreen"
+            android:configChanges="orientation|screenSize|keyboardHidden|smallestScreenSize|screenLayout"/>
+        <activity android:name=".playlistdetails.ui.PlaylistDetailsScreen"
+            android:label="Playlist details"/>
+        <activity android:name=".playlist.ui.PlaylistScreen"
+            android:label="Playlists"/>
         <activity
             android:name=".authentication.ui.AuthenticationScreen"
             android:theme="@style/AppTheme.NoActionBar">

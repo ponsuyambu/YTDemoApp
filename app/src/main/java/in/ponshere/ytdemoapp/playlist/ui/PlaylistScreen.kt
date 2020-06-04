@@ -4,9 +4,12 @@ import `in`.ponshere.ytdemoapp.R
 import `in`.ponshere.ytdemoapp.playlist.models.YTPlaylist
 import `in`.ponshere.ytdemoapp.playlist.viewmodels.PlaylistViewModel
 import `in`.ponshere.ytdemoapp.playlist.viewmodels.PlaylistViewModelFactory
+import `in`.ponshere.ytdemoapp.search.SearchScreen
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -41,6 +44,18 @@ class PlaylistScreen : DaggerAppCompatActivity() {
 
         playlistViewModel.fetchPlaylist()
 
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.playlist_screen_menu, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if(item.itemId == R.id.searchOption) {
+            SearchScreen.launch(this)
+        }
+        return true
     }
 
     private fun setupRecyclerView() {
