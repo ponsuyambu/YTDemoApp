@@ -4,7 +4,7 @@ import `in`.ponshere.ytdemoapp.authentication.ui.AuthenticationScreen
 import `in`.ponshere.ytdemoapp.player.YoutubePlayerScreen
 import `in`.ponshere.ytdemoapp.playlist.ui.PlaylistScreen
 import `in`.ponshere.ytdemoapp.playlistdetails.ui.PlaylistDetailsScreen
-import `in`.ponshere.ytdemoapp.search.SearchScreen
+import `in`.ponshere.ytdemoapp.search.ui.SearchScreen
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 

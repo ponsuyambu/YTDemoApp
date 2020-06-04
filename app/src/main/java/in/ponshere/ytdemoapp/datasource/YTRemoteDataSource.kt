@@ -59,6 +59,32 @@ class YTRemoteDataSource @Inject constructor(context: Context) : YTDataSource {
         return YTVideosResult(videos, nextPageToken)
     }
 
+    override suspend fun getVideosFor(searchTerm: String, pageToken: String?): YTVideosResult {
+        val videos = arrayListOf<YTVideo>()
+        var nextPageToken = ""
+        coroutineScope {
+            withContext(Dispatchers.IO) {
+                val task = youTube.search()?.list("snippet")
+                task?.q = searchTerm
+                task?.maxResults = 15
+                pageToken?.let { task?.pageToken = it }
+
+                val result = task?.execute()
+
+                nextPageToken = result?.nextPageToken ?: ""
+                result?.items?.forEach { playlistItem ->
+                    val videoId = playlistItem?.id?.videoId
+                    val title = playlistItem?.snippet?.title
+                    val icon = playlistItem?.snippet?.thumbnails?.high?.url
+                    if(videoId != null && title != null && icon != null) {
+                        videos.add(YTVideo(videoId, title, icon, "", ""))
+                    }
+                }
+            }
+        }
+        return YTVideosResult(videos, nextPageToken)
+    }
+
     override suspend fun getPlaylists(pageToken: String?) : YTPlaylistsResult {
         val playLists = arrayListOf<YTPlaylist>()
         var nextPageToken = ""

@@ -1,33 +1,21 @@
 package `in`.ponshere.ytdemoapp.playlistdetails.ui
 
-import `in`.ponshere.ytdemoapp.R
-import `in`.ponshere.ytdemoapp.playlistdetails.models.YTVideo
 import `in`.ponshere.ytdemoapp.playlistdetails.viewmodels.PlaylistDetailsViewModel
 import `in`.ponshere.ytdemoapp.playlistdetails.viewmodels.PlaylistDetailsViewModelFactory
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.LinearLayoutManager
-import dagger.android.support.DaggerFragment
-import kotlinx.android.synthetic.main.fragment_playlist_videos.*
 import javax.inject.Inject
 
 private const val KEY_PLAYLIST_ID = "playlistId"
 
-class PlaylistVideosFragment : DaggerFragment() {
+class PlaylistVideosFragment: VideosFragment() {
     private lateinit var playlistDetailsViewModel: PlaylistDetailsViewModel
-    private lateinit var playlistDetailsAdapter: PlaylistDetailsAdapter
-
     @Inject
     lateinit var viewModelFactory: PlaylistDetailsViewModelFactory
 
-    private val playlistVideos = mutableListOf<YTVideo>()
-
     companion object {
-        fun newInstance(playlistId: String): PlaylistVideosFragment {
+        fun newInstance(playlistId: String): VideosFragment {
             return PlaylistVideosFragment()
                 .apply {
                     val bundle = Bundle().apply {
@@ -50,19 +38,6 @@ class PlaylistVideosFragment : DaggerFragment() {
         }
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_playlist_videos, container, false)
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        setupRecyclerView()
-    }
-
     private fun addObservers() {
         playlistDetailsViewModel.showProgress().observe(this,
             Observer {
@@ -72,24 +47,9 @@ class PlaylistVideosFragment : DaggerFragment() {
         playlistDetailsViewModel.playlistVideos().observe(this,
             Observer {
                 it?.let {
-                    playlistVideos.addAll(it)
-                    playlistDetailsAdapter.notifyDataSetChanged()
+                    videos.addAll(it)
+                    videosAdapter.notifyDataSetChanged()
                 }
             })
-    }
-
-    private fun setupRecyclerView() {
-        playlistDetailsAdapter = PlaylistDetailsAdapter(playlistVideos)
-        playlistDetailsAdapter.onEndReachedListener =
-            object : PlaylistDetailsAdapter.OnEndReachedListener {
-                override fun onRecyclerEndReached(position: Int) {
-
-                }
-
-            }
-        playlistVideoRecyclerView.apply {
-            layoutManager = LinearLayoutManager(context)
-            adapter = playlistDetailsAdapter
-        }
     }
 }

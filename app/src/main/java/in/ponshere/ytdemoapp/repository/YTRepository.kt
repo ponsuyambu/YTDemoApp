@@ -38,6 +38,10 @@ class YTRepository @Inject constructor(
         return remoteDataSource.getPlaylistVideos(playlistId, pageToken)
     }
 
+    override suspend fun getVideosFor(searchTerm: String, pageToken: String?): YTVideosResult {
+        return remoteDataSource.getVideosFor(searchTerm, pageToken)
+    }
+
     override suspend fun isNextPlaylistDataAvailable(pageToken: String?): Boolean {
         return getActiveDataSource().isNextPlaylistDataAvailable(pageToken)
     }

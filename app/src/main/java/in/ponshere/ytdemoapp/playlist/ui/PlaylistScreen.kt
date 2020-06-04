@@ -4,7 +4,7 @@ import `in`.ponshere.ytdemoapp.R
 import `in`.ponshere.ytdemoapp.playlist.models.YTPlaylist
 import `in`.ponshere.ytdemoapp.playlist.viewmodels.PlaylistViewModel
 import `in`.ponshere.ytdemoapp.playlist.viewmodels.PlaylistViewModelFactory
-import `in`.ponshere.ytdemoapp.search.SearchScreen
+import `in`.ponshere.ytdemoapp.search.ui.SearchScreen
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle

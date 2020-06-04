@@ -1,4 +1,4 @@
-package `in`.ponshere.ytdemoapp.search
+package `in`.ponshere.ytdemoapp.search.ui
 
 import `in`.ponshere.ytdemoapp.R
 import android.app.Activity
@@ -26,6 +26,12 @@ class SearchScreen : DaggerAppCompatActivity() {
         searchView.isIconified = false
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
+                query?.let {
+                    lblSearch.visibility = GONE
+                    supportFragmentManager.beginTransaction()
+                        .replace(R.id.flContainer, SearchVideosFragment.newInstance(it))
+                        .commit()
+                }
                 return true
             }
             override fun onQueryTextChange(newText: String?): Boolean {
