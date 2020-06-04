@@ -94,4 +94,10 @@ class YTRemoteDataSource @Inject constructor(context: Context) : YTDataSource {
             nextPageToken
         )
     }
+
+    override suspend fun isNextPlaylistDataAvailable(pageToken: String?): Boolean {
+        if(pageToken == null) return true
+        if(pageToken.isEmpty()) return false
+        return true
+    }
 }

@@ -20,8 +20,9 @@ class YTRepository @Inject constructor(
             return localDataSource.getPlaylists(pageToken)
         }
 
-    val playlistsResult = remoteDataSource.getPlaylists(pageToken)
-        if(pageToken == null) {
+        val playlistsResult = remoteDataSource.getPlaylists(pageToken)
+
+        if(isFirstPageCall(pageToken)) {
             localDataSource.deletePlaylistResults()
             localDataSource.addPlaylistResult(playlistsResult, pageToken)
         }else if(localDataSource.isAlreadyCached(playlistsResult.nextPageToken).not()) {
@@ -31,7 +32,17 @@ class YTRepository @Inject constructor(
         return playlistsResult
     }
 
+    private fun isFirstPageCall(pageToken: String?) = pageToken == null
+
     override suspend fun getPlaylistVideos(playlistId: String, pageToken: String?): YTVideosResult {
         return remoteDataSource.getPlaylistVideos(playlistId, pageToken)
+    }
+
+    override suspend fun isNextPlaylistDataAvailable(pageToken: String?): Boolean {
+        return getActiveDataSource().isNextPlaylistDataAvailable(pageToken)
+    }
+
+    private fun getActiveDataSource() : YTDataSource {
+        return if(networkState.isConnected) remoteDataSource else localDataSource
     }
 }

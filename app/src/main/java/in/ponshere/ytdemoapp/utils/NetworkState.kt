@@ -17,6 +17,14 @@ internal class NetworkCallbackImp(private val holder: NetworkStateImp) : Connect
     override fun onAvailable(network: Network) {
         holder.isConnected = true
     }
+
+    override fun onLosing(network: Network, maxMsToLive: Int) {
+        holder.isConnected = false
+    }
+
+    override fun onLost(network: Network) {
+        holder.isConnected = false
+    }
 }
 object NetworkStateHolder : NetworkState {
 

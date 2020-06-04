@@ -26,6 +26,10 @@ class YTLocalDataSource @Inject constructor(
         TODO("Not yet implemented")
     }
 
+    override suspend fun isNextPlaylistDataAvailable(pageToken: String?): Boolean {
+        return playlistResultDao.findByPageToken(pageToken ?: FIRST_PAGE_TOKEN) != null
+    }
+
     suspend fun isAlreadyCached(pageToken: String) = playlistResultDao.findByPageToken(pageToken) != null
 
     suspend fun addPlaylistResult(playlistResult: YTPlaylistsResult, pageToken: String?) {

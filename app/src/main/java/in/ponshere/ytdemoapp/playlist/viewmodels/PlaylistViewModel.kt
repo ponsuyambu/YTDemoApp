@@ -15,13 +15,11 @@ class PlaylistViewModel(private val repository: YTRepository) : ViewModel() {
 
     fun fetchPlaylist() {
         viewModelScope.launch {
-            if(isNextPlaylistResultsAvailable(nextPageToken)) {
+            if(repository.isNextPlaylistDataAvailable(nextPageToken)) {
                 showProgress.postValue(true)
                 val playlistResult = repository.getPlaylists(nextPageToken)
                 nextPageToken = playlistResult.nextPageToken
-                if (playlistResult.isOfflineDataNotAvailable.not()) {
-                    playlists.postValue(playlistResult.playlists)
-                }
+                playlists.postValue(playlistResult.playlists)
                 showProgress.postValue(false)
             }
         }
