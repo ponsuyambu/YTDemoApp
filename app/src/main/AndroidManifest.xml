@@ -12,7 +12,7 @@
         android:theme="@style/AppTheme">
         <activity android:name=".search.ui.SearchScreen" />
         <activity
-            android:name=".player.YoutubePlayerScreen"
+            android:name=".player.VideoPlayerScreen"
             android:configChanges="orientation|screenSize|keyboardHidden|smallestScreenSize|screenLayout"/>
         <activity android:name=".playlistdetails.ui.PlaylistDetailsScreen"
             android:label="Playlist details"/>

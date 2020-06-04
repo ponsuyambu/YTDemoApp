@@ -1,5 +1,6 @@
 package `in`.ponshere.ytdemoapp.repository
 
+import `in`.ponshere.ytdemoapp.CacheRetrievalPolicy
 import `in`.ponshere.ytdemoapp.datasource.YTDataSource
 import `in`.ponshere.ytdemoapp.datasource.YTLocalDataSource
 import `in`.ponshere.ytdemoapp.datasource.YTRemoteDataSource
@@ -34,12 +35,15 @@ class YTRepository @Inject constructor(
 
     private fun isFirstPageCall(pageToken: String?) = pageToken == null
 
-    override suspend fun getPlaylistVideos(playlistId: String, pageToken: String?): YTVideosResult {
+    override suspend fun getPlaylistVideos(playlistId: String, pageToken: String?, cacheRetrievalPolicy: CacheRetrievalPolicy): YTVideosResult {
         if(networkState.isConnected.not()) {
-            return localDataSource.getPlaylistVideos(playlistId, pageToken)
+            return localDataSource.getPlaylistVideos(playlistId, pageToken, cacheRetrievalPolicy)
+        } else if(cacheRetrievalPolicy == CacheRetrievalPolicy.CACHE_FIRST &&
+                localDataSource.isNextPlaylistVideosDataAvailable(playlistId, pageToken)) { // user is online
+                return localDataSource.getPlaylistVideos(playlistId, pageToken, cacheRetrievalPolicy)
         }
 
-        val playlistVideosResult = remoteDataSource.getPlaylistVideos(playlistId, pageToken)
+        val playlistVideosResult = remoteDataSource.getPlaylistVideos(playlistId, pageToken, cacheRetrievalPolicy)
 
         if(isFirstPageCall(pageToken)) {
             localDataSource.deletePlaylistVideosResults(playlistId)

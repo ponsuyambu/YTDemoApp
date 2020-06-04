@@ -1,5 +1,6 @@
 package `in`.ponshere.ytdemoapp.datasource
 
+import `in`.ponshere.ytdemoapp.CacheRetrievalPolicy
 import `in`.ponshere.ytdemoapp.db.AppDatabase
 import `in`.ponshere.ytdemoapp.db.playlist.YTPlaylistEntity
 import `in`.ponshere.ytdemoapp.db.playlistdetails.YTPlaylistVideosEntity
@@ -24,10 +25,10 @@ class YTLocalDataSource @Inject constructor(
         return Gson().fromJson(playlistEntity.resultResponse,YTPlaylistsResult::class.java)
     }
 
-    override suspend fun getPlaylistVideos(playlistId: String, pageToken: String?): YTVideosResult {
+    override suspend fun getPlaylistVideos(playlistId: String, pageToken: String?, cacheRetrievalPolicy: CacheRetrievalPolicy): YTVideosResult {
         val playlistVideos = playlistVideosDao.findByPageToken(playlistId, pageToken ?: FIRST_PAGE_TOKEN)
                 ?: return YTVideosResult(null, "")
-        return Gson().fromJson(playlistVideos?.resultResponse,YTVideosResult::class.java)
+        return Gson().fromJson(playlistVideos.resultResponse,YTVideosResult::class.java)
     }
 
     override suspend fun getVideosFor(searchTerm: String, pageToken: String?): YTVideosResult {

@@ -1,7 +1,7 @@
 package `in`.ponshere.ytdemoapp.playlistdetails.ui
 
 import `in`.ponshere.ytdemoapp.R
-import `in`.ponshere.ytdemoapp.player.YoutubePlayerScreen
+import `in`.ponshere.ytdemoapp.player.VideoPlayerScreen
 import `in`.ponshere.ytdemoapp.playlist.models.YTPlaylist
 import android.app.Activity
 import android.content.Intent
@@ -34,7 +34,7 @@ class PlaylistDetailsScreen : DaggerAppCompatActivity() {
 
     fun playAll(view: View) {
         playlist?.let {
-            YoutubePlayerScreen.launch(this@PlaylistDetailsScreen, it)
+            VideoPlayerScreen.launch(this@PlaylistDetailsScreen, it)
         }
     }
 

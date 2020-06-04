@@ -15,7 +15,7 @@ import kotlinx.android.synthetic.main.activity_youtube_player_screen.*
 private const val KEY_PLAYLIST = "playlist"
 private const val KEY_PLAYLISTVIDEO = "playlistVideo"
 
-class YoutubePlayerScreen : DaggerAppCompatActivity() {
+class VideoPlayerScreen : DaggerAppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_youtube_player_screen)
@@ -40,14 +40,14 @@ class YoutubePlayerScreen : DaggerAppCompatActivity() {
 
     companion object {
         fun launch(caller: Activity, playlistVideo: YTVideo) {
-            val intent = Intent(caller, YoutubePlayerScreen::class.java).apply {
+            val intent = Intent(caller, VideoPlayerScreen::class.java).apply {
                 putExtra(KEY_PLAYLISTVIDEO, playlistVideo)
             }
             caller.startActivity(intent)
         }
 
         fun launch(caller: Activity, playlist: YTPlaylist) {
-            val intent = Intent(caller, YoutubePlayerScreen::class.java).apply {
+            val intent = Intent(caller, VideoPlayerScreen::class.java).apply {
                 putExtra(KEY_PLAYLIST, playlist)
             }
             caller.startActivity(intent)

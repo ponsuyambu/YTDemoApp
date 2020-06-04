@@ -1,7 +1,7 @@
 package `in`.ponshere.ytdemoapp.playlistdetails.ui
 
 import `in`.ponshere.ytdemoapp.R
-import `in`.ponshere.ytdemoapp.player.YoutubePlayerScreen
+import `in`.ponshere.ytdemoapp.player.VideoPlayerScreen
 import `in`.ponshere.ytdemoapp.playlistdetails.models.YTVideo
 import android.app.Activity
 import android.view.LayoutInflater
@@ -55,7 +55,7 @@ class PlaylistDetailsAdapter (private val playlistVideos: List<YTVideo>) :
         override fun onClick(view: View) {
             val context = itemView.context
             playlistVideo?.let {
-                YoutubePlayerScreen.launch(context as Activity, it)
+                VideoPlayerScreen.launch(context as Activity, it)
             }
         }
     }

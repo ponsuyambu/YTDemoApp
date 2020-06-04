@@ -1,6 +1,8 @@
 package `in`.ponshere.ytdemoapp.playlistdetails.ui
 
+import `in`.ponshere.ytdemoapp.CacheRetrievalPolicy
 import `in`.ponshere.ytdemoapp.ViewModelFactory
+import `in`.ponshere.ytdemoapp.player.VideoPlayerScreen
 import `in`.ponshere.ytdemoapp.playlistdetails.viewmodels.PlaylistDetailsViewModel
 import android.os.Bundle
 import androidx.lifecycle.Observer
@@ -34,8 +36,15 @@ class PlaylistVideosFragment: VideosFragment() {
         addObservers()
         val playlistId = arguments?.getString(KEY_PLAYLIST_ID)
         playlistId?.let {
-            playlistDetailsViewModel.fetchPlaylistVideos(it)
+            playlistDetailsViewModel.fetchPlaylistVideos(it, getCacheRetrievalPolicy())
         }
+    }
+
+    private fun getCacheRetrievalPolicy(): CacheRetrievalPolicy {
+        if(activity is VideoPlayerScreen) {
+            return CacheRetrievalPolicy.CACHE_FIRST
+        }
+        return CacheRetrievalPolicy.NETWORK_FIRST
     }
 
     private fun addObservers() {

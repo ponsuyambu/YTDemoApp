@@ -1,5 +1,6 @@
 package `in`.ponshere.ytdemoapp.datasource
 
+import `in`.ponshere.ytdemoapp.CacheRetrievalPolicy
 import `in`.ponshere.ytdemoapp.playlist.models.YTPlaylist
 import `in`.ponshere.ytdemoapp.playlist.models.YTVideosResult
 import `in`.ponshere.ytdemoapp.playlistdetails.models.YTPlaylistsResult
@@ -33,7 +34,7 @@ class YTRemoteDataSource @Inject constructor(context: Context) : YTDataSource {
         ).setApplicationName("YTDemoApp").build()
     }
 
-    override suspend fun getPlaylistVideos(playlistId: String, pageToken: String?): YTVideosResult {
+    override suspend fun getPlaylistVideos(playlistId: String, pageToken: String?, cacheRetrievalPolicy: CacheRetrievalPolicy): YTVideosResult {
         val videos = arrayListOf<YTVideo>()
         var nextPageToken = ""
         coroutineScope {
