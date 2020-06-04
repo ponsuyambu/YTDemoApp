@@ -1,4 +1,4 @@
-package `in`.ponshere.ytdemoapp.db
+package `in`.ponshere.ytdemoapp.db.playlist
 
 import androidx.room.Dao
 import androidx.room.Insert
@@ -6,7 +6,7 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 
 @Dao
-interface YTPlaylistResultDao {
+interface YTPlaylistDao {
     @Query("SELECT * FROM playlist_cache")
     suspend fun getAll(): List<YTPlaylistEntity>
 
@@ -18,5 +18,4 @@ interface YTPlaylistResultDao {
 
     @Query("DELETE FROM playlist_cache")
     suspend fun deleteAll()
-
 }

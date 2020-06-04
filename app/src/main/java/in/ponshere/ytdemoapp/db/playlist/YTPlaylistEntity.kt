@@ -1,4 +1,4 @@
-package `in`.ponshere.ytdemoapp.db
+package `in`.ponshere.ytdemoapp.db.playlist
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
