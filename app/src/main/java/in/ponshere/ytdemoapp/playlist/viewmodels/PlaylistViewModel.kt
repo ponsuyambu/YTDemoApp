@@ -19,7 +19,10 @@ class PlaylistViewModel(private val repository: YTRepository) : ViewModel() {
                 showProgress.postValue(true)
                 val playlistResult = repository.getPlaylists(nextPageToken)
                 nextPageToken = playlistResult.nextPageToken
-                playlists.postValue(playlistResult.playlists)
+                if (playlistResult.isOfflineDataNotAvailable.not()) {
+                    playlists.postValue(playlistResult.playlists)
+                }
+                showProgress.postValue(false)
             }
         }
     }

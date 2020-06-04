@@ -13,8 +13,9 @@ import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 
-class PlaylistAdapter (private val playlists: List<YTPlaylist>) :
-    RecyclerView.Adapter<PlaylistAdapter.PlaylistViewHolder>(){
+class PlaylistAdapter (private val playlists: List<YTPlaylist>,
+                       private val picasso: Picasso
+) : RecyclerView.Adapter<PlaylistAdapter.PlaylistViewHolder>(){
 
     var onEndReachedListener: OnEndReachedListener? = null
 
@@ -23,7 +24,8 @@ class PlaylistAdapter (private val playlists: List<YTPlaylist>) :
             R.layout.row_playlist_item,
             parent,
             false
-        )
+        ),
+        picasso
     )
 
     override fun getItemCount(): Int = playlists.size
@@ -36,7 +38,7 @@ class PlaylistAdapter (private val playlists: List<YTPlaylist>) :
         }
     }
 
-    class PlaylistViewHolder(view: View) : RecyclerView.ViewHolder(view), View.OnClickListener {
+    class PlaylistViewHolder(private val view: View, private val picasso: Picasso) : RecyclerView.ViewHolder(view), View.OnClickListener {
         private var playlist: YTPlaylist? = null
         private val tvTile: TextView = view.findViewById(R.id.tvTitle)
         private val tvCount: TextView = view.findViewById(R.id.tvCount)
@@ -51,7 +53,7 @@ class PlaylistAdapter (private val playlists: List<YTPlaylist>) :
             this.playlist = playlist
             tvTile.text = playlist.title
             tvCount.text = playlist.videosCount.toString()
-            Picasso.get().load(playlist.icon).into(imgIcon)
+            picasso.load(playlist.icon).into(imgIcon)
         }
 
         override fun onClick(view: View) {

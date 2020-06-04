@@ -6,6 +6,8 @@ import `in`.ponshere.ytdemoapp.utils.NetworkStateHolder
 import android.app.Application
 import android.content.Context
 import androidx.room.Room
+import com.squareup.picasso.OkHttp3Downloader
+import com.squareup.picasso.Picasso
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
@@ -32,5 +34,13 @@ class ApplicationModule() {
     @Provides
     fun provideNetworkStateHolder() : NetworkState {
         return NetworkStateHolder
+    }
+
+    @Provides
+    @Singleton
+    fun providePicasso(context: Context) : Picasso {
+        return Picasso.Builder(context)
+            .downloader(OkHttp3Downloader(context, Long.MAX_VALUE))
+            .build()
     }
 }

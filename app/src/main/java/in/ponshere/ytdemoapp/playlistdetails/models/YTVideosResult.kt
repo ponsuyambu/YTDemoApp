@@ -4,6 +4,7 @@ import `in`.ponshere.ytdemoapp.playlist.models.YTPlaylist
 
 
 data class YTPlaylistsResult(
-    val playlists: List<YTPlaylist>,
-    val nextPageToken: String
+    val playlists: List<YTPlaylist>?,
+    val nextPageToken: String,
+    var isOfflineDataNotAvailable : Boolean = false
 )

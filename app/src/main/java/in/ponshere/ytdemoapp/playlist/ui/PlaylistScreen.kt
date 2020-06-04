@@ -10,6 +10,7 @@ import android.os.Bundle
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.squareup.picasso.Picasso
 import dagger.android.support.DaggerAppCompatActivity
 import kotlinx.android.synthetic.main.activity_playlist_screen.*
 import javax.inject.Inject
@@ -22,6 +23,9 @@ class PlaylistScreen : DaggerAppCompatActivity() {
 
     @Inject
     lateinit var viewModelFactory: PlaylistViewModelFactory
+
+    @Inject
+    lateinit var picasso: Picasso
 
     val playlist = mutableListOf<YTPlaylist>()
 
@@ -39,7 +43,7 @@ class PlaylistScreen : DaggerAppCompatActivity() {
     }
 
     private fun setupRecyclerView() {
-        playlistAdapter = PlaylistAdapter(playlist)
+        playlistAdapter = PlaylistAdapter(playlist, picasso)
         playlistAdapter.onEndReachedListener = object : PlaylistAdapter.OnEndReachedListener {
             override fun onRecyclerEndReached(position: Int) {
                 playlistViewModel.fetchPlaylist()

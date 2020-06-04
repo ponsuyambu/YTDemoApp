@@ -94,7 +94,10 @@ dependencies {
 
     //android-youtube-player
     implementation 'com.pierfrancescosoffritti.androidyoutubeplayer:core:10.0.5'
-    
+
+    //okhttp
+    implementation 'com.squareup.okhttp:okhttp:2.4.0'
+
     //testing
 
     //Unit tests
