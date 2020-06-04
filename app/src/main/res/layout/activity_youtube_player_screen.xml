@@ -7,9 +7,13 @@
     tools:context=".player.YoutubePlayerScreen">
 
     <LinearLayout
+        android:id="@+id/llPlayer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical" >
+        android:orientation="vertical"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        >
 
         <com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
             android:id="@+id/youtube_player_view"
@@ -17,5 +21,13 @@
             android:layout_height="wrap_content"
             app:showFullScreenButton="true" />
     </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/flContainer"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/llPlayer"
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

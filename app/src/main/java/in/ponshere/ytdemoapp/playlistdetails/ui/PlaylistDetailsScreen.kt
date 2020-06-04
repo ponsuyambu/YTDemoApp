@@ -1,10 +1,12 @@
 package `in`.ponshere.ytdemoapp.playlistdetails.ui
 
 import `in`.ponshere.ytdemoapp.R
+import `in`.ponshere.ytdemoapp.player.YoutubePlayerScreen
 import `in`.ponshere.ytdemoapp.playlist.models.YTPlaylist
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import com.squareup.picasso.Picasso
 import dagger.android.support.DaggerAppCompatActivity
 import kotlinx.android.synthetic.main.activity_playlist_details_screen.*
@@ -13,11 +15,12 @@ private const val KEY_PLAYLIST = "playlist"
 
 
 class PlaylistDetailsScreen : DaggerAppCompatActivity() {
+    private var playlist: YTPlaylist? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_playlist_details_screen)
-        val playlist = intent.getParcelableExtra<YTPlaylist>(KEY_PLAYLIST)
+        playlist = intent.getParcelableExtra(KEY_PLAYLIST)
 
         playlist?.let {
             supportFragmentManager.beginTransaction()
@@ -26,6 +29,12 @@ class PlaylistDetailsScreen : DaggerAppCompatActivity() {
             tvTitle.text = it.title
             tvCount.text = it.videosCount.toString()
             Picasso.get().load(it.icon).into(imgPlaylistIcon)
+        }
+    }
+
+    fun playAll(view: View) {
+        playlist?.let {
+            YoutubePlayerScreen.launch(this@PlaylistDetailsScreen, it)
         }
     }
 
