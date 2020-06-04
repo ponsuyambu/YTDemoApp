@@ -4,6 +4,7 @@ import `in`.ponshere.ytdemoapp.authentication.ui.AuthenticationScreen
 import `in`.ponshere.ytdemoapp.player.YoutubePlayerScreen
 import `in`.ponshere.ytdemoapp.playlist.ui.PlaylistScreen
 import `in`.ponshere.ytdemoapp.playlistdetails.ui.PlaylistDetailsScreen
+import `in`.ponshere.ytdemoapp.playlistdetails.ui.PlaylistVideosFragment
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 
@@ -21,4 +22,7 @@ abstract class ActivityModule {
 
     @ContributesAndroidInjector
     abstract fun youtubePlayerScreen(): YoutubePlayerScreen
+
+    @ContributesAndroidInjector
+    abstract fun playlistVideosFragment(): PlaylistVideosFragment
 }
