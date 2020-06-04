@@ -58,7 +58,7 @@ class PlaylistScreen : DaggerAppCompatActivity() {
     }
 
     private fun addObservers() {
-        playlistViewModel.showProgress().observe(this,
+        playlistViewModel.initialLoading().observe(this,
             Observer {
                 it?.let {
                     if(it) {
@@ -69,6 +69,15 @@ class PlaylistScreen : DaggerAppCompatActivity() {
                 }
 
             })
+
+        playlistViewModel.status().observe(this, Observer {
+            if(it == null) {
+                tvStatus.visibility = View.GONE
+            } else {
+                tvStatus.text = it
+                tvStatus.visibility = View.VISIBLE
+            }
+        })
 
         playlistViewModel.playlists().observe(this,
             Observer {

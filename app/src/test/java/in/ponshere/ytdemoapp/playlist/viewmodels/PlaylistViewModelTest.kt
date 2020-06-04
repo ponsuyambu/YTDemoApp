@@ -55,7 +55,7 @@ class PlaylistViewModelTest {
     fun `should show progress dialog when playlist request started`() = testCoroutineRule.runBlocking {
         viewModel.fetchPlaylist()
 
-        assertTrue(viewModel.showProgress().value)
+        assertTrue(viewModel.initialLoading().value)
     }
 
     @Test
