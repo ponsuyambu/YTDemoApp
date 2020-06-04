@@ -7,6 +7,7 @@ import `in`.ponshere.ytdemoapp.playlist.viewmodels.PlaylistViewModelFactory
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -59,6 +60,13 @@ class PlaylistScreen : DaggerAppCompatActivity() {
     private fun addObservers() {
         playlistViewModel.showProgress().observe(this,
             Observer {
+                it?.let {
+                    if(it) {
+                        progressBar.visibility = View.VISIBLE
+                    } else {
+                        progressBar.visibility = View.GONE
+                    }
+                }
 
             })
 

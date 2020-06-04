@@ -66,7 +66,7 @@ class YTRemoteDataSource @Inject constructor(context: Context) : YTDataSource {
             withContext(Dispatchers.IO) {
                 val task = youTube.playlists()?.list("snippet,contentDetails")
                 task?.mine = true
-                task?.maxResults = 5
+                task?.maxResults = 15
                 pageToken?.let { task?.pageToken = it }
 
                 val result = task?.execute()
