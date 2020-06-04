@@ -8,4 +8,5 @@ interface YTDataSource {
     suspend fun getPlaylistVideos(playlistId: String, pageToken: String? = null): YTVideosResult
     suspend fun getVideosFor(searchTerm: String, pageToken: String? = null): YTVideosResult
     suspend fun isNextPlaylistDataAvailable(pageToken: String?) : Boolean
+    suspend fun isNextPlaylistVideosDataAvailable(playlistId: String, pageToken: String?) : Boolean
 }

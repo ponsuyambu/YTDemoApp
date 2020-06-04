@@ -18,18 +18,18 @@ import java.util.*
 import javax.inject.Inject
 
 class YTRemoteDataSource @Inject constructor(context: Context) : YTDataSource {
-    private val youTube : YouTube
+    private val youTube: YouTube
 
     init {
         val credential = GoogleAccountCredential.usingOAuth2(
-            context,
-            Collections.singleton(GOOGLE_SIGN_IN_YOUTUBE_SCOPE)
+                context,
+                Collections.singleton(GOOGLE_SIGN_IN_YOUTUBE_SCOPE)
         )
         credential.selectedAccount = GoogleSignIn.getLastSignedInAccount(context)?.account
         youTube = YouTube.Builder(
-            NetHttpTransport(),
-            JacksonFactory(),
-            credential
+                NetHttpTransport(),
+                JacksonFactory(),
+                credential
         ).setApplicationName("YTDemoApp").build()
     }
 
@@ -50,7 +50,7 @@ class YTRemoteDataSource @Inject constructor(context: Context) : YTDataSource {
                     val videoId = playlistItem?.snippet?.resourceId?.videoId
                     val title = playlistItem?.snippet?.title
                     val icon = playlistItem?.snippet?.thumbnails?.high?.url
-                    if(videoId != null && title != null && icon != null) {
+                    if (videoId != null && title != null && icon != null) {
                         videos.add(YTVideo(videoId, title, icon, "", ""))
                     }
                 }
@@ -76,7 +76,7 @@ class YTRemoteDataSource @Inject constructor(context: Context) : YTDataSource {
                     val videoId = playlistItem?.id?.videoId
                     val title = playlistItem?.snippet?.title
                     val icon = playlistItem?.snippet?.thumbnails?.high?.url
-                    if(videoId != null && title != null && icon != null) {
+                    if (videoId != null && title != null && icon != null) {
                         videos.add(YTVideo(videoId, title, icon, "", ""))
                     }
                 }
@@ -85,7 +85,7 @@ class YTRemoteDataSource @Inject constructor(context: Context) : YTDataSource {
         return YTVideosResult(videos, nextPageToken)
     }
 
-    override suspend fun getPlaylists(pageToken: String?) : YTPlaylistsResult {
+    override suspend fun getPlaylists(pageToken: String?): YTPlaylistsResult {
         val playLists = arrayListOf<YTPlaylist>()
         var nextPageToken = ""
         coroutineScope {
@@ -104,26 +104,34 @@ class YTRemoteDataSource @Inject constructor(context: Context) : YTDataSource {
                     val videosCount = playlist?.contentDetails?.itemCount
                     val playlistId = playlist?.id
                     //Make sure all the data are available, only then add to the list
-                    if(playlistId != null && title != null && icon != null && videosCount != null) {
+                    if (playlistId != null && title != null && icon != null && videosCount != null) {
                         playLists.add(YTPlaylist(
-                            playlistId,
-                            title,
-                            videosCount,
-                            icon
+                                playlistId,
+                                title,
+                                videosCount,
+                                icon
                         ))
                     }
                 }
             }
         }
         return YTPlaylistsResult(
-            playLists,
-            nextPageToken
+                playLists,
+                nextPageToken
         )
     }
 
     override suspend fun isNextPlaylistDataAvailable(pageToken: String?): Boolean {
-        if(pageToken == null) return true
-        if(pageToken.isEmpty()) return false
+        return isNextResultsAvailable(pageToken)
+    }
+
+    private fun isNextResultsAvailable(pageToken: String?): Boolean {
+        if (pageToken == null) return true
+        if (pageToken.isEmpty()) return false
         return true
+    }
+
+    override suspend fun isNextPlaylistVideosDataAvailable(playlistId: String, pageToken: String?): Boolean {
+        return isNextResultsAvailable(pageToken)
     }
 }

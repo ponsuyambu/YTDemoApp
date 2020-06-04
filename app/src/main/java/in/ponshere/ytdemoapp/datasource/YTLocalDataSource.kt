@@ -2,6 +2,7 @@ package `in`.ponshere.ytdemoapp.datasource
 
 import `in`.ponshere.ytdemoapp.db.AppDatabase
 import `in`.ponshere.ytdemoapp.db.playlist.YTPlaylistEntity
+import `in`.ponshere.ytdemoapp.db.playlistdetails.YTPlaylistVideosEntity
 import `in`.ponshere.ytdemoapp.extensions.toJson
 import `in`.ponshere.ytdemoapp.playlist.models.YTVideosResult
 import `in`.ponshere.ytdemoapp.playlistdetails.models.YTPlaylistsResult
@@ -14,30 +15,27 @@ class YTLocalDataSource @Inject constructor(
     database: AppDatabase
 ) : YTDataSource {
 
-    private val playlistResultDao = database.playlistResultDao()
+    private val playlistDao = database.playlistDao()
+    private val playlistVideosDao = database.playlistVideosDao()
 
     override suspend fun getPlaylists(pageToken: String?): YTPlaylistsResult {
-        val playlistEntity = playlistResultDao.findByPageToken(pageToken ?: FIRST_PAGE_TOKEN)
-            ?: return YTPlaylistsResult(null, "", true)
+        val playlistEntity = playlistDao.findByPageToken(pageToken ?: FIRST_PAGE_TOKEN)
+            ?: return YTPlaylistsResult(null, "")
         return Gson().fromJson(playlistEntity.resultResponse,YTPlaylistsResult::class.java)
     }
 
     override suspend fun getPlaylistVideos(playlistId: String, pageToken: String?): YTVideosResult {
-        TODO("Not yet implemented")
+        val playlistVideos = playlistVideosDao.findByPageToken(playlistId, pageToken ?: FIRST_PAGE_TOKEN)
+                ?: return YTVideosResult(null, "")
+        return Gson().fromJson(playlistVideos?.resultResponse,YTVideosResult::class.java)
     }
 
     override suspend fun getVideosFor(searchTerm: String, pageToken: String?): YTVideosResult {
         TODO("Not yet implemented")
     }
 
-    override suspend fun isNextPlaylistDataAvailable(pageToken: String?): Boolean {
-        return playlistResultDao.findByPageToken(pageToken ?: FIRST_PAGE_TOKEN) != null
-    }
-
-    suspend fun isAlreadyCached(pageToken: String) = playlistResultDao.findByPageToken(pageToken) != null
-
     suspend fun addPlaylistResult(playlistResult: YTPlaylistsResult, pageToken: String?) {
-        playlistResultDao.insert(
+        playlistDao.insert(
             YTPlaylistEntity(
                 playlistResult.toJson(),
                 pageToken ?: FIRST_PAGE_TOKEN
@@ -45,7 +43,31 @@ class YTLocalDataSource @Inject constructor(
         )
     }
 
-    suspend fun deletePlaylistResults() {
-        playlistResultDao.deleteAll()
+    override suspend fun isNextPlaylistDataAvailable(pageToken: String?): Boolean {
+        return playlistDao.findByPageToken(pageToken ?: FIRST_PAGE_TOKEN) != null
     }
+
+    suspend fun isPlaylistAlreadyCached(pageToken: String) = playlistDao.findByPageToken(pageToken) != null
+
+    suspend fun deletePlaylistResults()  = playlistDao.deleteAll()
+
+
+    suspend fun addPlaylistVideosResult(playlistId: String, videosResult: YTVideosResult, pageToken: String?) {
+        playlistVideosDao.insert(
+            YTPlaylistVideosEntity(
+                videosResult.toJson(),
+                playlistId,
+                pageToken ?: FIRST_PAGE_TOKEN
+            )
+        )
+    }
+
+    override suspend fun isNextPlaylistVideosDataAvailable(playlistId: String, pageToken: String?): Boolean {
+        return playlistVideosDao.findByPageToken(playlistId, pageToken ?: FIRST_PAGE_TOKEN) != null
+    }
+
+    suspend fun isPlaylistVideosAlreadyCached(playlistId: String, pageToken: String) = playlistVideosDao.findByPageToken(playlistId, pageToken) != null
+
+    suspend fun deletePlaylistVideosResults(playlistId: String)  = playlistVideosDao.deleteAll(playlistId)
+
 }

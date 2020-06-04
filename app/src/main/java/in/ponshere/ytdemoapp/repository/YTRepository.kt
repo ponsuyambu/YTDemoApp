@@ -25,7 +25,7 @@ class YTRepository @Inject constructor(
         if(isFirstPageCall(pageToken)) {
             localDataSource.deletePlaylistResults()
             localDataSource.addPlaylistResult(playlistsResult, pageToken)
-        }else if(localDataSource.isAlreadyCached(playlistsResult.nextPageToken).not()) {
+        }else if(localDataSource.isPlaylistAlreadyCached(playlistsResult.nextPageToken).not()) {
             localDataSource.addPlaylistResult(playlistsResult, pageToken)
         }
 
@@ -35,7 +35,19 @@ class YTRepository @Inject constructor(
     private fun isFirstPageCall(pageToken: String?) = pageToken == null
 
     override suspend fun getPlaylistVideos(playlistId: String, pageToken: String?): YTVideosResult {
-        return remoteDataSource.getPlaylistVideos(playlistId, pageToken)
+        if(networkState.isConnected.not()) {
+            return localDataSource.getPlaylistVideos(playlistId, pageToken)
+        }
+
+        val playlistVideosResult = remoteDataSource.getPlaylistVideos(playlistId, pageToken)
+
+        if(isFirstPageCall(pageToken)) {
+            localDataSource.deletePlaylistVideosResults(playlistId)
+            localDataSource.addPlaylistVideosResult(playlistId, playlistVideosResult, pageToken)
+        }else if(localDataSource.isPlaylistVideosAlreadyCached(playlistId, playlistVideosResult.nextPageToken).not()) {
+            localDataSource.addPlaylistVideosResult(playlistId, playlistVideosResult, pageToken)
+        }
+        return playlistVideosResult
     }
 
     override suspend fun getVideosFor(searchTerm: String, pageToken: String?): YTVideosResult {
@@ -44,6 +56,10 @@ class YTRepository @Inject constructor(
 
     override suspend fun isNextPlaylistDataAvailable(pageToken: String?): Boolean {
         return getActiveDataSource().isNextPlaylistDataAvailable(pageToken)
+    }
+
+    override suspend fun isNextPlaylistVideosDataAvailable(playlistId: String, pageToken: String?): Boolean {
+        return getActiveDataSource().isNextPlaylistVideosDataAvailable(playlistId, pageToken)
     }
 
     private fun getActiveDataSource() : YTDataSource {

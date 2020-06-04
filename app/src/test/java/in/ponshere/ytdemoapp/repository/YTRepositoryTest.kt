@@ -49,7 +49,7 @@ class YTRepositoryTest {
     @Test
     fun `should add playlist result to local data source if it is not already cached` () = testCoroutineRule.runBlocking {
         `when`(remoteDataSource.getPlaylists(anyString())).thenReturn(mockPlaylistResultWithToken)
-        `when`(localDataSource.isAlreadyCached(anyString())).thenReturn(false)
+        `when`(localDataSource.isPlaylistAlreadyCached(anyString())).thenReturn(false)
 
         repository.getPlaylists(A_PAGE_TOKEN)
 
@@ -59,7 +59,7 @@ class YTRepositoryTest {
     @Test
     fun `should not add playlist result to local data source if it is already cached` () = testCoroutineRule.runBlocking {
         `when`(remoteDataSource.getPlaylists(anyString())).thenReturn(mockPlaylistResultWithToken)
-        `when`(localDataSource.isAlreadyCached(anyString())).thenReturn(true)
+        `when`(localDataSource.isPlaylistAlreadyCached(anyString())).thenReturn(true)
 
         repository.getPlaylists(A_PAGE_TOKEN)
 

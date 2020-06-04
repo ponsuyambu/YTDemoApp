@@ -6,8 +6,10 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View.GONE
 import android.widget.SearchView
 import dagger.android.support.DaggerAppCompatActivity
+import kotlinx.android.synthetic.main.activity_search_screen.*
 
 
 class SearchScreen : DaggerAppCompatActivity() {
