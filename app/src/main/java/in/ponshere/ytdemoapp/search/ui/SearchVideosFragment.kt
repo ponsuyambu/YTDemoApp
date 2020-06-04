@@ -1,8 +1,8 @@
 package `in`.ponshere.ytdemoapp.search.ui
 
+import `in`.ponshere.ytdemoapp.ViewModelFactory
 import `in`.ponshere.ytdemoapp.playlistdetails.ui.VideosFragment
 import `in`.ponshere.ytdemoapp.search.viewmodels.SearchViewModel
-import `in`.ponshere.ytdemoapp.search.viewmodels.SearchViewModelFactory
 import android.os.Bundle
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -13,7 +13,7 @@ private const val KEY_QUERY_TERM = "queryTerm"
 class SearchVideosFragment : VideosFragment() {
     private lateinit var searchViewModel: SearchViewModel
     @Inject
-    lateinit var viewModelFactory: SearchViewModelFactory
+    lateinit var viewModelFactory: ViewModelFactory
 
     companion object {
         fun newInstance(queryTerm: String): VideosFragment {

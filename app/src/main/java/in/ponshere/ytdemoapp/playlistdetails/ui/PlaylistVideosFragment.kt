@@ -1,7 +1,7 @@
 package `in`.ponshere.ytdemoapp.playlistdetails.ui
 
+import `in`.ponshere.ytdemoapp.ViewModelFactory
 import `in`.ponshere.ytdemoapp.playlistdetails.viewmodels.PlaylistDetailsViewModel
-import `in`.ponshere.ytdemoapp.playlistdetails.viewmodels.PlaylistDetailsViewModelFactory
 import android.os.Bundle
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -12,7 +12,7 @@ private const val KEY_PLAYLIST_ID = "playlistId"
 class PlaylistVideosFragment: VideosFragment() {
     private lateinit var playlistDetailsViewModel: PlaylistDetailsViewModel
     @Inject
-    lateinit var viewModelFactory: PlaylistDetailsViewModelFactory
+    lateinit var viewModelFactory: ViewModelFactory
 
     companion object {
         fun newInstance(playlistId: String): VideosFragment {

@@ -2,7 +2,8 @@ package `in`.ponshere.ytdemoapp.repository
 
 import `in`.ponshere.ytdemoapp.datasource.YTLocalDataSource
 import `in`.ponshere.ytdemoapp.datasource.YTRemoteDataSource
-import `in`.ponshere.ytdemoapp.playlist.viewmodels.mockPlaylistResultWithToken
+import `in`.ponshere.ytdemoapp.playlist.models.YTPlaylist
+import `in`.ponshere.ytdemoapp.playlistdetails.models.YTPlaylistsResult
 import `in`.ponshere.ytdemoapp.utils.NetworkState
 import `in`.ponshere.ytdemoapp.utils.TestCoroutineRule
 import `in`.ponshere.ytdemoapp.utils.any
@@ -19,6 +20,12 @@ import org.mockito.Mock
 import org.mockito.Mockito.*
 import org.mockito.junit.MockitoJUnitRunner
 
+val mockPlaylist = mutableListOf<YTPlaylist>().apply {
+    add(YTPlaylist("1", "playlist1", 10, "icon_url1"))
+    add(YTPlaylist("2", "playlist2", 8, "icon_url2"))
+    add(YTPlaylist("3", "playlist3", 5, "icon_url3"))
+}
+val mockPlaylistResultWithToken = YTPlaylistsResult(mockPlaylist, "A_TOKEN")
 private const val A_PAGE_TOKEN: String = "a_page_token"
 
 @ExperimentalCoroutinesApi

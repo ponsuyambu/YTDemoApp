@@ -9,7 +9,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 
 class PlaylistViewModel(private val repository: YTRepository) : ViewModel() {
-    private val initialLoading = MutableLiveData(false)
+    private val showProgress = MutableLiveData(false)
     private val status = MutableLiveData<String>(null)
     private val playlists = MutableLiveData<List<YTPlaylist>>()
     private var nextPageToken: String? = null
@@ -18,19 +18,19 @@ class PlaylistViewModel(private val repository: YTRepository) : ViewModel() {
         viewModelScope.launch {
             if(repository.isNextPlaylistDataAvailable(nextPageToken)) {
                 if(nextPageToken == null)
-                    initialLoading.postValue(true)
+                    showProgress.postValue(true)
                 else
                     status.postValue("Loading more videos...")
                 val playlistResult = repository.getPlaylists(nextPageToken)
                 nextPageToken = playlistResult.nextPageToken
                 playlists.postValue(playlistResult.playlists)
-                initialLoading.postValue(false)
+                showProgress.postValue(false)
                 status.postValue(null)
             }
         }
     }
 
-    fun initialLoading(): LiveData<Boolean> = initialLoading
+    fun showProgress(): LiveData<Boolean> = showProgress
     fun status(): LiveData<String> = status
     fun playlists(): LiveData<List<YTPlaylist>> = playlists
 

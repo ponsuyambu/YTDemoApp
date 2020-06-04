@@ -1,9 +1,9 @@
 package `in`.ponshere.ytdemoapp.playlist.ui
 
 import `in`.ponshere.ytdemoapp.R
+import `in`.ponshere.ytdemoapp.ViewModelFactory
 import `in`.ponshere.ytdemoapp.playlist.models.YTPlaylist
 import `in`.ponshere.ytdemoapp.playlist.viewmodels.PlaylistViewModel
-import `in`.ponshere.ytdemoapp.playlist.viewmodels.PlaylistViewModelFactory
 import `in`.ponshere.ytdemoapp.search.ui.SearchScreen
 import android.app.Activity
 import android.content.Intent
@@ -26,7 +26,7 @@ class PlaylistScreen : DaggerAppCompatActivity() {
     private lateinit var playlistAdapter: PlaylistAdapter
 
     @Inject
-    lateinit var viewModelFactory: PlaylistViewModelFactory
+    lateinit var viewModelFactory: ViewModelFactory
 
     @Inject
     lateinit var picasso: Picasso
@@ -73,7 +73,7 @@ class PlaylistScreen : DaggerAppCompatActivity() {
     }
 
     private fun addObservers() {
-        playlistViewModel.initialLoading().observe(this,
+        playlistViewModel.showProgress().observe(this,
             Observer {
                 it?.let {
                     if(it) {
