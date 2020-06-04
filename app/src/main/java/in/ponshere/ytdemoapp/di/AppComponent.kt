@@ -10,7 +10,7 @@ import javax.inject.Singleton
 
 @Singleton
 @Component(
-    modules = [AndroidInjectionModule::class, ApplicationModule::class, ActivityModule::class]
+    modules = [AndroidInjectionModule::class, ApplicationModule::class, ActivityModule::class, FragmentModule::class]
 )
 interface AppComponent : AndroidInjector<YTDemoApp> {
     @Component.Builder
