@@ -1,35 +1,20 @@
 package `in`.ponshere.ytdemoapp.playlist.viewmodels
 
+import `in`.ponshere.ytdemoapp.BaseTest
 import `in`.ponshere.ytdemoapp.playlist.models.YTPlaylist
 import `in`.ponshere.ytdemoapp.playlistdetails.models.YTPlaylistsResult
 import `in`.ponshere.ytdemoapp.repository.YTRepository
-import `in`.ponshere.ytdemoapp.utils.TestCoroutineRule
-import `in`.ponshere.ytdemoapp.utils.any
 import `in`.ponshere.ytdemoapp.utils.assertTrue
-import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import junit.framework.Assert.assertNull
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.junit.Assert
+import org.junit.Assert.assertNull
 import org.junit.Before
-import org.junit.Rule
 import org.junit.Test
-import org.junit.rules.TestRule
-import org.junit.runner.RunWith
 import org.mockito.Mock
 import org.mockito.Mockito.*
-import org.mockito.junit.MockitoJUnitRunner
 
-@ExperimentalCoroutinesApi
-@RunWith(MockitoJUnitRunner::class)
-class PlaylistViewModelTest {
+class PlaylistViewModelTest : BaseTest() {
     @Mock
     private lateinit var repository: YTRepository
-
-    @get:Rule
-    val testInstantTaskExecutorRule: TestRule = InstantTaskExecutorRule()
-
-    @get:Rule
-    val testCoroutineRule = TestCoroutineRule()
 
     private lateinit var viewModel: PlaylistViewModel
 
