@@ -2,4 +2,7 @@
     <string name="app_name">YTDemoApp</string>
     <string name="videos">videos</string>
     <string name="play_list_icon">play list icon</string>
+    <string name="loading">Loading...</string>
+    <string name="play_all">Play All</string>
+    <string name="sign_in">Sign In</string>
 </resources>
