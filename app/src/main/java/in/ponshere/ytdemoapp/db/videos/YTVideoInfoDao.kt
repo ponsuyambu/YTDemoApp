@@ -10,12 +10,15 @@ interface YTVideoInfoDao {
     @Query("SELECT * FROM video_info_cache")
     suspend fun getAll(): List<YTVideoInfoEntity>
 
-    @Query("SELECT * FROM video_info_cache WHERE video_id LIKE :videoId")
+    @Query("SELECT * FROM video_info_cache WHERE video_id = :videoId")
     suspend fun find(videoId: String): YTVideoInfoEntity?
 
     @Query("SELECT * FROM video_info_cache WHERE video_id IN(:videoIds)")
-    suspend fun findAll(videoIds: List<String>): List<YTVideoInfoEntity>
+    suspend fun find(videoIds: List<String>): List<YTVideoInfoEntity>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(videoInfoEntity: YTVideoInfoEntity)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertAll(videoInfoEntity: List<YTVideoInfoEntity>)
 }

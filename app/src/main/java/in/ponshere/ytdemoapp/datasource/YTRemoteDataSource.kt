@@ -35,7 +35,7 @@ class YTRemoteDataSource @Inject constructor(context: Context) : YTDataSource {
         ).setApplicationName("YTDemoApp").build()
     }
 
-    override suspend fun getPlaylists(pageToken: String): YTPlaylistsResult {
+    override suspend fun getPlaylists(pageToken: String): YTPlaylistsResult? {
         val playLists = arrayListOf<YTPlaylist>()
         var nextPageToken = ""
         coroutineScope {
@@ -71,7 +71,7 @@ class YTRemoteDataSource @Inject constructor(context: Context) : YTDataSource {
         )
     }
 
-    override suspend fun getPlaylistVideos(playlistId: String, pageToken: String, cacheRetrievalPolicy: CacheRetrievalPolicy): YTVideosResult {
+    override suspend fun getPlaylistVideos(playlistId: String, pageToken: String, cacheRetrievalPolicy: CacheRetrievalPolicy): YTVideosResult? {
         val videos = arrayListOf<YTVideo>()
         var nextPageToken = ""
         coroutineScope {
@@ -127,34 +127,20 @@ class YTRemoteDataSource @Inject constructor(context: Context) : YTDataSource {
 
     override suspend fun isNextPlaylistDataAvailable(pageToken: String) = pageToken.isEmpty().not()
 
-    private fun isNextResultsAvailable(pageToken: String?): Boolean {
-        if (pageToken == null) return true
-        if (pageToken.isEmpty()) return false
-        return true
-    }
-
-    override suspend fun getVideosInfo(videoIds: List<String>): Map<String, String> {
-        TODO("Not yet implemented")
-    }
-
-     suspend fun getVideosInfo(vararg videoIds: String): List<YTVideoInfoResult> {
-        val videoInfoResultList = mutableListOf<YTVideoInfoResult>()
+    override suspend fun getVideosInfo(videoIds: List<String>): Map<String, YTVideoInfoResult> {
+        val videoInfoResultList = mutableMapOf<String, YTVideoInfoResult>()
         coroutineScope {
             withContext(Dispatchers.IO) {
                 val task = youTube.videos()?.list("contentDetails")
-                task?.id = videoIds.toList().joinToString(separator = ",")
-                task?.maxResults = videoIds.size.toLong()
+                task?.id = videoIds.joinToString(",")
                 val result = task?.execute()
-
                 result?.items?.forEach { video ->
                     val duration = video.contentDetails?.duration
-                    if (duration != null) {
-                        videoInfoResultList.add( YTVideoInfoResult(video.id, duration))
-
-                    }
+                    videoInfoResultList[video.id] = YTVideoInfoResult(video.id, duration)
                 }
             }
         }
         return videoInfoResultList
     }
+
 }

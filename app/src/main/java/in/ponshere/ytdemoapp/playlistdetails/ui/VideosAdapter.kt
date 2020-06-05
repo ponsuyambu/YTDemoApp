@@ -40,6 +40,7 @@ class VideosAdapter (private val videos: List<YTVideo>) :
         private var playlistVideo: YTVideo? = null
         private val tvTile: TextView = view.findViewById(R.id.tvTitle)
         private val tvAuthor: TextView = view.findViewById(R.id.tvAuthor)
+        private val tvDuration: TextView = view.findViewById(R.id.tvDuration)
         private val imgIcon: ImageView = view.findViewById(R.id.imgPlaylistIcon)
         private val cardView: CardView = view.findViewById(R.id.cvPlaylist)
 
@@ -51,6 +52,7 @@ class VideosAdapter (private val videos: List<YTVideo>) :
             this.playlistVideo = playlistVideo
             tvTile.text = playlistVideo.title
             tvAuthor.text = playlistVideo.author
+            tvDuration.text = playlistVideo.duration
             Picasso.get().load(playlistVideo.icon).into(imgIcon)
         }
 

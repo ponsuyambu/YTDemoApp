@@ -5,6 +5,7 @@ import `in`.ponshere.ytdemoapp.common.models.YTVideosResult
 import `in`.ponshere.ytdemoapp.db.AppDatabase
 import `in`.ponshere.ytdemoapp.db.playlist.YTPlaylistEntity
 import `in`.ponshere.ytdemoapp.db.playlistdetails.YTPlaylistVideosEntity
+import `in`.ponshere.ytdemoapp.db.videos.YTVideoInfoEntity
 import `in`.ponshere.ytdemoapp.extensions.toJson
 import `in`.ponshere.ytdemoapp.playlist.models.YTPlaylistsResult
 import `in`.ponshere.ytdemoapp.playlist.models.YTVideoInfoResult
@@ -33,6 +34,11 @@ class YTLocalDataSource @Inject constructor(database: AppDatabase) : YTDataSourc
 
     override suspend fun isNextPlaylistDataAvailable(pageToken: String) = playlistDao.find(pageToken) != null
 
+    override suspend fun getVideosInfo(videoIds: List<String>): Map<String, YTVideoInfoResult> {
+        val videoEntities = videoInfoDao.find(videoIds)
+        return videoEntities.map { e -> Gson().fromJson(e.resultResponse, YTVideoInfoResult::class.java) }.map { it.videoId to it }.toMap()
+    }
+
     suspend fun addPlaylistResult(playlistResult: YTPlaylistsResult, pageToken: String) {
         playlistDao.insert(YTPlaylistEntity(playlistResult.toJson(), pageToken))
     }
@@ -49,8 +55,8 @@ class YTLocalDataSource @Inject constructor(database: AppDatabase) : YTDataSourc
 
     suspend fun deletePlaylistVideosResults(playlistId: String, pageToken: String) = playlistVideosDao.delete(playlistId, pageToken)
 
-    override suspend fun getVideosInfo(videoIds: List<String>): Map<String, String> {
-        val videoEntities = videoInfoDao.findAll(videoIds)
-        return videoEntities.map { e -> Gson().fromJson(e.resultResponse, YTVideoInfoResult::class.java) }.map { it.videoId to it.duration }.toMap()
+    suspend fun addVideoInfos(videoInfos: List<YTVideoInfoResult>) {
+        val videoInfoEntities = videoInfos.map {videoInfo ->  YTVideoInfoEntity(videoInfo.toJson(), videoInfo.videoId) }
+        videoInfoDao.insertAll(videoInfoEntities)
     }
 }
