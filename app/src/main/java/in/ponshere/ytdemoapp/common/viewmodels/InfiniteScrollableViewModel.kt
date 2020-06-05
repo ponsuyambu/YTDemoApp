@@ -16,7 +16,6 @@ abstract class InfiniteScrollableViewModel<R: ListResult<T>, T: ListModel>(priva
     protected var nextPageToken: String? = null
 
     fun fetch(callback: suspend () -> R) {
-        showProgress.postValue(true)
         viewModelScope.launch {
             if (repository.isNextPlaylistDataAvailable(nextPageToken)) {
                 if (nextPageToken == null)

@@ -76,6 +76,7 @@ class VideoPlayerScreen : BaseActivity() {
 
     private fun playVideo(video: YTVideo) {
         tvVideoTitle.text = video.title
+        title = video.title
         player.loadVideo(video.videoId, 0f)
     }
 
