@@ -2,10 +2,10 @@ package `in`.ponshere.ytdemoapp.repository
 
 import `in`.ponshere.ytdemoapp.BaseTest
 import `in`.ponshere.ytdemoapp.CacheRetrievalPolicy
+import `in`.ponshere.ytdemoapp.common.models.YTPlaylistsResult
 import `in`.ponshere.ytdemoapp.datasource.YTLocalDataSource
 import `in`.ponshere.ytdemoapp.datasource.YTRemoteDataSource
 import `in`.ponshere.ytdemoapp.playlist.models.YTPlaylist
-import `in`.ponshere.ytdemoapp.playlistdetails.models.YTPlaylistsResult
 import `in`.ponshere.ytdemoapp.utils.NetworkState
 import org.junit.Before
 import org.junit.Test

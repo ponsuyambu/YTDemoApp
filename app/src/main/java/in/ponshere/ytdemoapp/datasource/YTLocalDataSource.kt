@@ -1,12 +1,12 @@
 package `in`.ponshere.ytdemoapp.datasource
 
 import `in`.ponshere.ytdemoapp.CacheRetrievalPolicy
+import `in`.ponshere.ytdemoapp.common.models.YTPlaylistsResult
 import `in`.ponshere.ytdemoapp.db.AppDatabase
 import `in`.ponshere.ytdemoapp.db.playlist.YTPlaylistEntity
 import `in`.ponshere.ytdemoapp.db.playlistdetails.YTPlaylistVideosEntity
 import `in`.ponshere.ytdemoapp.extensions.toJson
 import `in`.ponshere.ytdemoapp.playlist.models.YTVideosResult
-import `in`.ponshere.ytdemoapp.playlistdetails.models.YTPlaylistsResult
 import com.google.gson.Gson
 import javax.inject.Inject
 

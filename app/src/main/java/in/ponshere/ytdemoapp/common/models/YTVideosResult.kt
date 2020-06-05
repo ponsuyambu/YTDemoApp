@@ -1,4 +1,4 @@
-package `in`.ponshere.ytdemoapp.playlistdetails.models
+package `in`.ponshere.ytdemoapp.common.models
 
 import `in`.ponshere.ytdemoapp.playlist.models.YTPlaylist
 

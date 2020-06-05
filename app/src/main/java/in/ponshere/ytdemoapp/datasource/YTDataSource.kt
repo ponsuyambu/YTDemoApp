@@ -1,8 +1,8 @@
 package `in`.ponshere.ytdemoapp.datasource
 
 import `in`.ponshere.ytdemoapp.CacheRetrievalPolicy
+import `in`.ponshere.ytdemoapp.common.models.YTPlaylistsResult
 import `in`.ponshere.ytdemoapp.playlist.models.YTVideosResult
-import `in`.ponshere.ytdemoapp.playlistdetails.models.YTPlaylistsResult
 
 interface YTDataSource {
     suspend fun getPlaylists(pageToken: String? = null): YTPlaylistsResult

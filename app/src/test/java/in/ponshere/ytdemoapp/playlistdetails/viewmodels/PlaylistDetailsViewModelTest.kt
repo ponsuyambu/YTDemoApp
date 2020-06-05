@@ -1,8 +1,8 @@
 package `in`.ponshere.ytdemoapp.playlistdetails.viewmodels
 
 import `in`.ponshere.ytdemoapp.BaseTest
+import `in`.ponshere.ytdemoapp.common.models.YTVideo
 import `in`.ponshere.ytdemoapp.playlist.models.YTVideosResult
-import `in`.ponshere.ytdemoapp.playlistdetails.models.YTVideo
 import `in`.ponshere.ytdemoapp.repository.YTRepository
 import `in`.ponshere.ytdemoapp.utils.assertTrue
 import org.junit.Assert.assertNotNull

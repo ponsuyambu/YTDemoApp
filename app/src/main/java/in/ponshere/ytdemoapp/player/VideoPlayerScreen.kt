@@ -1,8 +1,8 @@
 package `in`.ponshere.ytdemoapp.player
 
 import `in`.ponshere.ytdemoapp.R
+import `in`.ponshere.ytdemoapp.common.models.YTVideo
 import `in`.ponshere.ytdemoapp.playlist.models.YTPlaylist
-import `in`.ponshere.ytdemoapp.playlistdetails.models.YTVideo
 import `in`.ponshere.ytdemoapp.playlistdetails.ui.PlaylistVideosFragment
 import android.app.Activity
 import android.content.Intent
