@@ -50,9 +50,10 @@ class YTRemoteDataSource @Inject constructor(context: Context) : YTDataSource {
                 result?.items?.forEach { playlistItem ->
                     val videoId = playlistItem?.snippet?.resourceId?.videoId
                     val title = playlistItem?.snippet?.title
+                    val author = playlistItem?.snippet?.channelTitle
                     val icon = playlistItem?.snippet?.thumbnails?.high?.url
-                    if (videoId != null && title != null && icon != null) {
-                        videos.add(YTVideo(videoId, title, icon, "", ""))
+                    if (videoId != null && title != null && icon != null && author != null) {
+                        videos.add(YTVideo(videoId, title, icon, author, ""))
                     }
                 }
             }
@@ -77,8 +78,9 @@ class YTRemoteDataSource @Inject constructor(context: Context) : YTDataSource {
                     val videoId = playlistItem?.id?.videoId
                     val title = playlistItem?.snippet?.title
                     val icon = playlistItem?.snippet?.thumbnails?.high?.url
-                    if (videoId != null && title != null && icon != null) {
-                        videos.add(YTVideo(videoId, title, icon, "", ""))
+                    val author = playlistItem?.snippet?.channelTitle
+                    if (videoId != null && title != null && icon != null && author != null) {
+                        videos.add(YTVideo(videoId, title, icon, author, ""))
                     }
                 }
             }

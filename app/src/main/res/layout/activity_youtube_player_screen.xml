@@ -31,7 +31,19 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/llPlayer"
-        tools:text="title"/>
+        tools:text="Video Title"/>
+
+    <TextView
+        android:id="@+id/tvVideoAuthor"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:padding="0dp"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvVideoTitle"
+        tools:text="Author"/>
+
 
     <FrameLayout
         android:id="@+id/flContainer"

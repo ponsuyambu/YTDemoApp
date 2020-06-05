@@ -40,8 +40,7 @@ class VideoPlayerScreen : BaseActivity() {
         })
         currentVideo?.let {
             // In offline, youtube player will not ready, hence set here as well
-            tvVideoTitle.text = it.title
-            title = it.title
+            updateVideoInfo(it)
             playInitialVideo(it)
 
             if(playlistId != null) {
@@ -55,6 +54,12 @@ class VideoPlayerScreen : BaseActivity() {
                         .commit()
             }
         }
+    }
+
+    private fun updateVideoInfo(video: YTVideo) {
+        tvVideoTitle.text = video.title
+        tvVideoAuthor.text = video.author
+        title = video.title
     }
 
     private fun playInitialVideo(video : YTVideo) {
@@ -75,8 +80,7 @@ class VideoPlayerScreen : BaseActivity() {
     }
 
     private fun playVideo(video: YTVideo) {
-        tvVideoTitle.text = video.title
-        title = video.title
+        updateVideoInfo(video)
         player.loadVideo(video.videoId, 0f)
     }
 
