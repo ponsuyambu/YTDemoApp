@@ -53,7 +53,7 @@ class VideosAdapter (private val videos: List<YTVideo>) :
             tvTile.text = playlistVideo.title
             tvAuthor.text = playlistVideo.author
             tvDuration.text = playlistVideo.duration
-            Picasso.get().load(playlistVideo.icon).into(imgIcon)
+            Picasso.get().load(playlistVideo.icon).placeholder(R.drawable.app_icon).into(imgIcon)
         }
 
         override fun onClick(view: View) {
