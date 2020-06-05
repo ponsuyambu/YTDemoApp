@@ -25,9 +25,14 @@ abstract class VideosFragment<T : InfiniteScrollableViewModel>(private val type:
 
     private val videos = mutableListOf<YTVideo>()
 
+    private lateinit var sharedPlayerViewModel: SharedPlayerViewModel
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProvider(this, viewModelFactory).get(type)
+        activity?.let {
+            sharedPlayerViewModel = ViewModelProvider(it).get(SharedPlayerViewModel::class.java)
+        }
         addObservers()
         getVideos()
     }
@@ -53,6 +58,13 @@ abstract class VideosFragment<T : InfiniteScrollableViewModel>(private val type:
 
             })
 
+        sharedPlayerViewModel.playlist().observe(this, Observer { playlistId ->
+            val value = viewModel.listModels().value
+            if(value?.get(0) != null) {
+                VideoPlayerScreen.launch(activity, playlistId, value[0])
+            }
+        })
+
         viewModel.status().observe(this, Observer {
             if (it == null) {
                 tvStatus.visibility = View.GONE
@@ -62,7 +74,7 @@ abstract class VideosFragment<T : InfiniteScrollableViewModel>(private val type:
             }
         })
 
-        viewModel.videos().observe(this,
+        viewModel.listModels().observe(this,
             Observer {
                 it?.let {
                     videos.addAll(it)
@@ -94,5 +106,9 @@ abstract class VideosFragment<T : InfiniteScrollableViewModel>(private val type:
         if(activity is VideoPlayerScreen) {
 
         }
+    }
+
+    override fun onVideoClicked(video: YTVideo) {
+        sharedPlayerViewModel.playVideo(video)
     }
 }

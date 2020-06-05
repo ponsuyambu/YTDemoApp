@@ -2,7 +2,7 @@ package `in`.ponshere.ytdemoapp.playlistdetails.viewmodels
 
 import `in`.ponshere.ytdemoapp.BaseTest
 import `in`.ponshere.ytdemoapp.common.models.YTVideo
-import `in`.ponshere.ytdemoapp.playlist.models.YTVideosResult
+import `in`.ponshere.ytdemoapp.common.models.YTVideosResult
 import `in`.ponshere.ytdemoapp.repository.YTRepository
 import `in`.ponshere.ytdemoapp.utils.assertTrue
 import org.junit.Assert.assertNotNull
@@ -34,7 +34,7 @@ class PlaylistDetailsViewModelTest: BaseTest() {
             viewModel.fetchPlaylistVideos(playlistId)
 
             assertTrue(viewModel.showProgress().value)
-            val playListVideos = viewModel.videos().value
+            val playListVideos = viewModel.listModels().value
             assertNotNull(playListVideos)
             assertTrue(playListVideos?.size?.equals(1))
             assertTrue(playListVideos?.get(0)?.equals(mockVideo))

@@ -1,5 +1,6 @@
 package `in`.ponshere.ytdemoapp.playlist.models
 
+import `in`.ponshere.ytdemoapp.common.models.ListModel
 import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
 
@@ -9,5 +10,4 @@ data class YTPlaylist(
     val title: String,
     val videosCount: Long,
     val icon: String
-) : Parcelable{
-}
+) : Parcelable, ListModel

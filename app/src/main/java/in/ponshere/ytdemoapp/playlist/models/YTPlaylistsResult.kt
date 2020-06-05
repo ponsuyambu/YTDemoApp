@@ -1,9 +1,8 @@
 package `in`.ponshere.ytdemoapp.playlist.models
 
-import `in`.ponshere.ytdemoapp.common.models.YTVideo
+import `in`.ponshere.ytdemoapp.common.models.ListResult
 
-
-class YTVideosResult(
-    val videos: List<YTVideo>?,
-    val nextPageToken: String
-)
+class YTPlaylistsResult(
+    override val listModels: List<YTPlaylist>?,
+    override val nextPageToken: String
+) : ListResult<YTPlaylist>

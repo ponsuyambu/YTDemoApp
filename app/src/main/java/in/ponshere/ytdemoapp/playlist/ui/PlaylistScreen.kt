@@ -94,7 +94,7 @@ class PlaylistScreen : DaggerAppCompatActivity() {
             }
         })
 
-        playlistViewModel.playlists().observe(this,
+        playlistViewModel.listModels().observe(this,
             Observer {
                 it?.let {
                     playlist.addAll(it)

@@ -1,11 +1,11 @@
 package `in`.ponshere.ytdemoapp.repository
 
 import `in`.ponshere.ytdemoapp.CacheRetrievalPolicy
-import `in`.ponshere.ytdemoapp.common.models.YTPlaylistsResult
+import `in`.ponshere.ytdemoapp.common.models.YTVideosResult
 import `in`.ponshere.ytdemoapp.datasource.YTDataSource
 import `in`.ponshere.ytdemoapp.datasource.YTLocalDataSource
 import `in`.ponshere.ytdemoapp.datasource.YTRemoteDataSource
-import `in`.ponshere.ytdemoapp.playlist.models.YTVideosResult
+import `in`.ponshere.ytdemoapp.playlist.models.YTPlaylistsResult
 import `in`.ponshere.ytdemoapp.utils.NetworkState
 import javax.inject.Inject
 

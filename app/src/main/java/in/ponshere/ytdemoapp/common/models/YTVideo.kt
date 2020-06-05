@@ -10,4 +10,4 @@ data class YTVideo(
     val icon: String,
     val author: String,
     val duration: String
-) : Parcelable
+) : Parcelable, ListModel
