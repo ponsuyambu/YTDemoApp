@@ -16,7 +16,7 @@ Demo implemenation of YouTube app using YouTube data API.
 - Picasso
 - Gson
 
-Just make sure you select the release variant in Android Studio to build the app. You can also download the apk directly from here.
+Just make sure you select the release variant in Android Studio to build the app. You can also download the apk directly from [here](app-release.apk).
 
 ## Screens
 ### 1. Authentication screen
