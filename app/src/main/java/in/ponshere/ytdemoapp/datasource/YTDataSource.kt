@@ -13,4 +13,5 @@ interface YTDataSource {
     suspend fun getVideosFor(searchTerm: String, pageToken: String = FIRST_PAGE_TOKEN): YTVideosResult
     suspend fun isNextPlaylistDataAvailable(pageToken: String = FIRST_PAGE_TOKEN) : Boolean
     suspend fun getVideosInfo(videoIds: List<String>): Map<String, YTVideoInfoResult>
+    suspend fun isChannelIdAvailable() : Boolean
 }

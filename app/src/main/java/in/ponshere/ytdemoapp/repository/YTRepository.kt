@@ -84,4 +84,9 @@ class YTRepository @Inject constructor(
     private fun getActiveDataSource(): YTDataSource {
         return if (networkState.isConnected) remoteDataSource else localDataSource
     }
+
+    override suspend fun isChannelIdAvailable(): Boolean {
+        if(localDataSource.isChannelIdAvailable() || remoteDataSource.isChannelIdAvailable()) return true
+        return false
+    }
 }

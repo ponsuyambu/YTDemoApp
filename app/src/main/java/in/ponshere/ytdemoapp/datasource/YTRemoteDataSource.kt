@@ -30,6 +30,23 @@ class YTRemoteDataSource @Inject constructor(context: Context) : YTDataSource {
         youTube = YouTube.Builder(NetHttpTransport(), JacksonFactory(), credential).setApplicationName("YTDemoApp").build()
     }
 
+     override suspend fun isChannelIdAvailable() : Boolean {
+         var hasChannel = false
+         coroutineScope {
+            withContext(Dispatchers.IO) {
+                val task = youTube.channels()?.list("snippet")?.apply {
+                    mine = true
+                }
+                val result = task?.execute()
+
+                if (result?.items?.size ?: 0 > 0) {
+                    hasChannel = true
+                }
+            }
+         }
+         return hasChannel
+    }
+
     override suspend fun getPlaylists(pageToken: String): YTPlaylistsResult? {
         val playLists = arrayListOf<YTPlaylist>()
         var nextPageToken = ""
@@ -39,6 +56,7 @@ class YTRemoteDataSource @Inject constructor(context: Context) : YTDataSource {
                 task?.mine = true
                 task?.maxResults = MAX_RESULTS
                 task?.pageToken = pageToken
+                task?.userIp
 
                 val result = task?.execute()
 
