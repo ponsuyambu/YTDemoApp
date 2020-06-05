@@ -12,8 +12,9 @@ import `in`.ponshere.ytdemoapp.playlist.models.YTVideoInfoResult
 import com.google.gson.Gson
 import javax.inject.Inject
 
-class YTLocalDataSource @Inject constructor(database: AppDatabase) : YTDataSource {
+private const val KEY_IS_CHANNEL_AVAILABLE = "is_channel_available"
 
+class YTLocalDataSource @Inject constructor(database: AppDatabase, private val sharedPreferences: SharedPreferences) : YTDataSource {
     private val playlistDao = database.playlistDao()
     private val playlistVideosDao = database.playlistVideosDao()
     private val videoInfoDao = database.videoInfoDao()
@@ -28,7 +29,7 @@ class YTLocalDataSource @Inject constructor(database: AppDatabase) : YTDataSourc
         return if (playlistVideos != null) Gson().fromJson(playlistVideos.resultResponse, YTVideosResult::class.java) else null
     }
 
-    override suspend fun getVideosFor(searchTerm: String, pageToken: String?): YTVideosResult {
+    override suspend fun getVideosFor(searchTerm: String, pageToken: String): YTVideosResult {
         TODO("Not valid operation")
     }
 
@@ -59,4 +60,13 @@ class YTLocalDataSource @Inject constructor(database: AppDatabase) : YTDataSourc
         val videoInfoEntities = videoInfos.map {videoInfo ->  YTVideoInfoEntity(videoInfo.toJson(), videoInfo.videoId) }
         videoInfoDao.insertAll(videoInfoEntities)
     }
+
+    fun cacheChannelIdAvailability(isAvailable: Boolean) {
+        with(sharedPreferences.edit()) {
+            putBoolean(KEY_IS_CHANNEL_AVAILABLE, isAvailable)
+            commit()
+        }
+    }
+
+    override suspend fun isChannelIdAvailable() = sharedPreferences.getBoolean(KEY_IS_CHANNEL_AVAILABLE, false)
 }

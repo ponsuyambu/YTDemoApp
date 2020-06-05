@@ -3,6 +3,7 @@ package `in`.ponshere.ytdemoapp.search.viewmodels
 import `in`.ponshere.ytdemoapp.BaseTest
 import `in`.ponshere.ytdemoapp.common.models.YTVideo
 import `in`.ponshere.ytdemoapp.common.models.YTVideosResult
+import `in`.ponshere.ytdemoapp.datasource.FIRST_PAGE_TOKEN
 import `in`.ponshere.ytdemoapp.repository.YTRepository
 import `in`.ponshere.ytdemoapp.utils.assertTrue
 import org.junit.Assert
@@ -27,7 +28,7 @@ class SearchViewModelTest : BaseTest() {
 
     @Test
     fun `should not fetch search videos when next search video data is not available`() = testCoroutineRule.runBlocking {
-        `when`(repository.isNextPlaylistDataAvailable(null)).thenReturn(false)
+        `when`(repository.isNextPlaylistDataAvailable(FIRST_PAGE_TOKEN)).thenReturn(false)
 
         viewModel.fetchVideosFor("searchTerm")
 
@@ -42,8 +43,8 @@ class SearchViewModelTest : BaseTest() {
         val searchTerm = "hello"
         val mockVideo = mock(YTVideo::class.java)
         val videoResult = YTVideosResult(mutableListOf<YTVideo>().apply { add(mockVideo) }, "next")
-        `when`(repository.isNextPlaylistDataAvailable(null)).thenReturn(true)
-        `when`(repository.getVideosFor(searchTerm, null)).thenReturn(videoResult)
+        `when`(repository.isNextPlaylistDataAvailable(FIRST_PAGE_TOKEN)).thenReturn(true)
+        `when`(repository.getVideosFor(searchTerm, FIRST_PAGE_TOKEN)).thenReturn(videoResult)
 
         viewModel.fetchVideosFor(searchTerm)
 
@@ -58,8 +59,8 @@ class SearchViewModelTest : BaseTest() {
     fun `should not show play all when search videos are empty`() = testCoroutineRule.runBlocking {
         val searchTerm = "123"
         val videoResult = YTVideosResult(mutableListOf<YTVideo>().apply { }, "next")
-        `when`(repository.isNextPlaylistDataAvailable(null)).thenReturn(true)
-        `when`(repository.getVideosFor(searchTerm, null)).thenReturn(videoResult)
+        `when`(repository.isNextPlaylistDataAvailable(FIRST_PAGE_TOKEN)).thenReturn(true)
+        `when`(repository.getVideosFor(searchTerm, FIRST_PAGE_TOKEN)).thenReturn(videoResult)
 
         viewModel.fetchVideosFor(searchTerm)
 

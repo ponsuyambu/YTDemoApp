@@ -37,7 +37,7 @@ class YTRepository @Inject constructor(
         return enhanceVideoResults(playlistVideosResult)
     }
 
-    override suspend fun getVideosFor(searchTerm: String, pageToken: String?): YTVideosResult {
+    override suspend fun getVideosFor(searchTerm: String, pageToken: String): YTVideosResult {
         val videos = remoteDataSource.getVideosFor(searchTerm, pageToken)
         return enhanceVideoResults(videos)
     }
@@ -65,8 +65,8 @@ class YTRepository @Inject constructor(
         val allVideoInfos = mutableMapOf<String, YTVideoInfoResult>()
         val cachedVideoInfos = localDataSource.getVideosInfo(videoIds)
         allVideoInfos.putAll(cachedVideoInfos)
-        if (cacheRetrievalPolicy != CACHE_ONLY) {
-            val remoteVideoIds = videoIds.filter { id -> cachedVideoInfos.keys.contains(id).not() }
+        val remoteVideoIds = videoIds.filter { id -> cachedVideoInfos.keys.contains(id).not() }
+        if (cacheRetrievalPolicy != CACHE_ONLY && remoteVideoIds.isNotEmpty()) {
             val remoteVideoInfos = remoteDataSource.getVideosInfo(remoteVideoIds)
             localDataSource.addVideoInfos(remoteVideoInfos.values.toList())
             allVideoInfos.putAll(remoteVideoInfos)

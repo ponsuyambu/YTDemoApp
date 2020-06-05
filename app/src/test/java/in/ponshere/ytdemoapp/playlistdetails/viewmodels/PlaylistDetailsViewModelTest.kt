@@ -3,6 +3,7 @@ package `in`.ponshere.ytdemoapp.playlistdetails.viewmodels
 import `in`.ponshere.ytdemoapp.BaseTest
 import `in`.ponshere.ytdemoapp.common.models.YTVideo
 import `in`.ponshere.ytdemoapp.common.models.YTVideosResult
+import `in`.ponshere.ytdemoapp.datasource.FIRST_PAGE_TOKEN
 import `in`.ponshere.ytdemoapp.repository.YTRepository
 import `in`.ponshere.ytdemoapp.utils.assertTrue
 import org.junit.Assert.assertNotNull
@@ -29,7 +30,7 @@ class PlaylistDetailsViewModelTest : BaseTest() {
     fun `should not fetch playlist videos when next playlist video data is not available`() =
         testCoroutineRule.runBlocking {
             val playlistId = "123"
-            `when`(repository.isNextPlaylistDataAvailable(null)).thenReturn(false)
+            `when`(repository.isNextPlaylistDataAvailable(FIRST_PAGE_TOKEN)).thenReturn(false)
 
             viewModel.fetchPlaylistVideos(playlistId)
 
@@ -44,8 +45,8 @@ class PlaylistDetailsViewModelTest : BaseTest() {
         val playlistId = "123"
         val mockVideo = mock(YTVideo::class.java)
         val videoResult = YTVideosResult(mutableListOf<YTVideo>().apply { add(mockVideo) }, "next")
-        `when`(repository.isNextPlaylistDataAvailable(null)).thenReturn(true)
-        `when`(repository.getPlaylistVideos(playlistId, null)).thenReturn(videoResult)
+        `when`(repository.isNextPlaylistDataAvailable(FIRST_PAGE_TOKEN)).thenReturn(true)
+        `when`(repository.getPlaylistVideos(playlistId, FIRST_PAGE_TOKEN)).thenReturn(videoResult)
 
         viewModel.fetchPlaylistVideos(playlistId)
 
@@ -61,8 +62,8 @@ class PlaylistDetailsViewModelTest : BaseTest() {
     fun `should not show play all when playlist videos are empty`() = testCoroutineRule.runBlocking {
         val playlistId = "123"
         val videoResult = YTVideosResult(mutableListOf<YTVideo>().apply { }, "next")
-        `when`(repository.isNextPlaylistDataAvailable(null)).thenReturn(true)
-        `when`(repository.getPlaylistVideos(playlistId, null)).thenReturn(videoResult)
+        `when`(repository.isNextPlaylistDataAvailable(FIRST_PAGE_TOKEN)).thenReturn(true)
+        `when`(repository.getPlaylistVideos(playlistId, FIRST_PAGE_TOKEN)).thenReturn(videoResult)
 
         viewModel.fetchPlaylistVideos(playlistId)
 
