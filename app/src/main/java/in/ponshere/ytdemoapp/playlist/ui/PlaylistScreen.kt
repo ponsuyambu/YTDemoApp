@@ -2,6 +2,7 @@ package `in`.ponshere.ytdemoapp.playlist.ui
 
 import `in`.ponshere.ytdemoapp.R
 import `in`.ponshere.ytdemoapp.ViewModelFactory
+import `in`.ponshere.ytdemoapp.common.ui.BaseActivity
 import `in`.ponshere.ytdemoapp.playlist.models.YTPlaylist
 import `in`.ponshere.ytdemoapp.playlist.viewmodels.PlaylistViewModel
 import `in`.ponshere.ytdemoapp.search.ui.SearchScreen
@@ -15,12 +16,11 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.squareup.picasso.Picasso
-import dagger.android.support.DaggerAppCompatActivity
 import kotlinx.android.synthetic.main.layout_infinite_scrollable_list.*
 import javax.inject.Inject
 
 
-class PlaylistScreen : DaggerAppCompatActivity() {
+class PlaylistScreen : BaseActivity() {
 
     private lateinit var playlistViewModel: PlaylistViewModel
     private lateinit var playlistAdapter: PlaylistAdapter
@@ -108,5 +108,9 @@ class PlaylistScreen : DaggerAppCompatActivity() {
             val intent = Intent(caller, PlaylistScreen::class.java)
             caller.startActivity(intent)
         }
+    }
+
+    override fun isRoot(): Boolean {
+        return true
     }
 }

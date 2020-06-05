@@ -1,18 +1,18 @@
 package `in`.ponshere.ytdemoapp.playlistdetails.ui
 
 import `in`.ponshere.ytdemoapp.R
+import `in`.ponshere.ytdemoapp.common.ui.BaseActivity
 import `in`.ponshere.ytdemoapp.playlist.models.YTPlaylist
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import com.squareup.picasso.Picasso
-import dagger.android.support.DaggerAppCompatActivity
 import kotlinx.android.synthetic.main.activity_playlist_details_screen.*
 
 private const val KEY_PLAYLIST = "playlist"
 
 
-class PlaylistDetailsScreen : DaggerAppCompatActivity() {
+class PlaylistDetailsScreen : BaseActivity() {
     private var playlist: YTPlaylist? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -27,6 +27,7 @@ class PlaylistDetailsScreen : DaggerAppCompatActivity() {
             tvTitle.text = it.title
             tvCount.text = it.videosCount.toString()
             Picasso.get().load(it.icon).into(imgPlaylistIcon)
+            title = it.title
         }
     }
 

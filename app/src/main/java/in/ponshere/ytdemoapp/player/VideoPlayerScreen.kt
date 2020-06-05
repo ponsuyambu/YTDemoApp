@@ -2,6 +2,7 @@ package `in`.ponshere.ytdemoapp.player
 
 import `in`.ponshere.ytdemoapp.R
 import `in`.ponshere.ytdemoapp.common.models.YTVideo
+import `in`.ponshere.ytdemoapp.common.ui.BaseActivity
 import `in`.ponshere.ytdemoapp.playlistdetails.ui.PlaylistVideosFragment
 import `in`.ponshere.ytdemoapp.search.ui.SearchVideosFragment
 import android.app.Activity
@@ -12,16 +13,14 @@ import androidx.lifecycle.ViewModelProvider
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener
-import dagger.android.support.DaggerAppCompatActivity
 import kotlinx.android.synthetic.main.activity_youtube_player_screen.*
 
-private const val KEY_PLAYLIST = "playlist"
 private const val KEY_PLAYLIST_ID = "playlist_id"
-private const val KEY_PLAYLISTVIDEO = "playlistVideo"
+private const val KEY_PLAYLIST_VIDEO = "playlistVideo"
 private const val KEY_QUERY_TERM = "queryTerm"
 
 
-class VideoPlayerScreen : DaggerAppCompatActivity() {
+class VideoPlayerScreen : BaseActivity() {
     private lateinit var player : YouTubePlayer
     private var currentVideo : YTVideo? = null
     private val sharedPlayerViewModel: SharedPlayerViewModel by lazy {
@@ -30,7 +29,7 @@ class VideoPlayerScreen : DaggerAppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_youtube_player_screen)
-        currentVideo = intent.getParcelableExtra(KEY_PLAYLISTVIDEO)
+        currentVideo = intent.getParcelableExtra(KEY_PLAYLIST_VIDEO)
         val playlistId = intent.getStringExtra(KEY_PLAYLIST_ID)
         val searchQuery = intent.getStringExtra(KEY_QUERY_TERM)
 
@@ -40,7 +39,9 @@ class VideoPlayerScreen : DaggerAppCompatActivity() {
             playVideo(it)
         })
         currentVideo?.let {
-            tvVideoTitle.text = it.title // In offline condition, youtube player will not ready, hence set here as well
+            // In offline, youtube player will not ready, hence set here as well
+            tvVideoTitle.text = it.title
+            title = it.title
             playInitialVideo(it)
 
             if(playlistId != null) {
@@ -81,14 +82,14 @@ class VideoPlayerScreen : DaggerAppCompatActivity() {
     companion object {
         fun launch(caller: Activity?, playlistVideo: YTVideo) {
             val intent = Intent(caller, VideoPlayerScreen::class.java).apply {
-                putExtra(KEY_PLAYLISTVIDEO, playlistVideo)
+                putExtra(KEY_PLAYLIST_VIDEO, playlistVideo)
             }
             caller?.startActivity(intent)
         }
 
         fun launch(caller: Activity?, playlistId: String, initialVideo: YTVideo) {
             val intent = Intent(caller, VideoPlayerScreen::class.java).apply {
-                putExtra(KEY_PLAYLISTVIDEO, initialVideo)
+                putExtra(KEY_PLAYLIST_VIDEO, initialVideo)
                 putExtra(KEY_PLAYLIST_ID, playlistId)
             }
             caller?.startActivity(intent)
@@ -96,7 +97,7 @@ class VideoPlayerScreen : DaggerAppCompatActivity() {
 
         fun launchWithSearchQuery(caller: Activity?, searchQuery: String, initialVideo: YTVideo) {
             val intent = Intent(caller, VideoPlayerScreen::class.java).apply {
-                putExtra(KEY_PLAYLISTVIDEO, initialVideo)
+                putExtra(KEY_PLAYLIST_VIDEO, initialVideo)
                 putExtra(KEY_QUERY_TERM, searchQuery)
             }
             caller?.startActivity(intent)

@@ -1,22 +1,20 @@
 package `in`.ponshere.ytdemoapp.search.ui
 
 import `in`.ponshere.ytdemoapp.R
+import `in`.ponshere.ytdemoapp.common.ui.BaseActivity
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
-import android.view.MenuItem
 import android.view.View.GONE
 import android.widget.SearchView
-import dagger.android.support.DaggerAppCompatActivity
 import kotlinx.android.synthetic.main.activity_search_screen.*
 
 
-class SearchScreen : DaggerAppCompatActivity() {
+class SearchScreen : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search_screen)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
         title = ""
     }
 
@@ -42,13 +40,6 @@ class SearchScreen : DaggerAppCompatActivity() {
 
         })
         return super.onCreateOptionsMenu(menu)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if(item.itemId == android.R.id.home) {
-            onBackPressed()
-        }
-        return true
     }
 
     companion object {
