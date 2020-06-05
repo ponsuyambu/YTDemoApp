@@ -1,16 +1,16 @@
 package `in`.ponshere.ytdemoapp.repository
 
-import `in`.ponshere.ytdemoapp.CacheRetrievalPolicy
-import `in`.ponshere.ytdemoapp.CacheRetrievalPolicy.CACHE_FIRST
-import `in`.ponshere.ytdemoapp.CacheRetrievalPolicy.CACHE_ONLY
 import `in`.ponshere.ytdemoapp.common.models.YTVideosResult
 import `in`.ponshere.ytdemoapp.datasource.FIRST_PAGE_TOKEN
 import `in`.ponshere.ytdemoapp.datasource.YTDataSource
 import `in`.ponshere.ytdemoapp.datasource.YTLocalDataSource
 import `in`.ponshere.ytdemoapp.datasource.YTRemoteDataSource
+import `in`.ponshere.ytdemoapp.network.CacheRetrievalPolicy
+import `in`.ponshere.ytdemoapp.network.CacheRetrievalPolicy.CACHE_FIRST
+import `in`.ponshere.ytdemoapp.network.CacheRetrievalPolicy.CACHE_ONLY
+import `in`.ponshere.ytdemoapp.network.NetworkState
 import `in`.ponshere.ytdemoapp.playlist.models.YTPlaylistsResult
 import `in`.ponshere.ytdemoapp.playlist.models.YTVideoInfoResult
-import `in`.ponshere.ytdemoapp.utils.NetworkState
 import javax.inject.Inject
 
 const val GOOGLE_SIGN_IN_YOUTUBE_SCOPE = "https://www.googleapis.com/auth/youtube"
@@ -78,7 +78,7 @@ class YTRepository @Inject constructor(
     }
 
     override suspend fun getVideosInfo(videoIds: List<String>): Map<String, YTVideoInfoResult> {
-        TODO("Not yet implemented")
+        TODO("Not a valid operation")
     }
 
     private fun getActiveDataSource(): YTDataSource {

@@ -1,15 +1,15 @@
 package `in`.ponshere.ytdemoapp.repository
 
 import `in`.ponshere.ytdemoapp.BaseTest
-import `in`.ponshere.ytdemoapp.CacheRetrievalPolicy
 import `in`.ponshere.ytdemoapp.common.models.YTVideo
 import `in`.ponshere.ytdemoapp.common.models.YTVideosResult
 import `in`.ponshere.ytdemoapp.datasource.FIRST_PAGE_TOKEN
 import `in`.ponshere.ytdemoapp.datasource.YTLocalDataSource
 import `in`.ponshere.ytdemoapp.datasource.YTRemoteDataSource
+import `in`.ponshere.ytdemoapp.network.CacheRetrievalPolicy
+import `in`.ponshere.ytdemoapp.network.NetworkState
 import `in`.ponshere.ytdemoapp.playlist.models.YTPlaylistsResult
 import `in`.ponshere.ytdemoapp.playlist.models.YTVideoInfoResult
-import `in`.ponshere.ytdemoapp.utils.NetworkState
 import `in`.ponshere.ytdemoapp.utils.assertTrue
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull

@@ -2,7 +2,7 @@ package `in`.ponshere.ytdemoapp.search.ui
 
 import `in`.ponshere.ytdemoapp.R
 import `in`.ponshere.ytdemoapp.common.ui.BaseActivity
-import `in`.ponshere.ytdemoapp.utils.NetworkState
+import `in`.ponshere.ytdemoapp.network.NetworkState
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle

@@ -1,8 +1,8 @@
 package `in`.ponshere.ytdemoapp.datasource
 
-import `in`.ponshere.ytdemoapp.CacheRetrievalPolicy
 import `in`.ponshere.ytdemoapp.common.models.YTVideo
 import `in`.ponshere.ytdemoapp.common.models.YTVideosResult
+import `in`.ponshere.ytdemoapp.network.CacheRetrievalPolicy
 import `in`.ponshere.ytdemoapp.playlist.models.YTPlaylist
 import `in`.ponshere.ytdemoapp.playlist.models.YTPlaylistsResult
 import `in`.ponshere.ytdemoapp.playlist.models.YTVideoInfoResult

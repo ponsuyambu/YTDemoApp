@@ -1,8 +1,8 @@
 package `in`.ponshere.ytdemoapp.di
 
 import `in`.ponshere.ytdemoapp.db.AppDatabase
-import `in`.ponshere.ytdemoapp.utils.NetworkState
-import `in`.ponshere.ytdemoapp.utils.NetworkStateHolder
+import `in`.ponshere.ytdemoapp.network.NetworkState
+import `in`.ponshere.ytdemoapp.network.NetworkStateHolder
 import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences

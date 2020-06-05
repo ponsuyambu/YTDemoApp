@@ -1,7 +1,7 @@
 package `in`.ponshere.ytdemoapp.playlistdetails.ui
 
-import `in`.ponshere.ytdemoapp.CacheRetrievalPolicy
 import `in`.ponshere.ytdemoapp.common.ui.VideosFragment
+import `in`.ponshere.ytdemoapp.network.CacheRetrievalPolicy
 import `in`.ponshere.ytdemoapp.player.VideoPlayerScreen
 import `in`.ponshere.ytdemoapp.playlistdetails.viewmodels.PlaylistDetailsViewModel
 import android.os.Bundle

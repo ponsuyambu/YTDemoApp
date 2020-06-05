@@ -1,4 +1,4 @@
-package `in`.ponshere.ytdemoapp.utils
+package `in`.ponshere.ytdemoapp.network
 
 import android.app.Application
 import android.content.Context

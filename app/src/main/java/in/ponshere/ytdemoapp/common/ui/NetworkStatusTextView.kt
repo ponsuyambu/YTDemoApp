@@ -1,8 +1,8 @@
 package `in`.ponshere.ytdemoapp.common.ui
 
 import `in`.ponshere.ytdemoapp.R
-import `in`.ponshere.ytdemoapp.utils.Event
-import `in`.ponshere.ytdemoapp.utils.NetworkEvents
+import `in`.ponshere.ytdemoapp.network.Event
+import `in`.ponshere.ytdemoapp.network.NetworkEvents
 import android.content.Context
 import android.util.AttributeSet
 import android.view.View

@@ -1,8 +1,8 @@
 package `in`.ponshere.ytdemoapp.playlist.ui
 
 import `in`.ponshere.ytdemoapp.R
-import `in`.ponshere.ytdemoapp.ViewModelFactory
 import `in`.ponshere.ytdemoapp.common.ui.BaseActivity
+import `in`.ponshere.ytdemoapp.common.viewmodels.ViewModelFactory
 import `in`.ponshere.ytdemoapp.playlist.models.YTPlaylist
 import `in`.ponshere.ytdemoapp.playlist.viewmodels.PlaylistViewModel
 import `in`.ponshere.ytdemoapp.search.ui.SearchScreen

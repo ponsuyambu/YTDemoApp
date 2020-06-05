@@ -1,10 +1,10 @@
 package `in`.ponshere.ytdemoapp.common.ui
 
 import `in`.ponshere.ytdemoapp.R
-import `in`.ponshere.ytdemoapp.ViewModelFactory
 import `in`.ponshere.ytdemoapp.common.models.YTVideo
 import `in`.ponshere.ytdemoapp.common.models.YTVideosResult
 import `in`.ponshere.ytdemoapp.common.viewmodels.InfiniteScrollableViewModel
+import `in`.ponshere.ytdemoapp.common.viewmodels.ViewModelFactory
 import `in`.ponshere.ytdemoapp.player.SharedPlayerViewModel
 import `in`.ponshere.ytdemoapp.player.VideoPlayerScreen
 import `in`.ponshere.ytdemoapp.playlistdetails.ui.VideosAdapter

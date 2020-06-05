@@ -1,4 +1,4 @@
-package `in`.ponshere.ytdemoapp
+package `in`.ponshere.ytdemoapp.common.viewmodels
 
 import `in`.ponshere.ytdemoapp.repository.YTRepository
 import androidx.lifecycle.ViewModel
