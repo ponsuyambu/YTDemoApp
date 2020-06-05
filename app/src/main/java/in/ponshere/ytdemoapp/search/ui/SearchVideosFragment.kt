@@ -4,8 +4,10 @@ import `in`.ponshere.ytdemoapp.ViewModelFactory
 import `in`.ponshere.ytdemoapp.playlistdetails.ui.VideosFragment
 import `in`.ponshere.ytdemoapp.search.viewmodels.SearchViewModel
 import android.os.Bundle
+import android.view.View
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import kotlinx.android.synthetic.main.layout_infinite_scrollable_list.*
 import javax.inject.Inject
 
 private const val KEY_QUERY_TERM = "queryTerm"
@@ -33,6 +35,10 @@ class SearchVideosFragment : VideosFragment() {
             SearchViewModel::class.java
         )
         addObservers()
+        getVideos()
+    }
+
+    override fun getVideos() {
         val playlistId = arguments?.getString(KEY_QUERY_TERM)
         playlistId?.let {
             searchViewModel.fetchVideosFor(it)
@@ -45,7 +51,16 @@ class SearchVideosFragment : VideosFragment() {
 
             })
 
-        searchViewModel.searchVideos().observe(this,
+        searchViewModel.status().observe(this, Observer {
+            if(it == null) {
+                tvStatus.visibility = View.GONE
+            } else {
+                tvStatus.text = it
+                tvStatus.visibility = View.VISIBLE
+            }
+        })
+
+        searchViewModel.videos().observe(this,
             Observer {
                 it?.let {
                     videos.addAll(it)

@@ -5,8 +5,10 @@ import `in`.ponshere.ytdemoapp.ViewModelFactory
 import `in`.ponshere.ytdemoapp.player.VideoPlayerScreen
 import `in`.ponshere.ytdemoapp.playlistdetails.viewmodels.PlaylistDetailsViewModel
 import android.os.Bundle
+import android.view.View
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import kotlinx.android.synthetic.main.layout_infinite_scrollable_list.*
 import javax.inject.Inject
 
 private const val KEY_PLAYLIST_ID = "playlistId"
@@ -34,6 +36,10 @@ class PlaylistVideosFragment: VideosFragment() {
             PlaylistDetailsViewModel::class.java
         )
         addObservers()
+        getVideos()
+    }
+
+    override fun getVideos() {
         val playlistId = arguments?.getString(KEY_PLAYLIST_ID)
         playlistId?.let {
             playlistDetailsViewModel.fetchPlaylistVideos(it, getCacheRetrievalPolicy())
@@ -53,7 +59,16 @@ class PlaylistVideosFragment: VideosFragment() {
 
             })
 
-        playlistDetailsViewModel.playlistVideos().observe(this,
+        playlistDetailsViewModel.status().observe(this, Observer {
+            if(it == null) {
+                tvStatus.visibility = View.GONE
+            } else {
+                tvStatus.text = it
+                tvStatus.visibility = View.VISIBLE
+            }
+        })
+
+        playlistDetailsViewModel.videos().observe(this,
             Observer {
                 it?.let {
                     videos.addAll(it)

@@ -34,7 +34,7 @@ class PlaylistDetailsViewModelTest: BaseTest() {
             viewModel.fetchPlaylistVideos(playlistId)
 
             assertTrue(viewModel.showProgress().value)
-            val playListVideos = viewModel.playlistVideos().value
+            val playListVideos = viewModel.videos().value
             assertNotNull(playListVideos)
             assertTrue(playListVideos?.size?.equals(1))
             assertTrue(playListVideos?.get(0)?.equals(mockVideo))

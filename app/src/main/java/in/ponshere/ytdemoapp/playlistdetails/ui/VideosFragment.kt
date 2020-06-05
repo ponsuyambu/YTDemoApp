@@ -8,7 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.android.support.DaggerFragment
-import kotlinx.android.synthetic.main.fragment_playlist_videos.*
+import kotlinx.android.synthetic.main.layout_infinite_scrollable_list.*
 
 abstract class VideosFragment : DaggerFragment() {
     protected lateinit var videosAdapter: PlaylistDetailsAdapter
@@ -20,7 +20,7 @@ abstract class VideosFragment : DaggerFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_playlist_videos, container, false)
+        return inflater.inflate(R.layout.layout_infinite_scrollable_list, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -28,15 +28,18 @@ abstract class VideosFragment : DaggerFragment() {
         setupRecyclerView()
     }
 
+    protected abstract fun getVideos()
+
     private fun setupRecyclerView() {
         videosAdapter = PlaylistDetailsAdapter(videos)
         videosAdapter.onEndReachedListener =
             object : PlaylistDetailsAdapter.OnEndReachedListener {
                 override fun onRecyclerEndReached(position: Int) {
+                    getVideos()
                 }
 
             }
-        playlistVideoRecyclerView.apply {
+        recyclerView.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = videosAdapter
         }

@@ -16,7 +16,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.squareup.picasso.Picasso
 import dagger.android.support.DaggerAppCompatActivity
-import kotlinx.android.synthetic.main.activity_playlist_screen.*
+import kotlinx.android.synthetic.main.layout_infinite_scrollable_list.*
 import javax.inject.Inject
 
 
@@ -35,7 +35,7 @@ class PlaylistScreen : DaggerAppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_playlist_screen)
+        setContentView(R.layout.layout_infinite_scrollable_list)
         playlistViewModel =
             ViewModelProvider(this, viewModelFactory).get(PlaylistViewModel::class.java)
 
@@ -66,7 +66,7 @@ class PlaylistScreen : DaggerAppCompatActivity() {
             }
 
         }
-        playlistRecyclerView.apply {
+        recyclerView.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = playlistAdapter
         }
