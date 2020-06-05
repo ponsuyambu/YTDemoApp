@@ -3,6 +3,7 @@ package `in`.ponshere.ytdemoapp.player
 import `in`.ponshere.ytdemoapp.R
 import `in`.ponshere.ytdemoapp.common.models.YTVideo
 import `in`.ponshere.ytdemoapp.playlistdetails.ui.PlaylistVideosFragment
+import `in`.ponshere.ytdemoapp.search.ui.SearchVideosFragment
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
@@ -17,6 +18,8 @@ import kotlinx.android.synthetic.main.activity_youtube_player_screen.*
 private const val KEY_PLAYLIST = "playlist"
 private const val KEY_PLAYLIST_ID = "playlist_id"
 private const val KEY_PLAYLISTVIDEO = "playlistVideo"
+private const val KEY_QUERY_TERM = "queryTerm"
+
 
 class VideoPlayerScreen : DaggerAppCompatActivity() {
     private lateinit var player : YouTubePlayer
@@ -29,6 +32,7 @@ class VideoPlayerScreen : DaggerAppCompatActivity() {
         setContentView(R.layout.activity_youtube_player_screen)
         currentVideo = intent.getParcelableExtra(KEY_PLAYLISTVIDEO)
         val playlistId = intent.getStringExtra(KEY_PLAYLIST_ID)
+        val searchQuery = intent.getStringExtra(KEY_QUERY_TERM)
 
         lifecycle.addObserver(youtubePlayerView)
         sharedPlayerViewModel.currentVideo().observe(this, Observer {
@@ -41,6 +45,11 @@ class VideoPlayerScreen : DaggerAppCompatActivity() {
             if(playlistId != null) {
                 supportFragmentManager.beginTransaction()
                         .replace(R.id.flContainer, PlaylistVideosFragment.newInstance(playlistId))
+                        .commit()
+            }
+            if(searchQuery != null) {
+                supportFragmentManager.beginTransaction()
+                        .replace(R.id.flContainer, SearchVideosFragment.newInstance(searchQuery))
                         .commit()
             }
         }
@@ -76,6 +85,14 @@ class VideoPlayerScreen : DaggerAppCompatActivity() {
             val intent = Intent(caller, VideoPlayerScreen::class.java).apply {
                 putExtra(KEY_PLAYLISTVIDEO, initialVideo)
                 putExtra(KEY_PLAYLIST_ID, playlistId)
+            }
+            caller?.startActivity(intent)
+        }
+
+        fun launchWithSearchQuery(caller: Activity?, searchQuery: String, initialVideo: YTVideo) {
+            val intent = Intent(caller, VideoPlayerScreen::class.java).apply {
+                putExtra(KEY_PLAYLISTVIDEO, initialVideo)
+                putExtra(KEY_QUERY_TERM, searchQuery)
             }
             caller?.startActivity(intent)
         }

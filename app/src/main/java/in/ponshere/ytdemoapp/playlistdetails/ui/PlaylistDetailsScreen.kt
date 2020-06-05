@@ -2,12 +2,10 @@ package `in`.ponshere.ytdemoapp.playlistdetails.ui
 
 import `in`.ponshere.ytdemoapp.R
 import `in`.ponshere.ytdemoapp.player.SharedPlayerViewModel
-import `in`.ponshere.ytdemoapp.player.VideoPlayerScreen
 import `in`.ponshere.ytdemoapp.playlist.models.YTPlaylist
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.squareup.picasso.Picasso
 import dagger.android.support.DaggerAppCompatActivity
@@ -36,10 +34,6 @@ class PlaylistDetailsScreen : DaggerAppCompatActivity() {
             tvCount.text = it.videosCount.toString()
             Picasso.get().load(it.icon).into(imgPlaylistIcon)
         }
-
-        sharedPlayerViewModel.currentVideo().observe(this, Observer {
-            VideoPlayerScreen.launch(this, it)
-        })
     }
 
     companion object {

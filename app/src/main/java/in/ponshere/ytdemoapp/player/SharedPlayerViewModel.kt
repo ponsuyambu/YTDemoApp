@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModel
 class SharedPlayerViewModel : ViewModel() {
     private val currentVideo = MutableLiveData<YTVideo>()
     private val endedVideo = MutableLiveData<YTVideo>()
+    @Deprecated("will be removed")
     private val playlist = MutableLiveData<String>()
 
     fun playVideo(video: YTVideo) {
@@ -25,5 +26,6 @@ class SharedPlayerViewModel : ViewModel() {
 
     fun currentVideo() : LiveData<YTVideo>  = currentVideo
     fun endedVideo() : LiveData<YTVideo>  = endedVideo
+    @Deprecated("will be removed")
     fun playlist() : LiveData<String>  = playlist
 }

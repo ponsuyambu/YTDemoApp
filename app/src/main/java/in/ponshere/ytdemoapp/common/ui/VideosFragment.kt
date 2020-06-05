@@ -63,13 +63,6 @@ abstract class VideosFragment<T : InfiniteScrollableViewModel<YTVideosResult, YT
 
             })
 
-        sharedPlayerViewModel.playlist().observe(this, Observer { playlistId ->
-            val videos = viewModel.listModels().value
-            if(videos?.get(0) != null) {
-                VideoPlayerScreen.launch(activity, playlistId, videos[0])
-            }
-        })
-
         sharedPlayerViewModel.endedVideo().observe(this, Observer { endedVideo ->
             val videos = viewModel.listModels().value
             if(videos != null && endedVideo != null) {
@@ -121,6 +114,10 @@ abstract class VideosFragment<T : InfiniteScrollableViewModel<YTVideosResult, YT
     }
 
     override fun onVideoClicked(video: YTVideo) {
-        sharedPlayerViewModel.playVideo(video)
+        if(activity is VideoPlayerScreen) {
+            sharedPlayerViewModel.playVideo(video)
+        } else {
+            VideoPlayerScreen.launch(activity, video)
+        }
     }
 }
