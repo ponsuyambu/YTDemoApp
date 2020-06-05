@@ -39,6 +39,9 @@ Plays the videos selected from search & play list videos screen. It uses the `[a
 ## Caching
 App caches the playlists and its videos locally in database. Though the search feature of the app always directly communicates with the server.
 
+## Testing
+Major logics are covered in unit tests. Due the time limit, not the all cases are covered.
+
 ## Notes:
 - To build the release variant of the app locally(for the reviewer), release keystore is stored in git. Keystore has to be kept safely in other secure place or else app siging by Goolge play can be used.
 
@@ -50,5 +53,3 @@ App caches the playlists and its videos locally in database. Though the search f
 - https://developers.google.com/identity/protocols/oauth2
 - Scopes - https://developers.google.com/android/reference/com/google/android/gms/common/Scopes
 
-## Testing
-Major logics are covered in unit tests. Due the time limit, not the all cases are covered.

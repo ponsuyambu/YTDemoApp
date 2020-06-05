@@ -22,7 +22,10 @@ class PlaylistViewModelTest : BaseTest() {
 
     @Before
     fun setup() {
-        viewModel = PlaylistViewModel(repository)
+        testCoroutineRule.runBlocking {
+            viewModel = PlaylistViewModel(repository)
+            `when`(repository.isChannelIdAvailable()).thenReturn(true)
+        }
     }
 
     @Test
