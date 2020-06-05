@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">YTDemoApp</string>
+    <string name="videos">videos</string>
+    <string name="play_list_icon">play list icon</string>
 </resources>
