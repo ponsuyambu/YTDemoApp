@@ -86,7 +86,10 @@ class YTRepository @Inject constructor(
     }
 
     override suspend fun isChannelIdAvailable(): Boolean {
-        if(localDataSource.isChannelIdAvailable() || remoteDataSource.isChannelIdAvailable()) return true
+        if(localDataSource.isChannelIdAvailable() || remoteDataSource.isChannelIdAvailable()) {
+            localDataSource.cacheChannelIdAvailability(true)
+            return true
+        }
         return false
     }
 }

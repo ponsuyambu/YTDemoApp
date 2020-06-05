@@ -2,16 +2,23 @@ package `in`.ponshere.ytdemoapp.search.ui
 
 import `in`.ponshere.ytdemoapp.R
 import `in`.ponshere.ytdemoapp.common.ui.BaseActivity
+import `in`.ponshere.ytdemoapp.utils.NetworkState
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.View.GONE
 import android.widget.SearchView
+import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_search_screen.*
+import javax.inject.Inject
 
 
 class SearchScreen : BaseActivity() {
+
+    @Inject
+    lateinit var networkState: NetworkState
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search_screen)
@@ -28,9 +35,13 @@ class SearchScreen : BaseActivity() {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 query?.let {
                     lblSearch.visibility = GONE
-                    supportFragmentManager.beginTransaction()
-                        .replace(R.id.flContainer, SearchVideosFragment.newInstance(it))
-                        .commit()
+                    if(networkState.isConnected) {
+                        supportFragmentManager.beginTransaction()
+                                .replace(R.id.flContainer, SearchVideosFragment.newInstance(it))
+                                .commit()
+                    } else {
+                        Toast.makeText(this@SearchScreen, "No data connection available", Toast.LENGTH_SHORT).show()
+                    }
                 }
                 return true
             }
