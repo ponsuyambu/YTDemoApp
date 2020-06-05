@@ -20,6 +20,9 @@
             android:layout_margin="8dp"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
             app:layout_constraintEnd_toStartOf="@id/imgPlaylistIcon"
+            android:ellipsize="end"
+            android:maxLines="2"
+            tools:text="Playlist title"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"/>
 
@@ -40,7 +43,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
             android:layout_marginEnd="8dp"
-            android:text="videos"
+            android:text="@string/videos"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
             app:layout_constraintStart_toEndOf="@id/tvCount"
             app:layout_constraintTop_toBottomOf="@id/tvTitle"
@@ -52,7 +55,8 @@
             android:layout_height="100dp"
             android:scaleType="centerCrop"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
+            android:contentDescription="@string/play_list_icon"
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
     <FrameLayout

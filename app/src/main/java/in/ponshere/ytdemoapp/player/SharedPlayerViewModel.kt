@@ -5,7 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
-//Shared across VideoPlayer, PlaylistDetails, VideosFragment
+//Shared across VideoPlayer, VideosFragment
 class SharedPlayerViewModel : ViewModel() {
     private val currentVideo = MutableLiveData<YTVideo>()
     private val endedVideo = MutableLiveData<YTVideo>()

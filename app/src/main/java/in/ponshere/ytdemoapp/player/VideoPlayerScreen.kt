@@ -37,9 +37,10 @@ class VideoPlayerScreen : DaggerAppCompatActivity() {
         lifecycle.addObserver(youtubePlayerView)
         sharedPlayerViewModel.currentVideo().observe(this, Observer {
             currentVideo = it
-            player.loadVideo(it.videoId, 0f)
+            playVideo(it)
         })
         currentVideo?.let {
+            tvVideoTitle.text = it.title // In offline condition, youtube player will not ready, hence set here as well
             playInitialVideo(it)
 
             if(playlistId != null) {
@@ -59,7 +60,7 @@ class VideoPlayerScreen : DaggerAppCompatActivity() {
         youtubePlayerView.addYouTubePlayerListener(object : AbstractYouTubePlayerListener() {
             override fun onReady(youTubePlayer: YouTubePlayer) {
                 player = youTubePlayer
-                youTubePlayer.loadVideo(video.videoId, 0f)
+                playVideo(video)
             }
 
             override fun onStateChange(youTubePlayer: YouTubePlayer, state: PlayerConstants.PlayerState) {
@@ -70,7 +71,11 @@ class VideoPlayerScreen : DaggerAppCompatActivity() {
                 }
             }
         })
+    }
 
+    private fun playVideo(video: YTVideo) {
+        tvVideoTitle.text = video.title
+        player.loadVideo(video.videoId, 0f)
     }
 
     companion object {
