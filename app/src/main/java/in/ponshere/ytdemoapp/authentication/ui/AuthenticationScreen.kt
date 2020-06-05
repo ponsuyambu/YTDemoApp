@@ -3,10 +3,8 @@ package `in`.ponshere.ytdemoapp.authentication.ui
 import `in`.ponshere.ytdemoapp.R
 import `in`.ponshere.ytdemoapp.authentication.GoogleSingInResultContract
 import `in`.ponshere.ytdemoapp.extensions.signInWithToken
-import `in`.ponshere.ytdemoapp.idlingresource.SignInIdlingResource
 import `in`.ponshere.ytdemoapp.playlist.ui.PlaylistScreen
 import android.os.Bundle
-import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.coroutineScope
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.firebase.auth.ktx.auth
@@ -17,15 +15,11 @@ import kotlinx.coroutines.launch
 
 class AuthenticationScreen : DaggerAppCompatActivity() {
 
-    @VisibleForTesting
-    var singInIdlingResource: SignInIdlingResource? = null
-
     private val signIn = registerForActivityResult(GoogleSingInResultContract()) { token ->
         token?.let {
             lifecycle.coroutineScope.launch {
-                val user = Firebase.auth.signInWithToken(token, this@AuthenticationScreen)
+                Firebase.auth.signInWithToken(token, this@AuthenticationScreen)
                 launchPlaylistScreen()
-                singInIdlingResource?.onSignCompleted()
             }
         }
     }
@@ -38,7 +32,6 @@ class AuthenticationScreen : DaggerAppCompatActivity() {
             return
         }
         btnSignIn.setOnClickListener {
-            singInIdlingResource?.onSignInStarted()
             signIn.launch(null)
         }
     }

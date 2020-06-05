@@ -23,6 +23,7 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunnerArguments clearPackageData: 'true'
     }
 
     buildTypes {
@@ -31,6 +32,9 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.release
         }
+    }
+    testOptions {
+        execution 'ANDROIDX_TEST_ORCHESTRATOR'
     }
     testBuildType "release" // Release keystore SHA1 is used for google signing
 }
@@ -135,4 +139,6 @@ dependencies {
     implementation 'androidx.test.espresso:espresso-idling-resource:3.2.0'
     // Set this dependency to build and run UI Automator tests
     androidTestImplementation 'androidx.test.uiautomator:uiautomator:2.2.0'
+
+    androidTestUtil 'androidx.test:orchestrator:1.2.0'
 }

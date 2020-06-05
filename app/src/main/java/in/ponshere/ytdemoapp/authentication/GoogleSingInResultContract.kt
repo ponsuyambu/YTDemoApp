@@ -1,6 +1,7 @@
 package `in`.ponshere.ytdemoapp.authentication
 
 import `in`.ponshere.ytdemoapp.R
+import `in`.ponshere.ytdemoapp.repository.GOOGLE_SIGN_IN_YOUTUBE_SCOPE
 import android.content.Context
 import android.content.Intent
 import androidx.activity.result.contract.ActivityResultContract
@@ -15,7 +16,7 @@ class GoogleSingInResultContract : ActivityResultContract<Unit, String?>() {
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken(context.getString(R.string.default_web_client_id))
             .requestEmail()
-            .requestScopes(Scope("https://www.googleapis.com/auth/youtube"))
+            .requestScopes(Scope(GOOGLE_SIGN_IN_YOUTUBE_SCOPE))
             .build()
         val googleSignInClient = GoogleSignIn.getClient(context, gso)
         return googleSignInClient.signInIntent
