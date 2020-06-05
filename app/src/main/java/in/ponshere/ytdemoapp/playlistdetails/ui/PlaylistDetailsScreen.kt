@@ -7,7 +7,6 @@ import `in`.ponshere.ytdemoapp.playlist.models.YTPlaylist
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.view.View
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.squareup.picasso.Picasso
@@ -41,12 +40,6 @@ class PlaylistDetailsScreen : DaggerAppCompatActivity() {
         sharedPlayerViewModel.currentVideo().observe(this, Observer {
             VideoPlayerScreen.launch(this, it)
         })
-    }
-
-    fun playAll(view: View) {
-        playlist?.let {
-            sharedPlayerViewModel.playPlaylist(it.id)
-        }
     }
 
     companion object {

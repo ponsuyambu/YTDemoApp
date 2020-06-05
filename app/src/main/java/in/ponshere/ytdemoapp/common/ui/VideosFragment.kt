@@ -49,6 +49,9 @@ abstract class VideosFragment<T : InfiniteScrollableViewModel<YTVideosResult, YT
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        if((activity is VideoPlayerScreen).not()) {
+            fabPlayAll.visibility = View.VISIBLE
+        }
         setupRecyclerView()
     }
 
