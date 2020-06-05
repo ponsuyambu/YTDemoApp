@@ -99,7 +99,7 @@ class YTRemoteDataSource @Inject constructor(context: Context) : YTDataSource {
                 val result = task?.execute()
 
                 nextPageToken = result?.nextPageToken ?: ""
-                result?.items?.forEach { playlistItem -> videos.add(YTVideo(playlistItem)) }
+                result?.items?.forEach { playlistItem -> if(playlistItem.id.videoId != null) videos.add(YTVideo(playlistItem)) }
             }
         }
         return YTVideosResult(videos, nextPageToken)
