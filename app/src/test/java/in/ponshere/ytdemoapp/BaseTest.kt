@@ -16,5 +16,4 @@ abstract class BaseTest {
 
     @get:Rule
     val testCoroutineRule = TestCoroutineRule()
-
 }

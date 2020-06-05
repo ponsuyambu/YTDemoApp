@@ -11,6 +11,8 @@ import `in`.ponshere.ytdemoapp.playlistdetails.ui.VideosAdapter
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -49,9 +51,6 @@ abstract class VideosFragment<T : InfiniteScrollableViewModel<YTVideosResult, YT
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        if((activity is VideoPlayerScreen).not()) {
-            fabPlayAll.visibility = View.VISIBLE
-        }
         setupRecyclerView()
     }
 
@@ -80,8 +79,12 @@ abstract class VideosFragment<T : InfiniteScrollableViewModel<YTVideosResult, YT
                 tvStatus.visibility = View.GONE
             } else {
                 tvStatus.text = it
-                tvStatus.visibility = View.VISIBLE
+                tvStatus.visibility = VISIBLE
             }
+        })
+
+        viewModel.showPlayAll().observe(this, Observer {
+            fabPlayAll.visibility = if (it && (activity is VideoPlayerScreen).not()) VISIBLE else GONE
         })
 
         viewModel.listModels().observe(this,
@@ -94,10 +97,7 @@ abstract class VideosFragment<T : InfiniteScrollableViewModel<YTVideosResult, YT
     }
 
     private fun setupRecyclerView() {
-        videosAdapter =
-            VideosAdapter(
-                videos
-            )
+        videosAdapter = VideosAdapter(videos)
         videosAdapter.onVideoClickListener = this
         videosAdapter.onEndReachedListener =
             object :

@@ -30,6 +30,8 @@ class PlaylistViewModelTest : BaseTest() {
         viewModel.fetchPlaylist()
 
         verify(repository, never()).getPlaylists(any())
+        assertTrue(viewModel.showProgress().value?.not())
+        assertNull(viewModel.status().value)
     }
 
     @Test
@@ -42,7 +44,7 @@ class PlaylistViewModelTest : BaseTest() {
         viewModel.fetchPlaylist()
 
         assertNull(viewModel.status().value)
-        val playLists = viewModel.playlists().value
+        val playLists = viewModel.listModels().value
         Assert.assertNotNull(playLists)
         assertTrue(playLists?.size?.equals(1))
         assertTrue(playLists?.get(0)?.equals(mockPlaylist))

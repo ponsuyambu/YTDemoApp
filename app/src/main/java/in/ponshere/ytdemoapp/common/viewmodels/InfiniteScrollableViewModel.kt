@@ -9,29 +9,35 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 
-abstract class InfiniteScrollableViewModel<R: ListResult<T>, T: ListModel>(private val repository: YTRepository) : ViewModel() {
+abstract class InfiniteScrollableViewModel<R : ListResult<T>, T : ListModel>(private val repository: YTRepository) :
+    ViewModel() {
     private val showProgress = MutableLiveData(false)
     private val status = MutableLiveData<String>(null)
     private val listModels = MutableLiveData<List<T>>()
     protected var nextPageToken: String? = null
 
+    private val showPlayAll: MutableLiveData<Boolean> = MutableLiveData(false)
+
     fun fetch(callback: suspend () -> R) {
         viewModelScope.launch {
             if (repository.isNextPlaylistDataAvailable(nextPageToken)) {
-                if (nextPageToken == null)
-                    showProgress.postValue(true)
-                else
-                    status.postValue("Loading ...")
+                setProgress(true)
                 val playlistResult = callback()
                 nextPageToken = playlistResult.nextPageToken
                 listModels.postValue(playlistResult.listModels)
-                showProgress.postValue(false)
-                status.postValue(null)
+                showPlayAll.postValue(playlistResult.listModels?.isNotEmpty() ?: false)
+                setProgress(false)
             }
         }
+    }
+
+    private fun setProgress(loading: Boolean) {
+        showProgress.postValue(loading && nextPageToken == null)
+        status.postValue(if (loading) "Loading ..." else null)
     }
 
     fun showProgress(): LiveData<Boolean> = showProgress
     fun status(): LiveData<String> = status
     fun listModels(): LiveData<List<T>> = listModels
+    fun showPlayAll(): LiveData<Boolean> = showPlayAll
 }
