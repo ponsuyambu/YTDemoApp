@@ -5,6 +5,7 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.net.Network
 import android.net.NetworkRequest
+import androidx.lifecycle.LiveData
 
 interface NetworkState {
     val isConnected: Boolean
@@ -12,6 +13,10 @@ interface NetworkState {
 
 internal class NetworkStateImp : NetworkState {
     override var isConnected: Boolean = false
+        set(value) {
+            field = value
+            NetworkEvents.notify(if (value) Event.ConnectivityAvailable else Event.ConnectivityLost)
+        }
 }
 internal class NetworkCallbackImp(private val holder: NetworkStateImp) : ConnectivityManager.NetworkCallback() {
     override fun onAvailable(network: Network) {
@@ -25,6 +30,17 @@ internal class NetworkCallbackImp(private val holder: NetworkStateImp) : Connect
     override fun onLost(network: Network) {
         holder.isConnected = false
     }
+
+    override fun onUnavailable() {
+        super.onUnavailable()
+        holder.isConnected = false
+    }
+
+    override fun onBlockedStatusChanged(network: Network, blocked: Boolean) {
+        super.onBlockedStatusChanged(network, blocked)
+        holder.isConnected = !blocked
+    }
+
 }
 object NetworkStateHolder : NetworkState {
 
@@ -41,5 +57,15 @@ object NetworkStateHolder : NetworkState {
             NetworkCallbackImp(holder)
         )
     }
+}
 
+sealed class Event {
+    object ConnectivityLost : Event()
+    object ConnectivityAvailable : Event()
+}
+
+object NetworkEvents : LiveData<Event>(Event.ConnectivityLost) {
+    internal fun notify(event: Event) {
+        postValue(event)
+    }
 }
