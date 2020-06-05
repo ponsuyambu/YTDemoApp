@@ -4,7 +4,8 @@ import `in`.ponshere.ytdemoapp.R
 import `in`.ponshere.ytdemoapp.ViewModelFactory
 import `in`.ponshere.ytdemoapp.common.models.YTVideo
 import `in`.ponshere.ytdemoapp.common.viewmodels.InfiniteScrollableViewModel
-import `in`.ponshere.ytdemoapp.playlistdetails.ui.PlaylistDetailsAdapter
+import `in`.ponshere.ytdemoapp.player.VideoPlayerScreen
+import `in`.ponshere.ytdemoapp.playlistdetails.ui.VideosAdapter
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -16,11 +17,11 @@ import dagger.android.support.DaggerFragment
 import kotlinx.android.synthetic.main.layout_infinite_scrollable_list.*
 import javax.inject.Inject
 
-abstract class VideosFragment<T : InfiniteScrollableViewModel>(private val type: Class<T>) : DaggerFragment() {
+abstract class VideosFragment<T : InfiniteScrollableViewModel>(private val type: Class<T>) : DaggerFragment(), VideosAdapter.OnVideoClickListener {
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
     protected lateinit var viewModel: T
-    private lateinit var videosAdapter: PlaylistDetailsAdapter
+    private lateinit var videosAdapter: VideosAdapter
 
     private val videos = mutableListOf<YTVideo>()
 
@@ -72,12 +73,12 @@ abstract class VideosFragment<T : InfiniteScrollableViewModel>(private val type:
 
     private fun setupRecyclerView() {
         videosAdapter =
-            PlaylistDetailsAdapter(
+            VideosAdapter(
                 videos
             )
         videosAdapter.onEndReachedListener =
             object :
-                PlaylistDetailsAdapter.OnEndReachedListener {
+                VideosAdapter.OnEndReachedListener {
                 override fun onRecyclerEndReached(position: Int) {
                     getVideos()
                 }
@@ -86,6 +87,12 @@ abstract class VideosFragment<T : InfiniteScrollableViewModel>(private val type:
         recyclerView.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = videosAdapter
+        }
+    }
+
+    override fun onVideoClicked(video: YTVideo) {
+        if(activity is VideoPlayerScreen) {
+
         }
     }
 }
