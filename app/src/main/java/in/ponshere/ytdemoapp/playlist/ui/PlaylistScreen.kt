@@ -101,6 +101,12 @@ class PlaylistScreen : BaseActivity() {
                     playlistAdapter.notifyDataSetChanged()
                 }
             })
+
+        playlistViewModel.channelIdNotAvailableError().observe(this, Observer {
+            it?.let {
+                if(it) tvError.visibility = View.VISIBLE else tvError.visibility = View.GONE
+            }
+        })
     }
 
     companion object {

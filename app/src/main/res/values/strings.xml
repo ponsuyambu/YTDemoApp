@@ -6,4 +6,5 @@
     <string name="play_all">Play All</string>
     <string name="sign_in">Sign In</string>
     <string name="offline_status">You are offline and viewing the cached data</string>
+    <string name="channel_id_error">Hi, you don\'t have any channels in your account. Please create a channel in YouTube and launch the app again.</string>
 </resources>
