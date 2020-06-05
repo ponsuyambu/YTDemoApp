@@ -1,7 +1,9 @@
 package `in`.ponshere.ytdemoapp.repository
 
 import `in`.ponshere.ytdemoapp.CacheRetrievalPolicy
+import `in`.ponshere.ytdemoapp.CacheRetrievalPolicy.CACHE_FIRST
 import `in`.ponshere.ytdemoapp.common.models.YTVideosResult
+import `in`.ponshere.ytdemoapp.datasource.FIRST_PAGE_TOKEN
 import `in`.ponshere.ytdemoapp.datasource.YTDataSource
 import `in`.ponshere.ytdemoapp.datasource.YTLocalDataSource
 import `in`.ponshere.ytdemoapp.datasource.YTRemoteDataSource
@@ -15,42 +17,20 @@ class YTRepository @Inject constructor(
     private val localDataSource: YTLocalDataSource,
     private val remoteDataSource: YTRemoteDataSource,
     private val networkState: NetworkState
-) : YTDataSource{
-    override suspend fun getPlaylists(pageToken: String?): YTPlaylistsResult {
-        if(networkState.isConnected.not()) {
-            return localDataSource.getPlaylists(pageToken)
-        }
+) : YTDataSource {
 
+    override suspend fun getPlaylists(pageToken: String): YTPlaylistsResult? {
+        if (networkState.isConnected.not()) return localDataSource.getPlaylists(pageToken)
         val playlistsResult = remoteDataSource.getPlaylists(pageToken)
-
-        if(isFirstPageCall(pageToken)) {
-            localDataSource.deletePlaylistResults()
-            localDataSource.addPlaylistResult(playlistsResult, pageToken)
-        }else if(localDataSource.isPlaylistAlreadyCached(playlistsResult.nextPageToken).not()) {
-            localDataSource.addPlaylistResult(playlistsResult, pageToken)
-        }
-
+        updatePlaylistResultsCache(pageToken, playlistsResult)
         return playlistsResult
     }
 
-    private fun isFirstPageCall(pageToken: String?) = pageToken == null
-
-    override suspend fun getPlaylistVideos(playlistId: String, pageToken: String?, cacheRetrievalPolicy: CacheRetrievalPolicy): YTVideosResult {
-        if(networkState.isConnected.not()) {
-            return localDataSource.getPlaylistVideos(playlistId, pageToken, cacheRetrievalPolicy)
-        } else if(cacheRetrievalPolicy == CacheRetrievalPolicy.CACHE_FIRST &&
-                localDataSource.isNextPlaylistVideosDataAvailable(playlistId, pageToken)) { // user is online
-                return localDataSource.getPlaylistVideos(playlistId, pageToken, cacheRetrievalPolicy)
-        }
-
+    override suspend fun getPlaylistVideos(playlistId: String, pageToken: String, cacheRetrievalPolicy: CacheRetrievalPolicy): YTVideosResult? {
+        val localPlaylistVideosResult = localDataSource.getPlaylistVideos(playlistId, pageToken, cacheRetrievalPolicy)
+        if (networkState.isConnected.not() || (cacheRetrievalPolicy == CACHE_FIRST && localPlaylistVideosResult != null)) return localPlaylistVideosResult
         val playlistVideosResult = remoteDataSource.getPlaylistVideos(playlistId, pageToken, cacheRetrievalPolicy)
-
-        if(isFirstPageCall(pageToken)) {
-            localDataSource.deletePlaylistVideosResults(playlistId)
-            localDataSource.addPlaylistVideosResult(playlistId, playlistVideosResult, pageToken)
-        }else if(localDataSource.isPlaylistVideosAlreadyCached(playlistId, playlistVideosResult.nextPageToken).not()) {
-            localDataSource.addPlaylistVideosResult(playlistId, playlistVideosResult, pageToken)
-        }
+        updatePlaylistVideosResultCache(pageToken, playlistVideosResult, playlistId)
         return playlistVideosResult
     }
 
@@ -58,15 +38,46 @@ class YTRepository @Inject constructor(
         return remoteDataSource.getVideosFor(searchTerm, pageToken)
     }
 
-    override suspend fun isNextPlaylistDataAvailable(pageToken: String?): Boolean {
+    override suspend fun isNextPlaylistDataAvailable(pageToken: String): Boolean {
         return getActiveDataSource().isNextPlaylistDataAvailable(pageToken)
     }
 
-    override suspend fun isNextPlaylistVideosDataAvailable(playlistId: String, pageToken: String?): Boolean {
-        return getActiveDataSource().isNextPlaylistVideosDataAvailable(playlistId, pageToken)
+    private suspend fun updatePlaylistResultsCache(pageToken: String, playlistsResult: YTPlaylistsResult) {
+        if (isFirstPageCall(pageToken)) localDataSource.deleteAllPlaylistResults()
+        else localDataSource.deletePlaylistResults(pageToken)
+        localDataSource.addPlaylistResult(playlistsResult, pageToken)
     }
 
-    private fun getActiveDataSource() : YTDataSource {
-        return if(networkState.isConnected) remoteDataSource else localDataSource
+    private suspend fun updatePlaylistVideosResultCache(pageToken: String, videosResult: YTVideosResult, playlistId: String) {
+        if (isFirstPageCall(pageToken)) localDataSource.deletePlaylistVideosResult(playlistId)
+        else localDataSource.deletePlaylistVideosResults(playlistId, pageToken)
+        localDataSource.addPlaylistVideosResult(playlistId, videosResult, pageToken)
+    }
+
+    private fun isFirstPageCall(pageToken: String) = pageToken == FIRST_PAGE_TOKEN
+
+    private suspend fun enhanceVideoResults(videoResults: YTVideosResult): YTVideosResult {
+        val videoIds = videoResults.listModels?.map { m -> m.videoId } ?: emptyList()
+        val cachedVideos = localDataSource.getVideosInfo(videoIds)
+        val remoteVideoIds = videoIds.filter { id -> cachedVideos.keys.contains(id).not() }
+        val remoteVideos = remoteDataSource.getVideosInfo(remoteVideoIds)
+        val allVideos = mutableMapOf<String, String>()
+        allVideos.putAll(cachedVideos)
+        allVideos.putAll(remoteVideos)
+
+        videoResults.listModels?.forEach { video ->
+            allVideos[video.videoId]?.let { duration ->
+                video.duration = duration
+            }
+        }
+        return videoResults
+    }
+
+    override suspend fun getVideosInfo(videoIds: List<String>): Map<String, String> {
+        TODO("Not yet implemented")
+    }
+
+    private fun getActiveDataSource(): YTDataSource {
+        return if (networkState.isConnected) remoteDataSource else localDataSource
     }
 }

@@ -71,7 +71,6 @@ abstract class VideosFragment<T : InfiniteScrollableViewModel<YTVideosResult, YT
                 }
 
             }
-
         })
 
         viewModel.status().observe(this, Observer {

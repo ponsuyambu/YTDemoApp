@@ -4,10 +4,12 @@ import `in`.ponshere.ytdemoapp.CacheRetrievalPolicy
 import `in`.ponshere.ytdemoapp.common.models.YTVideosResult
 import `in`.ponshere.ytdemoapp.playlist.models.YTPlaylistsResult
 
+const val FIRST_PAGE_TOKEN = "!!FIRST_PAGE!!"
+
 interface YTDataSource {
-    suspend fun getPlaylists(pageToken: String? = null): YTPlaylistsResult
-    suspend fun getPlaylistVideos(playlistId: String, pageToken: String? = null, cacheRetrievalPolicy: CacheRetrievalPolicy = CacheRetrievalPolicy.NETWORK_FIRST): YTVideosResult
+    suspend fun getPlaylists(pageToken: String = FIRST_PAGE_TOKEN): YTPlaylistsResult?
+    suspend fun getPlaylistVideos(playlistId: String, pageToken: String = FIRST_PAGE_TOKEN, cacheRetrievalPolicy: CacheRetrievalPolicy = CacheRetrievalPolicy.NETWORK_FIRST): YTVideosResult?
     suspend fun getVideosFor(searchTerm: String, pageToken: String? = null): YTVideosResult
-    suspend fun isNextPlaylistDataAvailable(pageToken: String?) : Boolean
-    suspend fun isNextPlaylistVideosDataAvailable(playlistId: String, pageToken: String?) : Boolean
+    suspend fun isNextPlaylistDataAvailable(pageToken: String = FIRST_PAGE_TOKEN) : Boolean
+    suspend fun getVideosInfo(videoIds: List<String>): Map<String, String>
 }

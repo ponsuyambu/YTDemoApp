@@ -5,6 +5,7 @@ import `in`.ponshere.ytdemoapp.common.models.YTVideo
 import `in`.ponshere.ytdemoapp.common.models.YTVideosResult
 import `in`.ponshere.ytdemoapp.playlist.models.YTPlaylist
 import `in`.ponshere.ytdemoapp.playlist.models.YTPlaylistsResult
+import `in`.ponshere.ytdemoapp.playlist.models.YTVideoInfoResult
 import `in`.ponshere.ytdemoapp.repository.GOOGLE_SIGN_IN_YOUTUBE_SCOPE
 import android.content.Context
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -34,7 +35,43 @@ class YTRemoteDataSource @Inject constructor(context: Context) : YTDataSource {
         ).setApplicationName("YTDemoApp").build()
     }
 
-    override suspend fun getPlaylistVideos(playlistId: String, pageToken: String?, cacheRetrievalPolicy: CacheRetrievalPolicy): YTVideosResult {
+    override suspend fun getPlaylists(pageToken: String): YTPlaylistsResult {
+        val playLists = arrayListOf<YTPlaylist>()
+        var nextPageToken = ""
+        coroutineScope {
+            withContext(Dispatchers.IO) {
+                val task = youTube.playlists()?.list("snippet,contentDetails")
+                task?.mine = true
+                task?.maxResults = 15
+                task?.pageToken = pageToken
+
+                val result = task?.execute()
+
+                nextPageToken = result?.nextPageToken ?: ""
+                result?.items?.forEach { playlist ->
+                    val title = playlist?.snippet?.title
+                    val icon = playlist?.snippet?.thumbnails?.high?.url
+                    val videosCount = playlist?.contentDetails?.itemCount
+                    val playlistId = playlist?.id
+                    //Make sure all the data are available, only then add to the list
+                    if (playlistId != null && title != null && icon != null && videosCount != null) {
+                        playLists.add(YTPlaylist(
+                            playlistId,
+                            title,
+                            videosCount,
+                            icon
+                        ))
+                    }
+                }
+            }
+        }
+        return YTPlaylistsResult(
+            playLists,
+            nextPageToken
+        )
+    }
+
+    override suspend fun getPlaylistVideos(playlistId: String, pageToken: String, cacheRetrievalPolicy: CacheRetrievalPolicy): YTVideosResult {
         val videos = arrayListOf<YTVideo>()
         var nextPageToken = ""
         coroutineScope {
@@ -42,7 +79,7 @@ class YTRemoteDataSource @Inject constructor(context: Context) : YTDataSource {
                 val task = youTube.playlistItems()?.list("snippet")
                 task?.playlistId = playlistId
                 task?.maxResults = 15
-                pageToken?.let { task?.pageToken = it }
+                task?.pageToken = pageToken
 
                 val result = task?.execute()
 
@@ -88,45 +125,7 @@ class YTRemoteDataSource @Inject constructor(context: Context) : YTDataSource {
         return YTVideosResult(videos, nextPageToken)
     }
 
-    override suspend fun getPlaylists(pageToken: String?): YTPlaylistsResult {
-        val playLists = arrayListOf<YTPlaylist>()
-        var nextPageToken = ""
-        coroutineScope {
-            withContext(Dispatchers.IO) {
-                val task = youTube.playlists()?.list("snippet,contentDetails")
-                task?.mine = true
-                task?.maxResults = 15
-                pageToken?.let { task?.pageToken = it }
-
-                val result = task?.execute()
-
-                nextPageToken = result?.nextPageToken ?: ""
-                result?.items?.forEach { playlist ->
-                    val title = playlist?.snippet?.title
-                    val icon = playlist?.snippet?.thumbnails?.high?.url
-                    val videosCount = playlist?.contentDetails?.itemCount
-                    val playlistId = playlist?.id
-                    //Make sure all the data are available, only then add to the list
-                    if (playlistId != null && title != null && icon != null && videosCount != null) {
-                        playLists.add(YTPlaylist(
-                                playlistId,
-                                title,
-                                videosCount,
-                                icon
-                        ))
-                    }
-                }
-            }
-        }
-        return YTPlaylistsResult(
-                playLists,
-                nextPageToken
-        )
-    }
-
-    override suspend fun isNextPlaylistDataAvailable(pageToken: String?): Boolean {
-        return isNextResultsAvailable(pageToken)
-    }
+    override suspend fun isNextPlaylistDataAvailable(pageToken: String) = pageToken.isEmpty().not()
 
     private fun isNextResultsAvailable(pageToken: String?): Boolean {
         if (pageToken == null) return true
@@ -134,7 +133,28 @@ class YTRemoteDataSource @Inject constructor(context: Context) : YTDataSource {
         return true
     }
 
-    override suspend fun isNextPlaylistVideosDataAvailable(playlistId: String, pageToken: String?): Boolean {
-        return isNextResultsAvailable(pageToken)
+    override suspend fun getVideosInfo(videoIds: List<String>): Map<String, String> {
+        TODO("Not yet implemented")
+    }
+
+     suspend fun getVideosInfo(vararg videoIds: String): List<YTVideoInfoResult> {
+        val videoInfoResultList = mutableListOf<YTVideoInfoResult>()
+        coroutineScope {
+            withContext(Dispatchers.IO) {
+                val task = youTube.videos()?.list("contentDetails")
+                task?.id = videoIds.toList().joinToString(separator = ",")
+                task?.maxResults = videoIds.size.toLong()
+                val result = task?.execute()
+
+                result?.items?.forEach { video ->
+                    val duration = video.contentDetails?.duration
+                    if (duration != null) {
+                        videoInfoResultList.add( YTVideoInfoResult(video.id, duration))
+
+                    }
+                }
+            }
+        }
+        return videoInfoResultList
     }
 }
